@@ -1,0 +1,43 @@
+{
+  "test" : "hiii"
+  "Menu" : "Меню",
+  "Play" : "Играть",
+  "Zen" : "Зэн",
+  "Editor" : "Редактор",
+  "Info" : "Инфо",
+  "Settings" : "Настройки",
+  "How to play" : "Как играть",
+  "About" : "Обо всём",
+  "Stats" : "Статистика",
+  "Back" : "Назад"
+  "How can I help?" : "Чем я могу помочь?"
+  "Attention" : "Внимание"
+  "How can I help" : "Чем я могу помочь"
+  "copy address to clipboard" : "скопировать адрес в буфер обмена"
+  "Get premium" : "Получить премиум"
+  "Premium is activated already." : "Премиум уже активирован."
+  "Deactivate" : "Деактивировать"
+  "Start over" : "Начать сначала"
+  "Go to Menu" : "Выйти в меню"
+  "reset level" : "сбросить уровень"
+  "transform the field" : "преобразовать поле"
+  "show hint" : "показать подсказку"
+  "skip level" : "пропустить уровень"
+  "back" : "назад"
+  "counterclockwise turn" : "повернуть против часовой стрелки"
+  "clockwise turn" : "повернуть по часовой стрелке"
+  "mirror" : "отзеркалить"
+  "go back" : "назад"
+  "transform" : "преобразовать"
+  "only for developers" : "только для разработчиков"
+  "Level " : "Уровень "
+  "Progress " : "Прогресс: "
+  "Current: " : "Текущий: "
+  "Auch!" : "Ай!"
+  "It's annoying" : "Это раздражает!"
+  "Would" : "Не мог"
+  "you please" : "бы ты"
+  "stop?" : "прекратить?"
+  "Ughhhh" : "Тьфу"
+  "Not so fast" : "Не так быстро"
+}

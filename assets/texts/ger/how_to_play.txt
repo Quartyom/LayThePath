@@ -1,0 +1,4 @@
+Ebnen Sie den Weg, um alle verfügbaren Feldzellen zu bedecken. Halten Sie Ihren Finger auf dem Feld und bewegen Sie ihn.
+Sie können sich nicht selbst oder Hindernisse überqueren. Der Weg muss in einem leeren Käfig beginnen und enden, aber er kann durch diagonale Wände, Punkte und sich selbst in Kurven gehen.
+An Kreuzungen können Sie nur geradeaus fahren.
+Wenn der Zug verboten ist, werden Sie es bemerken, in einem anderen Fall beschränken Sie sich nicht und haben Sie Spaß.

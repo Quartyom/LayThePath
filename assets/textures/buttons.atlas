@@ -1,0 +1,425 @@
+
+buttons.png
+size: 2048, 2048
+format: RGBA8888
+filter: Nearest, Nearest
+repeat: none
+back_normal
+  rotate: false
+  xy: 1292, 1344
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+back_pressed
+  rotate: false
+  xy: 1292, 54
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+bitcoin_normal
+  rotate: false
+  xy: 1034, 312
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+bitcoin_pressed
+  rotate: false
+  xy: 260, 54
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+button_hints_off
+  rotate: false
+  xy: 518, 1086
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+button_hints_on
+  rotate: false
+  xy: 260, 570
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+dark_theme
+  rotate: false
+  xy: 776, 1086
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+dec_normal
+  rotate: false
+  xy: 518, 312
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+empty_normal
+  rotate: false
+  xy: 2, 2
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+english_normal
+  rotate: false
+  xy: 776, 570
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+ethereum_normal
+  rotate: false
+  xy: 776, 312
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+ethereum_pressed
+  rotate: false
+  xy: 2, 828
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+field_size_normal
+  rotate: false
+  xy: 1034, 570
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+field_size_pressed
+  rotate: false
+  xy: 260, 1344
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+german_normal
+  rotate: false
+  xy: 1034, 1086
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+german_pressed
+  rotate: false
+  xy: 2, 54
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+hint_normal
+  rotate: false
+  xy: 1292, 312
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+hint_pressed
+  rotate: false
+  xy: 1292, 828
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+in_main_menu_normal
+  rotate: false
+  xy: 1808, 1826
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+in_main_menu_pressed
+  rotate: false
+  xy: 2, 20
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+inc_normal
+  rotate: false
+  xy: 1034, 828
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+launch_normal
+  rotate: false
+  xy: 1034, 1344
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+locale_normal
+  rotate: false
+  xy: 776, 1344
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+locale_pressed
+  rotate: false
+  xy: 1034, 1602
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+menu_normal
+  rotate: false
+  xy: 776, 1602
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+menu_pressed
+  rotate: false
+  xy: 260, 312
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+mirror_normal
+  rotate: false
+  xy: 518, 1602
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+mirror_pressed
+  rotate: false
+  xy: 518, 570
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+next_normal
+  rotate: false
+  xy: 2, 570
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+next_pressed
+  rotate: false
+  xy: 2, 1602
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+obstacle_normal
+  rotate: false
+  xy: 1292, 1602
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+obstacle_pressed
+  rotate: false
+  xy: 776, 828
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+premium_normal
+  rotate: false
+  xy: 2, 1344
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+premium_pressed
+  rotate: false
+  xy: 518, 828
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+reset_normal
+  rotate: false
+  xy: 1292, 570
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+reset_pressed
+  rotate: false
+  xy: 776, 54
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+russian_normal
+  rotate: false
+  xy: 1292, 1086
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+russian_pressed
+  rotate: false
+  xy: 1550, 1086
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+sound_off
+  rotate: false
+  xy: 1034, 54
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+sound_on
+  rotate: false
+  xy: 1550, 570
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+spanish_normal
+  rotate: false
+  xy: 1550, 1344
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+spanish_pressed
+  rotate: false
+  xy: 1550, 828
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+splash
+  rotate: false
+  xy: 36, 36
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+template
+  rotate: false
+  xy: 1550, 312
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+template
+  rotate: false
+  xy: 1550, 54
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: 1
+transform_normal
+  rotate: false
+  xy: 2, 1086
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+transform_pressed
+  rotate: false
+  xy: 2, 312
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+turn_clockwise_normal
+  rotate: false
+  xy: 260, 1086
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+turn_clockwise_pressed
+  rotate: false
+  xy: 1550, 1602
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+turn_counterclockwise_normal
+  rotate: false
+  xy: 518, 1344
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+turn_counterclockwise_pressed
+  rotate: false
+  xy: 260, 1602
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+vibration_off
+  rotate: false
+  xy: 260, 828
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+vibration_on
+  rotate: false
+  xy: 518, 54
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+
+buttons2.png
+size: 2048, 512
+format: RGBA8888
+filter: Nearest, Nearest
+repeat: none
+dec_pressed
+  rotate: false
+  xy: 776, 2
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+english_pressed
+  rotate: false
+  xy: 260, 2
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+inc_pressed
+  rotate: false
+  xy: 518, 2
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+launch_pressed
+  rotate: false
+  xy: 1292, 2
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+save_normal
+  rotate: false
+  xy: 1034, 2
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+save_pressed
+  rotate: false
+  xy: 2, 2
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1

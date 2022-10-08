@@ -1,0 +1,10 @@
+Spielmodi:
+Alle Ebenen im Spiel wurden ausgewählt und manuell hinzugefügt, wenn sie zufällig generiert werden. Daher sind die Level im ersten Modus im Durchschnitt schwieriger, auf der anderen Seite sind die Level in der Zone endlos.
+Der Editor-Modus ist experimentell und wurde ursprünglich erstellt, um mein Entwicklerleben zu vereinfachen. Sie können auch Ebenen entwerfen und ausführen. Die Option zum Speichern ist noch nicht verfügbar.
+
+Frage-Antwort:
+Was ist, wenn das Niveau unpassierbar ist? Nun, wahrscheinlich nicht. Sie können den Hinweis lesen oder das Level überspringen.
+Wie kann ich den Fortschritt zurücksetzen? Gehen Sie zu den Systemeinstellungen und löschen Sie die Daten.
+
+Applikation:
+Geschrieben in Java, libgdx Framework im Juli 2022.

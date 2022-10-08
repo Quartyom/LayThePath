@@ -1,0 +1,3 @@
+lanzamientos: %d
+superado los niveles de Zen: %d
+estadísticas vistas: %d

@@ -1,0 +1,3 @@
+start: %d
+zen-Level bestanden: %d
+statistiken anzeigen: %d

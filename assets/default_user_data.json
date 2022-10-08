@@ -1,0 +1,15 @@
+{
+current_level: 1
+max_level_achieved: 1
+zen_is_available: false
+editor_is_available: false
+hints_amount: 5
+volume: 0.5
+vibration_is_on: true
+button_hints_are_on: true
+premium_is_on: false
+locale: en
+launches: 0
+zen_levels_completed: 0
+stats_views: 0
+}

@@ -1,0 +1,65 @@
+{
+field_size: 5
+vertical_walls: []
+horizontal_walls: [
+	{
+		x: 4
+		y: 1
+	}
+]
+slash_walls: []
+backslash_walls: [
+	{
+		x: 3
+		y: 1
+	}
+]
+boxes: [
+	{
+		y: 4
+	}
+	{
+		x: 1
+		y: 4
+	}
+	{
+		x: 1
+		y: 3
+	}
+	{
+		y: 3
+	}
+	{
+		y: 2
+	}
+	{
+		x: 1
+		y: 2
+	}
+	{
+		x: 1
+		y: 1
+	}
+	{
+		y: 1
+	}
+	{}
+	{
+		x: 1
+	}
+	{
+		x: 4
+	}
+]
+points: []
+crossroads: []
+hint: [
+	{
+		x: 2
+	}
+	{
+		x: 4
+		y: 1
+	}
+]
+}

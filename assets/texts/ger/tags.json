@@ -1,0 +1,43 @@
+{
+  "test" : "hiii"
+  "Menu" : "Menü",
+  "Play" : "Spielen",
+  "Zen" : "Zen",
+  "Editor" : "Editor",
+  "Info" : "Info",
+  "Settings" : "Einstellungen",
+  "How to play" : "Spielanleitung",
+  "About" : "Über alles",
+  "Stats" : "Statistiken",
+  "Back" : "Zurück"
+  "How can I help?" : "Wie kann ich helfen?"
+  "Attention" : "Achtung"
+  "How can I help" : "Wie kann ich helfen?"
+  "copy address to clipboard" : "Adresse in Zwischenablage kopieren"
+  "Get premium" : "Premium erhalten"
+  "Premium is activated already." : "Premium ist bereits aktiviert."
+  "Deactivate" : "Deaktivieren"
+  "Start over" : "Von vorne anfangen"
+  "Go to Menu" : "Menü verlassen"
+  "reset level" : "Level zurücksetzen"
+  "transform the field" : "Feld transformieren"
+  "show hint" : "Hinweis anzeigen"
+  "skip level" : "Level überspringen"
+  "back" : "zurück"
+  "counterclockwise turn" : "gegen den Uhrzeigersinn drehen"
+  "clockwise turn" : "im Uhrzeigersinn drehen"
+  "mirror" : "spiegeln"
+  "go back" : "zurück"
+  "transform" : "konvertieren"
+  "only for developers" : "nur für Entwickler"
+  "Level " : "Level "
+  "Progress " : "Fortschritt: "
+  "Current: " : "Aktuell: "
+  "Auch!" : "Ah!"
+  "It's annoying" : "Das ist ärgerlich!"
+  "Would" : "Konnte es nicht"
+  "you please" : "würdest du"
+  "stop?" : "aufhören?"
+  "Ughhhh" : "Ughhhh"
+  "Not so fast" : "Nicht so schnell"
+}
