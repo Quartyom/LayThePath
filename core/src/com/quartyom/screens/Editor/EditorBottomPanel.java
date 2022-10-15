@@ -2,7 +2,7 @@ package com.quartyom.screens.Editor;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.quartyom.game_elements.Button;
-import com.quartyom.interfaces.EventHandler;
+import com.quartyom.interfaces.QuEvent;
 import com.quartyom.game_elements.Slider;
 import com.quartyom.game_elements.SwitchButton;
 
@@ -29,7 +29,7 @@ public class EditorBottomPanel {
         field_size_switch.add("field_size_normal").add("field_size_pressed");
         field_size_switch.setSound("click_1");
 
-        transform_button = new Button("transform", editorScreen.game, new EventHandler() {
+        transform_button = new Button("transform", editorScreen.game, new QuEvent() {
             @Override
             public void execute() {
                 is_active = false;
@@ -42,7 +42,7 @@ public class EditorBottomPanel {
         obstacle_switch.add("obstacle_normal").add("obstacle_pressed");
         obstacle_switch.setSound("click_1");
 
-        launch_button = new Button("launch", editorScreen.game, new EventHandler() {
+        launch_button = new Button("launch", editorScreen.game, new QuEvent() {
             @Override
             public void execute() {
                 editorScreen.editorBoard.is_active = false;

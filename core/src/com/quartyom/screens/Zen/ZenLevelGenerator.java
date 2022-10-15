@@ -1,8 +1,6 @@
 package com.quartyom.screens.Zen;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.Json;
 import com.quartyom.screens.Level.Gameplay;
 import com.quartyom.screens.Level.LevelConfiguration;
 import com.quartyom.screens.Level.MoveResult;
@@ -22,9 +20,7 @@ public class ZenLevelGenerator {
         random = new Random();
 
         levelConfiguration = new LevelConfiguration();
-
         gameplay = new Gameplay();
-
     }
 
     private int free_direction(boolean arr[], int k){
@@ -41,7 +37,7 @@ public class ZenLevelGenerator {
         return -1;
     }
 
-    private void generate_obstacles(int field_size){
+    private void generate_path(int field_size){
         levelConfiguration.set_empty();
         levelConfiguration.field_size = field_size;
 
@@ -84,8 +80,10 @@ public class ZenLevelGenerator {
                         break;
                     }
 
-                    int new_tail_x = new_x_by_direction(tail_x, direction);
-                    int new_tail_y = new_y_by_direction(tail_y, direction);
+                    //int new_tail_x = new_x_by_direction(tail_x, direction);
+                    //int new_tail_y = new_y_by_direction(tail_y, direction);
+                    int new_tail_x = tail_x + x_shift_by_direction[direction];
+                    int new_tail_y = tail_y + y_shift_by_direction[direction];
 
                     MoveResult result = gameplay.touched_make_move(new_tail_x, new_tail_y);
 
@@ -153,17 +151,16 @@ public class ZenLevelGenerator {
         gameplay.set_hint();
     }
 
-
     public LevelConfiguration generate_level(){
         int field_size = random.nextInt(9 - 4) + 4; // от 4 до 8
 
         while (true) {
-            generate_obstacles(field_size);
-            int k = 0;
+            generate_path(field_size);
+            int k = 0;      // количество клеток, где есть тело
             for (int y = 0; y < field_size; y++) {
                 for (int x = 0; x < field_size; x++) {
-                    Vector2 current = new Vector2(x,y);
-                    if (gameplay.body.contains(current)){
+                    Vector2 current = new Vector2(x, y);
+                    if (gameplay.body.contains(current)) {
                         k++;
                     }
                 }
@@ -179,6 +176,8 @@ public class ZenLevelGenerator {
 
 
         // в пустоты расставляются коробки
+        // вынесено в отдельный цикл, потому что прежде чем расставлять стены требуется поставить ВСЕ коробки
+        // стена должна проверить, не перекрывает ли она коробку
         for (int y=0; y<field_size; y++) {
             for (int x = 0; x < field_size; x++) {
                 Vector2 current = new Vector2(x,y);
@@ -196,12 +195,10 @@ public class ZenLevelGenerator {
 
                 int i = gameplay.body.indexOf(current);
 
-                if (i == -1){
-                    //gameplay.boxes.add(current);
-                }
-                else {
-                    // вероятность поставить преятствие
-                    if (random.nextInt(3) != 0){continue;}
+                //if (i == -1){ gameplay.boxes.add(current); }
+                if (i != -1) {
+                    // вероятность поставить преятствие в принципе
+                    if (random.nextInt(5) < 2){ continue; } // p = 2 / 5
 
                     int inp = (int) gameplay.body_io.get(i).x;
                     int out = (int) gameplay.body_io.get(i).y;
@@ -217,35 +214,29 @@ public class ZenLevelGenerator {
                         segment = gameplay.segment_by_io[inp][out];
                     }
 
-                    boolean to_shift = random.nextBoolean();
-
-
+                    // Все исходы равновероятны
                     switch (segment){
                         case 0: // по идее такого не бывает
 
                         case 1:
                         case 5:
                             // вертикальные и горизонтальные снизу
-                            if (random.nextBoolean()){
-                                if (to_shift){
-                                    if (x > 0) {
-                                        // те же координаты либо х+1
-                                        if (gameplay.boxes.contains(new Vector2(x-1, y)) || gameplay.boxes.contains(current)){
-                                            break;
-                                        }
-                                        gameplay.vertical_walls.add(new Vector2(x - 1, y));
-                                    }
+                            if (random.nextBoolean() && x > 0){
+                                // те же координаты либо х+1
+                                if (gameplay.boxes.contains(new Vector2(x-1, y)) || gameplay.boxes.contains(current)){
+                                    break;
                                 }
-                                else if (x < field_size - 1){
-                                    if (gameplay.boxes.contains(current) || gameplay.boxes.contains(new Vector2(x+1, y))){
-                                        break;
-                                    }
-                                    gameplay.vertical_walls.add(current);
-                                }
+                                gameplay.vertical_walls.add(new Vector2(x - 1, y));
                             }
-                            else if (y > 0){
+                            if (random.nextBoolean() && x < field_size - 1) {
+                                if (gameplay.boxes.contains(current) || gameplay.boxes.contains(new Vector2(x + 1, y))) {
+                                    break;
+                                }
+                                gameplay.vertical_walls.add(current);
+                            }
+                            if (random.nextBoolean() && y > 0) {
                                 // те же координаты либо y+1
-                                if (gameplay.boxes.contains(new Vector2(x, y-1)) || gameplay.boxes.contains(current)){
+                                if (gameplay.boxes.contains(new Vector2(x, y - 1)) || gameplay.boxes.contains(current)) {
                                     break;
                                 }
                                 gameplay.horizontal_walls.add(new Vector2(x, y - 1));
@@ -254,53 +245,41 @@ public class ZenLevelGenerator {
                         case 2:
                         case 6:
                             // вертикальные слева и горизонтальные
-                            if (random.nextBoolean()){
-                                if (x > 0) {
-                                    if (gameplay.boxes.contains(new Vector2(x-1, y)) || gameplay.boxes.contains(current)){
-                                        break;
-                                    }
-                                    gameplay.vertical_walls.add(new Vector2(x - 1, y));
+                            if (random.nextBoolean() && x > 0){
+                                if (gameplay.boxes.contains(new Vector2(x-1, y)) || gameplay.boxes.contains(current)){
+                                    break;
                                 }
+                                gameplay.vertical_walls.add(new Vector2(x - 1, y));
                             }
-                            else {
-                                if (to_shift) {
-                                    if (y > 0) {
-                                        if (gameplay.boxes.contains(new Vector2(x, y-1)) || gameplay.boxes.contains(current)){
-                                            break;
-                                        }
-                                        gameplay.horizontal_walls.add(new Vector2(x, y - 1));
-                                    }
+                            if (random.nextBoolean() && y > 0){
+                                if (gameplay.boxes.contains(new Vector2(x, y-1)) || gameplay.boxes.contains(current)){
+                                    break;
                                 }
-                                else if (y < field_size - 1) {
-                                    if (gameplay.boxes.contains(current) || gameplay.boxes.contains(new Vector2(x, y+1))){
-                                        break;
-                                    }
-                                    gameplay.horizontal_walls.add(current);
+                                gameplay.horizontal_walls.add(new Vector2(x, y - 1));
+                            }
+                            if (random.nextBoolean() && y < field_size - 1){
+                                if (gameplay.boxes.contains(current) || gameplay.boxes.contains(new Vector2(x, y+1))){
+                                    break;
                                 }
+                                gameplay.horizontal_walls.add(current);
                             }
                             break;
                         case 3:
                         case 7:
                             // вертикальные и горизонтальные сверху
-                            if (random.nextBoolean()){
-                                if (to_shift){
-                                    if (x > 0) {
-                                        if (gameplay.boxes.contains(new Vector2(x-1, y)) || gameplay.boxes.contains(current)){
-                                            break;
-                                        }
-                                        gameplay.vertical_walls.add(new Vector2(x - 1, y));
-                                    }
+                            if (random.nextBoolean() && x > 0){
+                                if (gameplay.boxes.contains(new Vector2(x-1, y)) || gameplay.boxes.contains(current)){
+                                    break;
                                 }
-                                else {
-                                    if (x < field_size - 1) {
-                                        if (gameplay.boxes.contains(current) || gameplay.boxes.contains(new Vector2(x+1, y))){
-                                            break;
-                                        }
-                                        gameplay.vertical_walls.add(current);
-                                    }
-                                }
+                                gameplay.vertical_walls.add(new Vector2(x - 1, y));
                             }
-                            else if (y < field_size - 1){
+                            if (random.nextBoolean() && x < field_size - 1) {
+                                if (gameplay.boxes.contains(current) || gameplay.boxes.contains(new Vector2(x+1, y))){
+                                    break;
+                                }
+                                gameplay.vertical_walls.add(current);
+                            }
+                            if (random.nextBoolean() && y < field_size - 1) {
                                 if (gameplay.boxes.contains(current) || gameplay.boxes.contains(new Vector2(x, y+1))){
                                     break;
                                 }
@@ -310,73 +289,59 @@ public class ZenLevelGenerator {
                         case 4:
                         case 8:
                             // вертикальные справа и горизонтальные
-                            if (random.nextBoolean()){
-                                if (x < field_size - 1) {
-                                    if (gameplay.boxes.contains(current) || gameplay.boxes.contains(new Vector2(x+1, y))){
-                                        break;
-                                    }
-                                    gameplay.vertical_walls.add(current);
+                            if (random.nextBoolean() && x < field_size - 1){
+                                if (gameplay.boxes.contains(current) || gameplay.boxes.contains(new Vector2(x+1, y))){
+                                    break;
                                 }
+                                gameplay.vertical_walls.add(current);
                             }
-                            else {
-                                if (to_shift) {
-                                    if (y > 0) {
-                                        if (gameplay.boxes.contains(new Vector2(x, y-1)) || gameplay.boxes.contains(current)){
-                                            break;
-                                        }
-                                        gameplay.horizontal_walls.add(new Vector2(x, y - 1));
-                                    }
+                            if (random.nextBoolean() && y > 0) {
+                                if (gameplay.boxes.contains(new Vector2(x, y-1)) || gameplay.boxes.contains(current)){
+                                    break;
                                 }
-                                else if (y < field_size - 1){
-                                    if (gameplay.boxes.contains(current) || gameplay.boxes.contains(new Vector2(x, y+1))){
-                                        break;
-                                    }
-                                    gameplay.horizontal_walls.add(current);
+                                gameplay.horizontal_walls.add(new Vector2(x, y - 1));
+                            }
+                            if (random.nextBoolean() && y < field_size - 1) {
+                                if (gameplay.boxes.contains(current) || gameplay.boxes.contains(new Vector2(x, y+1))){
+                                    break;
                                 }
+                                gameplay.horizontal_walls.add(current);
                             }
                             break;
 
                         case 9:
                             // только вертикальные или перекрёсток
-                            if (random.nextInt(3) != 0) {
-                                if (to_shift) {
-                                    if (x > 0) {
-                                        if (gameplay.boxes.contains(new Vector2(x - 1, y)) || gameplay.boxes.contains(current)) {
-                                            break;
-                                        }
-                                        gameplay.vertical_walls.add(new Vector2(x - 1, y));
-                                    }
-                                } else if (x < field_size - 1) {
-                                    if (gameplay.boxes.contains(current) || gameplay.boxes.contains(new Vector2(x + 1, y))) {
-                                        break;
-                                    }
-                                    gameplay.vertical_walls.add(current);
+                            if (random.nextBoolean() && x > 0){
+                                if (gameplay.boxes.contains(new Vector2(x - 1, y)) || gameplay.boxes.contains(current)) {
+                                    break;
                                 }
+                                gameplay.vertical_walls.add(new Vector2(x - 1, y));
                             }
-                            else {
+                            if (random.nextBoolean() && x < field_size - 1) {
+                                if (gameplay.boxes.contains(current) || gameplay.boxes.contains(new Vector2(x + 1, y))) {
+                                    break;
+                                }
+                                gameplay.vertical_walls.add(current);
+                            }
+                            if (random.nextInt(4) == 0) {
                                 gameplay.crossroads.add(current);
                             }
                             break;
                         case 10:
                             // только горизонтальные или перекёсток
-                            if (random.nextInt(3) != 0) {
-                                if (to_shift) {
-                                    if (y > 0) {
-                                        if (gameplay.boxes.contains(new Vector2(x, y - 1)) || gameplay.boxes.contains(current)) {
-                                            break;
-                                        }
-                                        gameplay.horizontal_walls.add(new Vector2(x, y - 1));
-                                    }
-                                } else {
-                                    if (y < field_size - 1) {
-                                        if (gameplay.boxes.contains(current) || gameplay.boxes.contains(new Vector2(x, y + 1))) {
-                                            break;
-                                        }
-                                        gameplay.horizontal_walls.add(current);
-                                    }
+                            if (random.nextBoolean() && y > 0){
+                                if (gameplay.boxes.contains(new Vector2(x, y - 1)) || gameplay.boxes.contains(current)) {
+                                    break;
                                 }
+                                gameplay.horizontal_walls.add(new Vector2(x, y - 1));
                             }
-                            else {
+                            if (random.nextBoolean() && y < field_size - 1) {
+                                if (gameplay.boxes.contains(current) || gameplay.boxes.contains(new Vector2(x, y + 1))) {
+                                    break;
+                                }
+                                gameplay.horizontal_walls.add(current);
+                            }
+                            if (random.nextInt(4) == 0) {
                                 gameplay.crossroads.add(current);
                             }
                             break;
@@ -384,21 +349,25 @@ public class ZenLevelGenerator {
                         case 11:
                         case 13:
                             // точка, backslash
-                            if (random.nextBoolean()){
-                                gameplay.backslash_walls.add(current);
-                            }
-                            else {
-                                gameplay.points.add(current);
+                            if (random.nextInt(3) != 0){
+                                if (random.nextBoolean()){
+                                    gameplay.backslash_walls.add(current);  // p = 1/3
+                                }
+                                else {
+                                    gameplay.points.add(current);       // p = 1/3
+                                }
                             }
                             break;
                         case 12:
                         case 14:
                             // точка, slash
-                            if (random.nextBoolean()){
-                                gameplay.slash_walls.add(current);
-                            }
-                            else {
-                                gameplay.points.add(current);
+                            if (random.nextInt(3) != 0){
+                                if (random.nextBoolean()){
+                                    gameplay.slash_walls.add(current);  // p = 1/3
+                                }
+                                else {
+                                    gameplay.points.add(current);       // p = 1/3
+                                }
                             }
                             break;
 
@@ -412,8 +381,10 @@ public class ZenLevelGenerator {
         return gameplay.get_level_configuration();
     }
 
+    private int x_shift_by_direction[] = {0, 1, 0, -1};
+    private int y_shift_by_direction[] = {1, 0, -1, 0};
 
-    private int new_x_by_direction(int x, int direction){
+    /*private int new_x_by_direction(int x, int direction){
         if (direction == 0 || direction == 2){
             return x;
         }
@@ -423,9 +394,9 @@ public class ZenLevelGenerator {
         else {
             return x - 1;
         }
-    }
+    }*/
 
-    private int new_y_by_direction(int y, int direction){
+    /*private int new_y_by_direction(int y, int direction){
         if (direction == 0){
             return y + 1;
         }
@@ -435,7 +406,7 @@ public class ZenLevelGenerator {
         else {
             return y - 1;
         }
-    }
+    }*/
 
 
 }

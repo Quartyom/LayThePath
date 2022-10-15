@@ -2,7 +2,7 @@ package com.quartyom.screens.Zen;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.quartyom.game_elements.Button;
-import com.quartyom.interfaces.EventHandler;
+import com.quartyom.interfaces.QuEvent;
 
 
 public class ZenBottomPanel {
@@ -21,7 +21,7 @@ public class ZenBottomPanel {
 
         texture = zenScreen.game.field_atlas.findRegion("bottom_panel");
 
-        reset_button = new Button("reset", zenScreen.game, new EventHandler() {
+        reset_button = new Button("reset", zenScreen.game, new QuEvent() {
             @Override
             public void execute() {
                 zenScreen.zenBoard.gameplay.reset_body();
@@ -29,7 +29,7 @@ public class ZenBottomPanel {
         });
         reset_button.setHint(zenScreen.game.locale.get("reset level")).setSound("click_1");
 
-        transform_button = new Button("transform", zenScreen.game, new EventHandler() {
+        transform_button = new Button("transform", zenScreen.game, new QuEvent() {
             @Override
             public void execute() {
                 is_active = false;
@@ -38,7 +38,7 @@ public class ZenBottomPanel {
         });
         transform_button.setHint(zenScreen.game.locale.get("transform the field")).setSound("click_1");
 
-        hint_button = new Button("hint", zenScreen.game, new EventHandler() {
+        hint_button = new Button("hint", zenScreen.game, new QuEvent() {
             @Override
             public void execute() {
                 if (zenScreen.zenBoard.boardDrawer.is_hint_shown){
@@ -66,12 +66,16 @@ public class ZenBottomPanel {
         });
         save_button.setSound("click_1");*/
 
-        skip_button = new Button("next", zenScreen.game, new EventHandler() {
+        skip_button = new Button("next", zenScreen.game, new QuEvent() {
             @Override
             public void execute() {
                 if (zenScreen.game.userData.premium_is_on){
+
                     zenScreen.zenBoard.current_level++;
-                    zenScreen.zenBoard.load_level();
+                    zenScreen.game.userData.current_zen_level = zenScreen.zenBoard.current_level;
+                    zenScreen.game.save_user_data();
+
+                    zenScreen.zenBoard.next_level();
                     zenScreen.game.setScreen("zen");
                 }
                 else {

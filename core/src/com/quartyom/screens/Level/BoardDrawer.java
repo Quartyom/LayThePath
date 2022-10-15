@@ -2,12 +2,13 @@ package com.quartyom.screens.Level;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.quartyom.MakeTheWay;
+import com.quartyom.LayThePath;
 
 import java.util.ArrayList;
 
+// отрисовывает игровое поле
 public class BoardDrawer {
-    private MakeTheWay game;
+    private LayThePath game;
     private Gameplay gameplay;
 
     // ИХ БУДЕТ ИЗМЕНЯТЬ ВЫСШИЙ КЛАСС
@@ -18,7 +19,7 @@ public class BoardDrawer {
     public boolean is_hint_shown = false;
 
 
-    public BoardDrawer(MakeTheWay game, Gameplay gameplay){
+    public BoardDrawer(LayThePath game, Gameplay gameplay){
         this.game = game;
         this.gameplay = gameplay;
     }
@@ -65,13 +66,15 @@ public class BoardDrawer {
         }
 
         // false path
-        for (Vector2 item: gameplay.false_path){
-            game.batch.draw(game.field_atlas.findRegion("red_square"),
-                    board_x + item.x * square_w,
-                    board_y + item.y * square_h,
-                    square_w,
-                    square_h
-            );
+        if (!game.userData.abstract_input_is_on) {
+            for (Vector2 item : gameplay.false_path) {
+                game.batch.draw(game.field_atlas.findRegion("red_square"),
+                        board_x + item.x * square_w,
+                        board_y + item.y * square_h,
+                        square_w,
+                        square_h
+                );
+            }
         }
 
         // рисуем сетку
@@ -122,6 +125,28 @@ public class BoardDrawer {
         );
 
         draw_body();
+
+        // абстрактный курсор
+        if (game.userData.abstract_input_is_on){
+            // небольшой костыль, чтобы не модифицировать игровую логику
+            // если false_path не пуст, значит был совершён неправильный ход
+            if (gameplay.false_path.isEmpty()) {
+                game.batch.draw(game.field_atlas.findRegion("cursor_white"),
+                        board_x + gameplay.abstract_input_cursor.x * square_w,
+                        board_y + gameplay.abstract_input_cursor.y * square_h,
+                        square_w,
+                        square_h
+                );
+            }
+            else {
+                game.batch.draw(game.field_atlas.findRegion("cursor_red"),
+                        board_x + gameplay.abstract_input_cursor.x * square_w,
+                        board_y + gameplay.abstract_input_cursor.y * square_h,
+                        square_w,
+                        square_h
+                );
+            }
+        }
     }
 
     private void draw_obstacle_in_square(ArrayList<Vector2> list, TextureRegion texture){

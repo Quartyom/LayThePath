@@ -3,28 +3,29 @@ package com.quartyom.screens.Menu;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.utils.Align;
-import com.quartyom.MakeTheWay;
+import com.quartyom.LayThePath;
 import com.quartyom.game_elements.Button;
-import com.quartyom.interfaces.EventHandler;
+import com.quartyom.game_elements.QuScreen;
+import com.quartyom.interfaces.QuEvent;
 import com.quartyom.game_elements.Label;
 import com.quartyom.game_elements.TextField;
 
-public class ZenIsUnavailable implements Screen {
-    final MakeTheWay game;
+public class ZenIsUnavailable extends QuScreen {
+    final LayThePath game;
 
     Label zen_label;
     TextField info_field;
     Button back_button;
 
 
-    public ZenIsUnavailable(final MakeTheWay game){
+    public ZenIsUnavailable(final LayThePath game){
         this.game = game;
 
         zen_label = new Label(game, game.locale.get("Attention"));
 
         info_field = new TextField(game, Gdx.files.internal("texts/" + game.userData.locale + "/zen_is_unavailable.txt").readString());
 
-        back_button = new Button("in_main_menu", game, new EventHandler() {
+        back_button = new Button("in_main_menu", game, new QuEvent() {
             @Override
             public void execute() {
                 game.setScreen("menu");
@@ -42,11 +43,6 @@ public class ZenIsUnavailable implements Screen {
         info_field.resize(game.upper_button_corner_x, game.upper_button_corner_y - game.down_margin + game.button_h, game.button_w, font_size);
         // gap
         back_button.resize(game.upper_button_corner_x, game.upper_button_corner_y - game.down_margin * 5, game.button_w, game.button_h);
-    }
-
-    @Override
-    public void show() {
-        Gdx.gl20.glClearColor(0, 0, 0, 1);
     }
 
     @Override
@@ -69,23 +65,4 @@ public class ZenIsUnavailable implements Screen {
         }
     }
 
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
-
-    }
-
-    @Override
-    public void dispose() {
-
-    }
 }

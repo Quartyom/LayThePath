@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Align;
-import com.quartyom.MakeTheWay;
+import com.quartyom.LayThePath;
 
 // Большой текст в несколько строк, заданный шрифт и ширина, возвращается размер объекта
 public class TextField {
@@ -14,12 +14,12 @@ public class TextField {
 
     private int font_size;
 
-    private MakeTheWay game;
+    private LayThePath game;
     private BitmapFont font;
 
     public String string;
 
-    public TextField(MakeTheWay game, String string){
+    public TextField(LayThePath game, String string){
         this.game = game;
         this.string = string;
         offset = new Vector2();
@@ -41,7 +41,7 @@ public class TextField {
     public float get_height(){
         return text_h;
     }
-
+    public float get_lower_y() { return text_y - text_h;}
 
     public void draw(){
         font.draw(game.batch, string, text_x + offset.x, text_y + offset.y, text_w, Align.left, true);

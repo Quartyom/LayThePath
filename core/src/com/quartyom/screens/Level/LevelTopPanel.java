@@ -3,7 +3,7 @@ package com.quartyom.screens.Level;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Align;
 import com.quartyom.game_elements.Button;
-import com.quartyom.interfaces.EventHandler;
+import com.quartyom.interfaces.QuEvent;
 import com.quartyom.game_elements.InputState;
 import com.quartyom.game_elements.Label;
 import com.quartyom.game_elements.Scroller;
@@ -29,7 +29,7 @@ public class LevelTopPanel {
         progress_label = new Label(levelScreen.game);
         progress_label.target_string = "Progress 100 / 100";
 
-        menu_button = new Button("menu", levelScreen.game, new EventHandler() {
+        menu_button = new Button("menu", levelScreen.game, new QuEvent() {
             @Override
             public void execute() {
                 //levelScreen.game.setScreen(new MenuScreen(levelScreen.game));

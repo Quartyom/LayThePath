@@ -2,20 +2,18 @@ package com.quartyom.screens.Editor;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.utils.viewport.StretchViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
-import com.quartyom.MakeTheWay;
+import com.quartyom.LayThePath;
+import com.quartyom.game_elements.QuScreen;
 
 /*
 по умолчанию открывается EditorBoard, EditorBottomPanel, они могут вызывать слайдэр, расставлять препятствия, менять размер поля
 при нажатии на Transform, открывается TransformBottomPanel, может поворачивать поле
 при нажатии на запуск открывается EditorLaunchedBoard, EditorLaunchedBottomPanel с новой конфигурацией
 при нажатии на Transform, открывается TransformBottomPanel
-
  */
-public class EditorScreen implements Screen {
-    final MakeTheWay game;
+
+public class EditorScreen extends QuScreen {
+    final LayThePath game;
 
     EditorTopPanel editorTopPanel;
     EditorLaunchedTopPanel editorLaunchedTopPanel;
@@ -31,7 +29,7 @@ public class EditorScreen implements Screen {
     boolean is_slider_active = false;
     int which_button_control_the_slider;
 
-    public EditorScreen(final MakeTheWay game){
+    public EditorScreen(final LayThePath game){
         this.game = game;
 
         editorTopPanel = new EditorTopPanel(this);
@@ -47,6 +45,7 @@ public class EditorScreen implements Screen {
     @Override
     public void show() {
         Gdx.gl20.glClearColor(0.25f, 0.25f, 0.25f, 1);
+        editorLaunchedBoard.show();
     }
 
     @Override
@@ -91,21 +90,4 @@ public class EditorScreen implements Screen {
 
     }
 
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
-
-    }
-
-    @Override
-    public void dispose() {}
 }

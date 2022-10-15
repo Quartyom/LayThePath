@@ -30,6 +30,11 @@
 # Required if using Gdx-Controllers extension
 -keep class com.badlogic.gdx.controllers.android.AndroidControllers
 
+-keep public class com.quartyom.UserData { public private *; }
+-keep public class com.quartyom.screens.Level.LevelsData { public private *; }
+-keep public class com.quartyom.screens.Level.LevelConfiguration { public private *; }
+-keep public class com.badlogic.gdx.math.Vector2 { public private *; }
+
 # Required if using Box2D extension
 -keepclassmembers class com.badlogic.gdx.physics.box2d.World {
    boolean contactFilter(long, long);

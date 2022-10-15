@@ -1,0 +1,1 @@
+Standardmäßig steuern Sie das Spiel direkt mit Ihrem Finger und bewegen es durch das Feld. Es gibt aber auch einen abstrakten Weg. Sie bewegen den Cursor mit Gesten, wischen und Doppeltippen.

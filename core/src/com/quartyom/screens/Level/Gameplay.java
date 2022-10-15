@@ -17,6 +17,8 @@ public class Gameplay {
     public ArrayList<Vector2> false_path;
     public ArrayList<Vector2> hint;
 
+    public Vector2 abstract_input_cursor;
+
     public boolean head_is_captured;    // держит ли палец на голове
     // когда только поставили голову - false, при ходе назад - false, если держит палец на голове или хвосте - true
     public boolean is_tending_to_destroy_the_head;
@@ -33,6 +35,8 @@ public class Gameplay {
         body = new ArrayList<Vector2>();
         body_io = new ArrayList<Vector2>();
         false_path = new ArrayList<Vector2>();
+
+        abstract_input_cursor = new Vector2();
 
     }
 
@@ -101,6 +105,7 @@ public class Gameplay {
             {14, 10, 13, 4}
     };
 
+    // [move_direction][visited_segment]
     private int entrance_to_body[][] = {
             {0,0,0,0,0,0,0,0,0,0,0,     1,0,0,1},
             {0,0,0,0,0,0,0,0,0,0,0,     1,1,0,0},
@@ -188,6 +193,95 @@ public class Gameplay {
         body.clear();
         body_io.clear();
         false_path.clear();
+        head_is_captured = false; /// new one
+    }
+
+    public void normalize_cursor(){
+        if (abstract_input_cursor.x < 0){ abstract_input_cursor.x = 0; }
+        else if (abstract_input_cursor.x >= field_size){ abstract_input_cursor.x = field_size - 1; }
+        if (abstract_input_cursor.y < 0){ abstract_input_cursor.y = 0; }
+        else if (abstract_input_cursor.y >= field_size){ abstract_input_cursor.y = field_size - 1; }
+    }
+
+    public MoveResult double_tap_make_move(){
+        Vector2 xy_to = new Vector2(abstract_input_cursor);
+
+        // либо тела нет, тогда нужно поставить голову
+        if (body.size() == 0) {
+            // можно ли ставить
+            if (can_stay_here(xy_to)){
+                body.add(xy_to);
+                body_io.add(new Vector2(-1,-1));
+                //System.out.println("Head is set on " + xy_to);
+                how_many_visited = 1;
+                head_is_captured = true;
+                is_tending_to_destroy_the_head = false;
+                return MoveResult.HEAD_IS_SET;
+            }
+            else {
+                return MoveResult.HEAD_IS_NOT_SET;
+            }
+        }
+        // если тело есть
+        else {
+            Vector2 tail = body.get(body.size() - 1);
+            //System.out.println("Tail: " + tail);
+
+            // курсор уже на хвосте
+            if (xy_to.equals(tail)) {
+                // курсор уже на хвосте, длина тела == 1, тогда разрушаем
+                if (body.size() == 1) {
+                    body.clear();
+                    body_io.clear();
+                    how_many_visited = 0;
+                    //is_tending_to_destroy_the_head = false;
+                    head_is_captured = false;
+                    return MoveResult.HEAD_IS_DESTROYED;
+                }
+                // курсор уже на хвосте, тогда переключаем на голову
+                else {
+                    abstract_input_cursor = new Vector2(body.get(0));
+
+                    boolean body_shortened = false;
+                    while (body.size() > 0){
+                        if (can_stay_here(body.get(body.size() - 1) )){
+                            break;
+                        }
+                        else {
+                            body_shortened = true;
+                            cut_tail();
+                        }
+                    }
+
+                    Collections.reverse(body);
+                    Collections.reverse(body_io);
+                    for (Vector2 item : body_io) {
+                        float tmp = item.x;
+                        item.x = item.y;
+                        item.y = tmp;
+                    }
+                    //System.out.println(body);
+                    //System.out.println(body_io);
+                    //is_tending_to_destroy_the_head = true;
+                    head_is_captured = true;
+                    false_path.clear(); // чтобы стереть красную дорожку за курсором
+
+                    if (body_shortened){
+                        return MoveResult.BODY_IS_SHORTENED;
+                    }
+
+                    return MoveResult.OTHER_GOOD;
+                }
+
+            }
+            // курсор не на хвосте, тогда переключаем на хвост
+            else {
+                abstract_input_cursor = new Vector2(body.get(body.size() - 1));
+                head_is_captured = true;
+                false_path.clear(); // чтобы стереть красную дорожку за курсором
+                return MoveResult.OTHER_GOOD;
+            }
+        }
     }
 
     public MoveResult just_touched_make_move(int x_to, int y_to){
@@ -224,6 +318,18 @@ public class Gameplay {
             }
             // выбрал голову
             if (xy_to.equals(body.get(0))){
+
+                boolean body_shortened = false;
+                while (body.size() > 0){
+                    if (can_stay_here(body.get(body.size() - 1) )){
+                        break;
+                    }
+                    else {
+                        body_shortened = true;
+                        cut_tail();
+                    }
+                }
+
                 // надо всё сделать задом наперёд
                 //System.out.println("You chose head");
                 Collections.reverse(body);
@@ -245,6 +351,14 @@ public class Gameplay {
             return MoveResult.OTHER_BAD;
 
         }
+    }
+
+    public MoveResult slide_just_untouched_make_move(){
+        if (how_many_visited == how_many_should_be_visited && can_stay_here(body.get(body.size() - 1) )){
+            return MoveResult.VICTORY;
+        }
+
+        return MoveResult.OTHER_GOOD;
     }
 
     public MoveResult just_untouched_make_move(int x_to, int y_to){
@@ -288,6 +402,10 @@ public class Gameplay {
 
         return MoveResult.OTHER_GOOD;
 
+    }
+
+    public MoveResult slide_touched_make_move(){
+        return touched_make_move((int)abstract_input_cursor.x, (int)abstract_input_cursor.y);
     }
 
     public MoveResult touched_make_move(int x_to, int y_to){
@@ -447,16 +565,17 @@ public class Gameplay {
         }
     }
 
+    private void clockwise_turn_item(Vector2 item){
+        float new_x = item.y;
+        float new_y = -item.x + (field_size - 1);
+        item.x = new_x;
+        item.y = new_y;
+    }
     private void clockwise_turn_array(ArrayList<Vector2> arr){
         for (Vector2 item: arr){
-            float new_x = item.y;
-            float new_y = -item.x + (field_size - 1);
-
-            item.x = new_x;
-            item.y = new_y;
+            clockwise_turn_item(item);
         }
     }
-
     public void clockwise_turn(){
         ArrayList<Vector2> tmp;
 
@@ -482,6 +601,7 @@ public class Gameplay {
         clockwise_turn_array(points);
         clockwise_turn_array(crossroads);
         clockwise_turn_array(hint);
+        clockwise_turn_item(abstract_input_cursor);
 
         clockwise_turn_array(body);
         for (Vector2 item: body_io){
@@ -490,16 +610,17 @@ public class Gameplay {
         }
     }
 
+    private void counterclockwise_turn_item(Vector2 item){
+        float new_x = -item.y + (field_size - 1);
+        float new_y = item.x;
+        item.x = new_x;
+        item.y = new_y;
+    }
     private void counterclockwise_turn_array(ArrayList<Vector2> arr){
         for (Vector2 item: arr){
-            float new_x = -item.y + (field_size - 1);
-            float new_y = item.x;
-
-            item.x = new_x;
-            item.y = new_y;
+            counterclockwise_turn_item(item);
         }
     }
-
     public void counterclockwise_turn(){
         ArrayList<Vector2> tmp;
 
@@ -522,6 +643,7 @@ public class Gameplay {
         counterclockwise_turn_array(points);
         counterclockwise_turn_array(crossroads);
         counterclockwise_turn_array(hint);
+        counterclockwise_turn_item(abstract_input_cursor);
 
         counterclockwise_turn_array(body);
         for (Vector2 item: body_io){
@@ -530,9 +652,12 @@ public class Gameplay {
         }
     }
 
+    private void mirror_turn_item(Vector2 item){
+        item.x = field_size - 1 - item.x;
+    }
     private void mirror_turn_array(ArrayList<Vector2> arr){
         for (Vector2 item: arr){
-            item.x = field_size - 1 - item.x;
+            mirror_turn_item(item);
         }
     }
     public void mirror_turn(){
@@ -553,6 +678,7 @@ public class Gameplay {
         mirror_turn_array(points);
         mirror_turn_array(crossroads);
         mirror_turn_array(hint);
+        mirror_turn_item(abstract_input_cursor);
 
         mirror_turn_array(body);
         for (Vector2 item: body_io){

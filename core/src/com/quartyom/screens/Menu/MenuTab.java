@@ -3,13 +3,14 @@ package com.quartyom.screens.Menu;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.utils.Align;
-import com.quartyom.MakeTheWay;
+import com.quartyom.LayThePath;
 import com.quartyom.game_elements.Button;
-import com.quartyom.interfaces.EventHandler;
+import com.quartyom.game_elements.QuScreen;
+import com.quartyom.interfaces.QuEvent;
 import com.quartyom.game_elements.Label;
 
-public class MenuTab implements Screen {
-    final MakeTheWay game;
+public class MenuTab extends QuScreen {
+    final LayThePath game;
 
     Button easter_button, play_button, zen_button, editor_button, info_button, settings_button;
     Label menu_label;
@@ -17,7 +18,7 @@ public class MenuTab implements Screen {
     private int times_easter_button_clicked = 0;
     private boolean back_pressed_before = false;
 
-    public MenuTab(final MakeTheWay game){
+    public MenuTab(final LayThePath game){
         this.game = game;
 
         game.add("menu_about", new AboutTab(game));
@@ -29,13 +30,14 @@ public class MenuTab implements Screen {
         game.add("menu_premium", new PremiumTab(game));
         game.add("menu_premium_is_activated", new PremiumIsActivated(game));
         game.add("menu_locale", new LocaleTab(game));
+        game.add("menu_controls", new ControlsTab(game));
         game.add("menu_stats", new StatsTab(game));
         //game.add("menu_zen_after_ads", new ZenAfterAds(game));
         game.add("menu_zen_is_unavailable", new ZenIsUnavailable(game));
 
         menu_label = new Label(game, game.locale.get("Menu"));
 
-        easter_button = new Button(game, new EventHandler() {
+        easter_button = new Button(game, new QuEvent() {
             @Override
             public void execute() {
                 times_easter_button_clicked++;
@@ -62,7 +64,7 @@ public class MenuTab implements Screen {
             }
         });
 
-        play_button = new Button("in_main_menu", game, new EventHandler() {
+        play_button = new Button("in_main_menu", game, new QuEvent() {
             @Override
             public void execute() {
                 game.setScreen("level");
@@ -71,7 +73,7 @@ public class MenuTab implements Screen {
         });
         play_button.setNinePatch(6).setLabel(game.locale.get("Play"));
 
-        zen_button = new Button("in_main_menu", game, new EventHandler() {
+        zen_button = new Button("in_main_menu", game, new QuEvent() {
             @Override
             public void execute() {
                 if (game.userData.zen_is_available){
@@ -90,7 +92,7 @@ public class MenuTab implements Screen {
         });
         zen_button.setNinePatch(6).setLabel(game.locale.get("Zen"));
 
-        editor_button = new Button("in_main_menu", game, new EventHandler() {
+        editor_button = new Button("in_main_menu", game, new QuEvent() {
             @Override
             public void execute() {
                 if (game.userData.editor_is_available){
@@ -103,7 +105,7 @@ public class MenuTab implements Screen {
         });
         editor_button.setNinePatch(6).setLabel(game.locale.get("Editor"));
 
-        info_button = new Button("in_main_menu", game, new EventHandler() {
+        info_button = new Button("in_main_menu", game, new QuEvent() {
             @Override
             public void execute() {
                 game.setScreen("menu_info");
@@ -111,7 +113,7 @@ public class MenuTab implements Screen {
         });
         info_button.setNinePatch(6).setLabel(game.locale.get("Info"));
 
-        settings_button = new Button("in_main_menu", game, new EventHandler() {
+        settings_button = new Button("in_main_menu", game, new QuEvent() {
             @Override
             public void execute() {
                 game.setScreen("menu_settings");
@@ -173,23 +175,4 @@ public class MenuTab implements Screen {
         }
     }
 
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
-
-    }
-
-    @Override
-    public void dispose() {
-
-    }
 }

@@ -1,30 +1,30 @@
 package com.quartyom.screens.Menu;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
-import com.quartyom.MakeTheWay;
+import com.quartyom.LayThePath;
 import com.quartyom.game_elements.Button;
-import com.quartyom.interfaces.EventHandler;
+import com.quartyom.game_elements.QuScreen;
+import com.quartyom.interfaces.QuEvent;
 import com.quartyom.game_elements.Label;
 import com.quartyom.game_elements.TextField;
 
-public class StatsTab implements Screen {
+public class StatsTab extends QuScreen {
     boolean is_active = false;
 
-    final MakeTheWay game;
+    final LayThePath game;
 
     Button back_button;
     Label how_to_play_label;
     TextField information_field;
 
-    public StatsTab(final MakeTheWay game){
+    public StatsTab(final LayThePath game){
         this.game = game;
 
         how_to_play_label = new Label(game, game.locale.get("Stats"));
 
         information_field = new TextField(game, new String());
 
-        back_button = new Button("in_main_menu", game, new EventHandler() {
+        back_button = new Button("in_main_menu", game, new QuEvent() {
             @Override
             public void execute() {
                 game.setScreen("menu_info");
@@ -51,7 +51,7 @@ public class StatsTab implements Screen {
         is_active = true;
         game.userData.stats_views++;
         game.save_user_data();
-        information_field.string = String.format(Gdx.files.internal("texts/" + game.userData.locale + "/stats.txt").readString(), game.userData.launches, game.userData.zen_levels_completed, game.userData.stats_views);
+        information_field.string = String.format(Gdx.files.internal("texts/" + game.userData.locale + "/stats.txt").readString(), game.userData.launches, game.userData.zen_levels_passed, game.userData.stats_views);
     }
 
     @Override
@@ -74,23 +74,4 @@ public class StatsTab implements Screen {
         }
     }
 
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
-
-    }
-
-    @Override
-    public void dispose() {
-
-    }
 }

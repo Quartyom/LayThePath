@@ -3,7 +3,7 @@ package com.quartyom.screens.Editor;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.quartyom.game_elements.Button;
-import com.quartyom.interfaces.EventHandler;
+import com.quartyom.interfaces.QuEvent;
 import com.quartyom.screens.Level.LevelConfiguration;
 
 public class EditorLaunchedBottomPanel {
@@ -14,7 +14,6 @@ public class EditorLaunchedBottomPanel {
 
     Button back_button, reset_button, transform_button, save_button;
 
-
     private float panel_x, panel_y, panel_w, panel_h;
 
     public EditorLaunchedBottomPanel(final EditorScreen editorScreen){
@@ -22,7 +21,7 @@ public class EditorLaunchedBottomPanel {
         texture = editorScreen.game.field_atlas.findRegion("bottom_panel");
 
 
-        back_button = new Button("back", editorScreen.game, new EventHandler() {
+        back_button = new Button("back", editorScreen.game, new QuEvent() {
             @Override
             public void execute() {
                 is_active = false;
@@ -36,7 +35,7 @@ public class EditorLaunchedBottomPanel {
         });
         back_button.setHint(editorScreen.game.locale.get("go back")).setSound("click_1");
 
-        reset_button = new Button("reset", editorScreen.game, new EventHandler() {
+        reset_button = new Button("reset", editorScreen.game, new QuEvent() {
             @Override
             public void execute() {
                 editorScreen.editorLaunchedBoard.gameplay.reset_body();
@@ -44,7 +43,7 @@ public class EditorLaunchedBottomPanel {
         });
         reset_button.setHint(editorScreen.game.locale.get("reset level")).setSound("click_1");
 
-        transform_button = new Button("transform", editorScreen.game, new EventHandler() {
+        transform_button = new Button("transform", editorScreen.game, new QuEvent() {
             @Override
             public void execute() {
                 is_active = false;
@@ -53,15 +52,20 @@ public class EditorLaunchedBottomPanel {
         });
         transform_button.setHint(editorScreen.game.locale.get("transform the field")).setSound("click_1");
 
-        save_button = new Button("save", editorScreen.game, new EventHandler() {
+        save_button = new Button("save", editorScreen.game, new QuEvent() {
             @Override
             public void execute() {
-                /*if (!editorScreen.editorLaunchedBoard.is_level_completed){return;}
+                if (!editorScreen.game.userData.is_developer){return;}
+                if (!editorScreen.editorLaunchedBoard.is_level_completed){return;}
+
+                // чтобы нельзя было дважды нажать на кнопку
+                if (editorScreen.editorLaunchedBoard.is_level_saved){return;}
+                editorScreen.editorLaunchedBoard.is_level_saved = true;
                 //System.out.println("pressed save button");
+
                 editorScreen.editorLaunchedBoard.gameplay.set_hint();
                 LevelConfiguration levelConfiguration = editorScreen.editorBoard.gameplay.get_level_configuration();
-                Gdx.files.local(String.valueOf("user_levels/" + System.currentTimeMillis() + ".json")).writeString(editorScreen.game.json.prettyPrint(levelConfiguration), false);
-                */
+                Gdx.files.local("user_levels/" + editorScreen.editorLaunchedBoard.gameplay.field_size + "/" + System.currentTimeMillis() + ".json").writeString(editorScreen.game.json.prettyPrint(levelConfiguration), false);
             }
         });
         save_button.setHint(editorScreen.game.locale.get("only for developers")).setSound("click_1");

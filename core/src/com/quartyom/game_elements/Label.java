@@ -3,7 +3,7 @@ package com.quartyom.game_elements;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Align;
-import com.quartyom.MakeTheWay;
+import com.quartyom.LayThePath;
 
 // Текст размещается внутри заданной рамки, в одну строку, отцентрированный, либо к левому краю
 public class Label {
@@ -11,17 +11,17 @@ public class Label {
     private float text_x, text_y, text_w, text_h;
     public Vector2 offset;
 
-    private MakeTheWay game;
+    private LayThePath game;
     private BitmapFont font;
 
     public String string;
     public String target_string;    // для фиксированного размера изменяющегося лэйбла
 
-    public Label(MakeTheWay game){
+    public Label(LayThePath game){
         this(game, new String());
     }
 
-    public Label(MakeTheWay game, String string){
+    public Label(LayThePath game, String string){
         this.game = game;
         this.string = string;
         offset = new Vector2();
@@ -77,7 +77,10 @@ public class Label {
         }
         text_y = y + h / 2 + text_h / 2;
 
+    }
 
+    public float get_lower_y(){
+        return label_y - label_h;
     }
 
 }

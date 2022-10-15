@@ -2,25 +2,33 @@ package com.quartyom.screens.Menu;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.utils.Align;
-import com.quartyom.MakeTheWay;
+import com.quartyom.LayThePath;
 import com.quartyom.game_elements.Button;
 import com.quartyom.game_elements.InputState;
-import com.quartyom.game_elements.Label;
+import com.quartyom.game_elements.QuScreen;
 import com.quartyom.game_elements.Scroller;
-import com.quartyom.game_elements.TextField;
-import com.quartyom.interfaces.EventHandler;
+import com.quartyom.interfaces.QuEvent;
 
-public class LocaleTab implements Screen {
-    final MakeTheWay game;
+public class LocaleTab extends QuScreen {
+    final LayThePath game;
 
+    Button back_button;
     Button english_button, spanish_button, german_button, russian_button;
+
     Scroller scroller;
 
-    public LocaleTab(final MakeTheWay game){
+    public LocaleTab(final LayThePath game){
         this.game = game;
 
-        english_button = new Button("english", game, new EventHandler() {
+        back_button = new Button("in_main_menu", game, new QuEvent() {
+            @Override
+            public void execute() {
+                game.setScreen("menu_settings");
+            }
+        });
+        back_button.setNinePatch(6).setLabel(game.locale.get("Back"));
+
+        english_button = new Button("english", game, new QuEvent() {
             @Override
             public void execute() {
                 game.set_locale("en");
@@ -28,7 +36,7 @@ public class LocaleTab implements Screen {
             }
         });
 
-        spanish_button = new Button("spanish", game, new EventHandler() {
+        spanish_button = new Button("spanish", game, new QuEvent() {
             @Override
             public void execute() {
                 game.set_locale("esp");
@@ -36,7 +44,7 @@ public class LocaleTab implements Screen {
             }
         });
 
-        german_button = new Button("german", game, new EventHandler() {
+        german_button = new Button("german", game, new QuEvent() {
             @Override
             public void execute() {
                 game.set_locale("ger");
@@ -44,7 +52,7 @@ public class LocaleTab implements Screen {
             }
         });
 
-        russian_button = new Button("russian", game, new EventHandler() {
+        russian_button = new Button("russian", game, new QuEvent() {
             @Override
             public void execute() {
                 game.set_locale("ru");
@@ -59,12 +67,20 @@ public class LocaleTab implements Screen {
     }
 
     public void update(){
-        english_button.update();
-        spanish_button.update();
-        german_button.update();
-        russian_button.update();
+        back_button.update();
 
-        if (english_button.inputState == InputState.TOUCHED || spanish_button.inputState == InputState.TOUCHED || german_button.inputState == InputState.TOUCHED || russian_button.inputState == InputState.TOUCHED){
+        if (back_button.inputState == InputState.UNTOUCHED) {   // кнопка назад находится сверху в интерфейсе экрана
+            english_button.update();
+            spanish_button.update();
+            german_button.update();
+            russian_button.update();
+        }
+
+        if (back_button.inputState == InputState.TOUCHED ||
+                english_button.inputState == InputState.TOUCHED ||
+                spanish_button.inputState == InputState.TOUCHED ||
+                german_button.inputState == InputState.TOUCHED ||
+                russian_button.inputState == InputState.TOUCHED) {
             scroller.inputState = InputState.UNTOUCHED;
             return;
         }
@@ -93,12 +109,9 @@ public class LocaleTab implements Screen {
         german_button.resize(game.upper_button_corner_x, game.upper_button_corner_y - game.down_margin * 2, game.button_h, game.button_h);
         russian_button.resize(theme_button_corner_x, game.upper_button_corner_y - game.down_margin * 2, game.button_h, game.button_h);
 
-        scroller.resize_full();
-    }
+        back_button.resize(game.upper_button_corner_x, game.upper_button_corner_y - game.down_margin * 5, game.button_w, game.button_h);
 
-    @Override
-    public void show() {
-        Gdx.gl20.glClearColor(0, 0, 0, 1);
+        scroller.resize_full();
     }
 
     @Override
@@ -112,34 +125,16 @@ public class LocaleTab implements Screen {
         german_button.draw();
         russian_button.draw();
 
+        back_button.draw();
+
         game.batch.end();
 
         update();
 
         if (game.is_back_button_pressed){
             game.is_back_button_pressed = false;
-            game.setScreen("menu_info");
+            game.setScreen("menu_settings");
         }
     }
 
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
-
-    }
-
-    @Override
-    public void dispose() {
-
-    }
 }

@@ -3,9 +3,11 @@ package com.quartyom.screens.Menu;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.quartyom.MakeTheWay;
+import com.quartyom.LayThePath;
 import com.quartyom.game_elements.Button;
-import com.quartyom.interfaces.EventHandler;
+import com.quartyom.game_elements.InputState;
+import com.quartyom.game_elements.QuScreen;
+import com.quartyom.interfaces.QuEvent;
 import com.quartyom.game_elements.Label;
 import com.quartyom.game_elements.Slider;
 import com.quartyom.game_elements.SwitchButton;
@@ -13,17 +15,17 @@ import com.quartyom.game_elements.Vibrator;
 
 import java.util.Random;
 
-public class SettingsTab implements Screen {
-    final MakeTheWay game;
+public class SettingsTab extends QuScreen {
+    final LayThePath game;
 
     Vibrator vibrator;
 
     Label settings_label;
-    Button premium_button, locale_button, back_button;
-    SwitchButton sound_button, vibration_button, hints_button;
+    Button locale_button, controls_button, back_button;
+    SwitchButton sound_button, vibration_button, hints_button, premium_button;
     Slider sound_slider;
 
-    public SettingsTab(final MakeTheWay game){
+    public SettingsTab(final LayThePath game){
         this.game = game;
 
         vibrator = game.vibrator;
@@ -45,26 +47,27 @@ public class SettingsTab implements Screen {
         hints_button.add("button_hints_off").add("button_hints_on");    // обратный порядок
         hints_button.state = game.userData.button_hints_are_on ? 1 : 0;
 
-        locale_button = new Button("locale", game, new EventHandler() {
+        locale_button = new Button("locale", game, new QuEvent() {
             @Override
             public void execute() {
                 game.setScreen("menu_locale");
             }
         });
 
-        premium_button = new Button("premium", game, new EventHandler() {
+
+        premium_button = new SwitchButton(game);
+        premium_button.add("premium_normal").add("premium_pressed");
+        //premium_button.state = game.userData.premium_is_on ? 1 : 0;   // уже есть в show()
+        premium_button.to_change_state_on_click = false;
+
+        controls_button = new Button("controls", game, new QuEvent() {
             @Override
             public void execute() {
-                if (game.userData.premium_is_on){
-                    game.setScreen("menu_premium_is_activated");
-                }
-                else {
-                    game.setScreen("menu_premium");
-                }
+                game.setScreen("menu_controls");
             }
         });
 
-        back_button = new Button("in_main_menu", game, new EventHandler() {
+        back_button = new Button("in_main_menu", game, new QuEvent() {
             @Override
             public void execute() {
                 game.setScreen("menu");
@@ -98,6 +101,9 @@ public class SettingsTab implements Screen {
                 else {
                     sound_button.state = 0;
                 }
+                //game.save_user_data();
+            }
+            if (sound_slider.inputState == InputState.JUST_UNTOUCHED){
                 game.save_user_data();
             }
         }
@@ -118,7 +124,17 @@ public class SettingsTab implements Screen {
         }
 
         premium_button.update();
+        if (premium_button.recently_changed){
+            if (game.userData.premium_is_on){
+                game.setScreen("menu_premium_is_activated");
+            }
+            else {
+                game.setScreen("menu_premium");
+            }
+        }
+
         locale_button.update();
+        if (!is_too_fast) { controls_button.update(); }
         back_button.update();
     }
 
@@ -147,6 +163,7 @@ public class SettingsTab implements Screen {
             back_button.resize(game.upper_button_corner_x, game.upper_button_corner_y - game.down_margin * 4, game.button_w, game.button_h);
         }
         else {
+            controls_button.resize(game.upper_button_corner_x, game.upper_button_corner_y - game.down_margin * 4, game.button_h, game.button_h);
             back_button.resize(game.upper_button_corner_x, game.upper_button_corner_y - game.down_margin * 5, game.button_w, game.button_h);
         }
     }
@@ -165,6 +182,8 @@ public class SettingsTab implements Screen {
             }
         }
         previously_launched = System.currentTimeMillis();
+
+        premium_button.state = game.userData.premium_is_on ? 1 : 0;
     }
 
     @Override
@@ -181,6 +200,7 @@ public class SettingsTab implements Screen {
 
         premium_button.draw();
         locale_button.draw();
+        if (!is_too_fast){ controls_button.draw();}
         back_button.draw();
 
         game.batch.end();
@@ -193,15 +213,6 @@ public class SettingsTab implements Screen {
         }
     }
 
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
 
     @Override
     public void hide() {
@@ -209,8 +220,4 @@ public class SettingsTab implements Screen {
         is_too_fast = false;
     }
 
-    @Override
-    public void dispose() {
-
-    }
 }

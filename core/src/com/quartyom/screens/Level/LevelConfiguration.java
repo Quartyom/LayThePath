@@ -3,6 +3,7 @@ package com.quartyom.screens.Level;
 
 import com.badlogic.gdx.math.Vector2;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 // хранит состояние уровня
 public class LevelConfiguration {
@@ -20,4 +21,5 @@ public class LevelConfiguration {
         crossroads = new ArrayList<Vector2>();
         hint = new ArrayList<Vector2>();
     }
+
 }

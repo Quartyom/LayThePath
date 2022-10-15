@@ -2,7 +2,7 @@ package com.quartyom.screens.Editor;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.quartyom.game_elements.Button;
-import com.quartyom.interfaces.EventHandler;
+import com.quartyom.interfaces.QuEvent;
 
 public class EditorTransformBottomPanel {
     public boolean is_active = false;
@@ -20,7 +20,7 @@ public class EditorTransformBottomPanel {
         texture = editorScreen.game.field_atlas.findRegion("bottom_panel");
 
 
-        back_button = new Button("back", editorScreen.game, new EventHandler() {
+        back_button = new Button("back", editorScreen.game, new QuEvent() {
             @Override
             public void execute() {
                 is_active = false;
@@ -34,7 +34,7 @@ public class EditorTransformBottomPanel {
         });
         back_button.setHint(editorScreen.game.locale.get("back")).setSound("click_1");
 
-        turn_counterclockwise_button = new Button("turn_counterclockwise", editorScreen.game, new EventHandler() {
+        turn_counterclockwise_button = new Button("turn_counterclockwise", editorScreen.game, new QuEvent() {
             @Override
             public void execute() {
                 if (editorScreen.editorBoard.is_active) {
@@ -47,7 +47,7 @@ public class EditorTransformBottomPanel {
         });
         turn_counterclockwise_button.setHint(editorScreen.game.locale.get("counterclockwise turn")).setSound("click_1");
 
-        turn_clockwise_button = new Button("turn_clockwise", editorScreen.game, new EventHandler() {
+        turn_clockwise_button = new Button("turn_clockwise", editorScreen.game, new QuEvent() {
             @Override
             public void execute() {
                 if (editorScreen.editorBoard.is_active) {
@@ -60,7 +60,7 @@ public class EditorTransformBottomPanel {
         });
         turn_clockwise_button.setHint(editorScreen.game.locale.get("clockwise turn")).setSound("click_1");
 
-        mirror_button = new Button("mirror", editorScreen.game, new EventHandler() {
+        mirror_button = new Button("mirror", editorScreen.game, new QuEvent() {
             @Override
             public void execute() {
                 if (editorScreen.editorBoard.is_active) {

@@ -6,9 +6,9 @@ import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Align;
-import com.quartyom.MakeTheWay;
+import com.quartyom.LayThePath;
 import com.quartyom.interfaces.Drawable;
-import com.quartyom.interfaces.EventHandler;
+import com.quartyom.interfaces.QuEvent;
 
 public class Button implements Drawable {
     private float button_x, button_y, button_w, button_h;
@@ -25,13 +25,13 @@ public class Button implements Drawable {
 
     public InputState inputState;
 
-    EventHandler handler;
-    MakeTheWay game;
+    QuEvent action;
+    LayThePath game;
 
     Vector2 touch_pos;
 
-    public Button(MakeTheWay game, EventHandler action){
-        this.handler=action;
+    public Button(LayThePath game, QuEvent action){
+        this.action = action;
         this.game = game;
 
         inputState = InputState.UNTOUCHED;
@@ -39,7 +39,7 @@ public class Button implements Drawable {
         offset = new Vector2();
     }
 
-    public Button(String name, MakeTheWay game, EventHandler action){
+    public Button(String name, LayThePath game, QuEvent action){
         this(game, action);
         normal_texture = game.buttons_atlas.findRegion(name + "_normal");
         pressed_texture = game.buttons_atlas.findRegion(name + "_pressed");
@@ -60,6 +60,13 @@ public class Button implements Drawable {
         return this;
     }
 
+    public Button changeLabel(String string){
+        label = new Label(game, string);
+        label.offset = this.offset;
+        label.resize(button_x, button_y, button_w, button_h, Align.center);
+        return this;
+    }
+
     public Button setHint(String string){
         hint = new Hint(game);
         hint.set_string(string);
@@ -72,7 +79,7 @@ public class Button implements Drawable {
     }
 
     public void on_click(){
-        handler.execute();
+        action.execute();
     }
 
     public void resize(float x, float y, float w, float h){

@@ -3,15 +3,16 @@ package com.quartyom.screens.Menu;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.utils.Align;
-import com.quartyom.MakeTheWay;
+import com.quartyom.LayThePath;
 import com.quartyom.game_elements.Button;
 import com.quartyom.game_elements.Label;
-import com.quartyom.interfaces.EventHandler;
+import com.quartyom.game_elements.QuScreen;
+import com.quartyom.interfaces.QuEvent;
 
 import java.util.Random;
 
-public class PremiumTab implements Screen {
-    final MakeTheWay game;
+public class PremiumTab extends QuScreen {
+    final LayThePath game;
 
     Label info_label, code_label;
     Button button_0, button_1, button_2, button_3, button_4, button_5, button_6, button_7, button_8, button_9, button_clean, button_accept, back_button;
@@ -20,68 +21,68 @@ public class PremiumTab implements Screen {
     private String public_code;
     private String current_input;
 
-    public PremiumTab(final MakeTheWay game){
+    public PremiumTab(final LayThePath game){
         this.game = game;
 
         info_label = new Label(game, game.locale.get("Get premium"));
         code_label = new Label(game);
         code_label.target_string = "000000: 00000000";
 
-        button_0 = new Button("in_main_menu", game, new EventHandler() {
+        button_0 = new Button("in_main_menu", game, new QuEvent() {
             @Override
             public void execute() {
                 current_input += 0;
             }
         });
-        button_1 = new Button("in_main_menu", game, new EventHandler() {
+        button_1 = new Button("in_main_menu", game, new QuEvent() {
             @Override
             public void execute() {
                 current_input += 1;
             }
         });
-        button_2 = new Button("in_main_menu", game, new EventHandler() {
+        button_2 = new Button("in_main_menu", game, new QuEvent() {
             @Override
             public void execute() {
                 current_input += 2;
             }
         });
-        button_3 = new Button("in_main_menu", game, new EventHandler() {
+        button_3 = new Button("in_main_menu", game, new QuEvent() {
             @Override
             public void execute() {
                 current_input += 3;
             }
         });
-        button_4 = new Button("in_main_menu", game, new EventHandler() {
+        button_4 = new Button("in_main_menu", game, new QuEvent() {
             @Override
             public void execute() {
                 current_input += 4;
             }
         });
-        button_5 = new Button("in_main_menu", game, new EventHandler() {
+        button_5 = new Button("in_main_menu", game, new QuEvent() {
             @Override
             public void execute() {
                 current_input += 5;
             }
         });
-        button_6 = new Button("in_main_menu", game, new EventHandler() {
+        button_6 = new Button("in_main_menu", game, new QuEvent() {
             @Override
             public void execute() {
                 current_input += 6;
             }
         });
-        button_7 = new Button("in_main_menu", game, new EventHandler() {
+        button_7 = new Button("in_main_menu", game, new QuEvent() {
             @Override
             public void execute() {
                 current_input += 7;
             }
         });
-        button_8 = new Button("in_main_menu", game, new EventHandler() {
+        button_8 = new Button("in_main_menu", game, new QuEvent() {
             @Override
             public void execute() {
                 current_input += 8;
             }
         });
-        button_9 = new Button("in_main_menu", game, new EventHandler() {
+        button_9 = new Button("in_main_menu", game, new QuEvent() {
             @Override
             public void execute() {
                 current_input += 9;
@@ -99,7 +100,7 @@ public class PremiumTab implements Screen {
         button_8.setNinePatch(6).setSound("click_1").setLabel("8");
         button_9.setNinePatch(6).setSound("click_1").setLabel("9");
 
-        button_clean = new Button("in_main_menu", game, new EventHandler() {
+        button_clean = new Button("in_main_menu", game, new QuEvent() {
             @Override
             public void execute() {
                 if (current_input.length() > 0) {
@@ -109,7 +110,7 @@ public class PremiumTab implements Screen {
         });
         button_clean.setNinePatch(6).setSound("click_1").setLabel("<");
 
-        button_accept = new Button("in_main_menu", game, new EventHandler() {
+        button_accept = new Button("in_main_menu", game, new QuEvent() {
             @Override
             public void execute() {
                 if (encrypt(current_input).equals(public_code)){
@@ -125,7 +126,7 @@ public class PremiumTab implements Screen {
         });
         button_accept.setNinePatch(6).setSound("click_1").setLabel(">");
 
-        back_button = new Button("in_main_menu", game, new EventHandler() {
+        back_button = new Button("in_main_menu", game, new QuEvent() {
             @Override
             public void execute() {
                 game.setScreen("menu_settings");
@@ -256,27 +257,6 @@ public class PremiumTab implements Screen {
             game.is_back_button_pressed = false;
             game.setScreen("menu_settings");
         }
-    }
-
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
-
-    }
-
-    @Override
-    public void dispose() {
-
     }
 
     private String encrypt(String n){

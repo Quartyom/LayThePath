@@ -3,17 +3,17 @@ package com.quartyom.game_elements;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Json;
-import com.quartyom.MakeTheWay;
+import com.quartyom.LayThePath;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class Locale {
-    private MakeTheWay game;
+    private LayThePath game;
     private Json json;
     private Map<String, String> tags;
 
-    public Locale(MakeTheWay game){
+    public Locale(LayThePath game){
         this.game = game;
         json = new Json();
         tags = new HashMap<String, String>();

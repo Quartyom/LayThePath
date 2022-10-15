@@ -3,7 +3,7 @@ package com.quartyom.screens.Editor;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Align;
 import com.quartyom.game_elements.Button;
-import com.quartyom.interfaces.EventHandler;
+import com.quartyom.interfaces.QuEvent;
 import com.quartyom.game_elements.InputState;
 import com.quartyom.game_elements.Label;
 import com.quartyom.screens.Level.Gameplay;
@@ -31,7 +31,7 @@ public class EditorLaunchedTopPanel {
         progress_label = new Label(editorScreen.game);
         progress_label.target_string = "Progress 100 / 100";
 
-        menu_button = new Button("menu", editorScreen.game, new EventHandler() {
+        menu_button = new Button("menu", editorScreen.game, new QuEvent() {
             @Override
             public void execute() {
                 editorScreen.game.setScreen("menu");

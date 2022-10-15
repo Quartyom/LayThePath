@@ -1,5 +1,5 @@
 package com.quartyom.interfaces;
 
-public interface EventHandler {
+public interface QuEvent {
     void execute();
 }

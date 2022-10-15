@@ -3,12 +3,12 @@ package com.quartyom.game_elements;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
-import com.quartyom.MakeTheWay;
+import com.quartyom.LayThePath;
 
 public class Scroller {
     private float view_x, view_y, view_w, view_h;
 
-    private MakeTheWay game;
+    private LayThePath game;
 
     public Vector2 value;
 
@@ -19,9 +19,8 @@ public class Scroller {
 
     public boolean physics_on;
     private Vector2 scroll_speed;
-    private float when_untouched;
 
-    public Scroller(MakeTheWay game){
+    public Scroller(LayThePath game){
         this.game = game;
 
         value = new Vector2();
@@ -81,8 +80,6 @@ public class Scroller {
                 float coef = 1.25f;  // чтобы скроллинг был быстрее
                 scroll_speed.x = scroll_speed.x / Gdx.graphics.getDeltaTime() * coef;  // до этого момента это была не скорость, а измененение
                 scroll_speed.y = scroll_speed.y / Gdx.graphics.getDeltaTime() * coef;
-
-                when_untouched = TimeUtils.millis();
             }
         }
         else {

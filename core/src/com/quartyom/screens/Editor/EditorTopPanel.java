@@ -3,7 +3,7 @@ package com.quartyom.screens.Editor;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Align;
 import com.quartyom.game_elements.Button;
-import com.quartyom.interfaces.EventHandler;
+import com.quartyom.interfaces.QuEvent;
 import com.quartyom.game_elements.InputState;
 import com.quartyom.game_elements.Label;
 
@@ -30,7 +30,7 @@ public class EditorTopPanel {
         tool_label = new Label(editorScreen.game);
         tool_label.target_string = "Current: backslash wall ";
 
-        menu_button = new Button("menu", this.editorScreen.game, new EventHandler() {
+        menu_button = new Button("menu", this.editorScreen.game, new QuEvent() {
             @Override
             public void execute() {
                 editorScreen.game.setScreen("menu");

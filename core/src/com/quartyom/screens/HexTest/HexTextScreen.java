@@ -5,16 +5,14 @@ import static java.lang.Math.sqrt;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
-import com.quartyom.MakeTheWay;
+import com.quartyom.LayThePath;
 
 public class HexTextScreen implements Screen {
 
 
-    final MakeTheWay game;
+    final LayThePath game;
 
     Vector2 touch_pos;
 
@@ -23,7 +21,7 @@ public class HexTextScreen implements Screen {
     int grid_size = 3;
     float hex_size;
 
-    public HexTextScreen(final MakeTheWay game) {
+    public HexTextScreen(final LayThePath game) {
         this.game = game;
 
         touch_pos = new Vector2();

@@ -2,7 +2,7 @@
 field.png
 size: 2048, 2048
 format: RGBA8888
-filter: Linear, Nearest
+filter: Nearest, Nearest
 repeat: none
 backslash_wall
   rotate: false
@@ -48,7 +48,7 @@ body
   index: 6
 body
   rotate: false
-  xy: 816, 1568
+  xy: 518, 1310
   size: 256, 256
   orig: 256, 256
   offset: 0, 0
@@ -104,7 +104,7 @@ body
   index: 2
 body
   rotate: false
-  xy: 2, 20
+  xy: 1332, 1568
   size: 256, 256
   orig: 256, 256
   offset: 0, 0
@@ -118,7 +118,7 @@ body
   index: 7
 bottom_panel
   rotate: false
-  xy: 260, 260
+  xy: 518, 646
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
@@ -137,9 +137,23 @@ crossroad
   orig: 256, 256
   offset: 0, 0
   index: -1
-dark_square
+cursor_red
+  rotate: false
+  xy: 1034, 1292
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+cursor_white
   rotate: false
   xy: 648, 776
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+dark_square
+  rotate: false
+  xy: 794, 1034
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
@@ -160,21 +174,21 @@ full_square
   index: -1
 halfbox
   rotate: false
-  xy: 1332, 1568
+  xy: 2, 20
   size: 256, 256
   orig: 256, 256
   offset: 0, 0
   index: -1
 horizontal_wall
   rotate: false
-  xy: 1292, 1550
+  xy: 1590, 1808
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 light_square
   rotate: false
-  xy: 776, 1016
+  xy: 1034, 1274
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
@@ -188,14 +202,14 @@ point
   index: -1
 red_square
   rotate: false
-  xy: 1590, 1808
+  xy: 2, 2
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 slash_wall
   rotate: false
-  xy: 518, 1310
+  xy: 816, 1568
   size: 256, 256
   orig: 256, 256
   offset: 0, 0
@@ -216,21 +230,21 @@ square
   index: -1
 swamp_square
   rotate: false
-  xy: 2, 2
+  xy: 260, 260
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 top_panel
   rotate: false
-  xy: 518, 646
+  xy: 776, 1016
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 vertical_wall
   rotate: false
-  xy: 1034, 1292
+  xy: 1292, 1550
   size: 16, 16
   orig: 16, 16
   offset: 0, 0

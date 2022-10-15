@@ -13,9 +13,12 @@ public class UserData {
     public boolean vibration_is_on;
     public boolean button_hints_are_on;
     public boolean premium_is_on;
+    public boolean abstract_input_is_on;
+    public boolean is_developer;
     public String locale;
 
     public int launches;
-    public int zen_levels_completed;
+    public int zen_levels_passed;
+    public int current_zen_level;
     public int stats_views;
 }

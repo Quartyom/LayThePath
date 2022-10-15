@@ -3,16 +3,17 @@ package com.quartyom.screens.Level;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.utils.Align;
-import com.quartyom.MakeTheWay;
+import com.quartyom.LayThePath;
 import com.quartyom.game_elements.Button;
-import com.quartyom.interfaces.EventHandler;
+import com.quartyom.game_elements.QuScreen;
+import com.quartyom.interfaces.QuEvent;
 import com.quartyom.game_elements.Label;
 import com.quartyom.game_elements.TextField;
 
 import java.util.Random;
 
-public class LevelsAreOver implements Screen {
-    final MakeTheWay game;
+public class LevelsAreOver extends QuScreen {
+    final LayThePath game;
     public LevelScreen levelScreen;
 
     Label hint_label;
@@ -31,7 +32,7 @@ public class LevelsAreOver implements Screen {
 
         info_field = new TextField(levelScreen.game, Gdx.files.internal("texts/" + game.userData.locale + "/levels_are_over.txt").readString());
 
-        start_over_button = new Button("in_main_menu", game, new EventHandler() {
+        start_over_button = new Button("in_main_menu", game, new QuEvent() {
             @Override
             public void execute() {
                 levelScreen.levelBoard.current_level = 1;
@@ -44,7 +45,7 @@ public class LevelsAreOver implements Screen {
         });
         start_over_button.setNinePatch(6).setLabel(levelScreen.game.locale.get("Start over"));
 
-        menu_button = new Button("in_main_menu", game, new EventHandler() {
+        menu_button = new Button("in_main_menu", game, new QuEvent() {
             @Override
             public void execute() {
                 levelScreen.game.setScreen("menu");
@@ -52,11 +53,6 @@ public class LevelsAreOver implements Screen {
         });
         menu_button.setNinePatch(6).setLabel(levelScreen.game.locale.get("Go to Menu"));
 
-    }
-
-    @Override
-    public void show() {
-        Gdx.gl20.glClearColor(0, 0, 0, 1);
     }
 
     @Override
@@ -87,23 +83,4 @@ public class LevelsAreOver implements Screen {
         menu_button.resize(game.upper_button_corner_x, game.upper_button_corner_y - game.down_margin * 5, game.button_w, game.button_h);
     }
 
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
-
-    }
-
-    @Override
-    public void dispose() {
-
-    }
 }

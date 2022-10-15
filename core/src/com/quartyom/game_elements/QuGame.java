@@ -13,12 +13,12 @@ import java.util.Queue;
 
 public abstract class QuGame implements ApplicationListener {
 
-    protected Screen screen;
-    protected Screen default_screen;
-    private Map<String, Screen> screens;
+    protected QuScreen screen;
+    protected QuScreen default_screen;
+    private Map<String, QuScreen> screens;
 
     public QuGame(){
-        screens = new HashMap<String, Screen>();
+        screens = new HashMap<String, QuScreen>();
     }
 
     @Override
@@ -30,7 +30,7 @@ public abstract class QuGame implements ApplicationListener {
     }
 
     public void setScreen(String name){
-        Screen screen = screens.get(name);
+        QuScreen screen = screens.get(name);
         if (this.screen != null){ this.screen.hide(); }
         if (screen != null) {
             this.screen = screen;
@@ -51,7 +51,7 @@ public abstract class QuGame implements ApplicationListener {
         return screen;
     }
 
-    public void add(String name, Screen screen){
+    public void add(String name, QuScreen screen){
         if (screens.containsKey(name)){
             screens.get(name).dispose();
             System.out.println("rewritten: Screen " + name);
@@ -60,7 +60,7 @@ public abstract class QuGame implements ApplicationListener {
         screens.put(name, screen);
     }
 
-    public void add_default(String name, Screen screen){
+    public void add_default(String name, QuScreen screen){
         add(name, screen);
         default_screen = screen;
     }

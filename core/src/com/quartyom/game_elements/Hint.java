@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Align;
-import com.quartyom.MakeTheWay;
+import com.quartyom.LayThePath;
 import com.quartyom.interfaces.Drawable;
 
 // произвольный текст, максимальный размер половина ширины, половина высоты игры, позиция зависит от курсора
@@ -18,7 +18,7 @@ public class Hint implements Drawable {
 
     private int font_size;
 
-    private MakeTheWay game;
+    private LayThePath game;
     private BitmapFont font;
 
     private TextureRegion texture;
@@ -28,7 +28,7 @@ public class Hint implements Drawable {
     Vector2 touch_pos;
 
 
-    public Hint(MakeTheWay game){
+    public Hint(LayThePath game){
         this.game = game;
 
         touch_pos = new Vector2();

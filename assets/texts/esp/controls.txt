@@ -1,0 +1,1 @@
+De forma predeterminada, controlas el juego con el dedo directamente, moviéndolo por el campo. Pero también hay una forma abstracta. Moverás el cursor con los gestos deslizar y tocar dos veces.

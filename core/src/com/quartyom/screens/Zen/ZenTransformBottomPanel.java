@@ -2,7 +2,7 @@ package com.quartyom.screens.Zen;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.quartyom.game_elements.Button;
-import com.quartyom.interfaces.EventHandler;
+import com.quartyom.interfaces.QuEvent;
 
 public class ZenTransformBottomPanel {
     public boolean is_active = false;
@@ -19,7 +19,7 @@ public class ZenTransformBottomPanel {
 
         texture = zenScreen.game.field_atlas.findRegion("bottom_panel");
 
-        back_button = new Button("back", zenScreen.game, new EventHandler() {
+        back_button = new Button("back", zenScreen.game, new QuEvent() {
             @Override
             public void execute() {
                 is_active = false;
@@ -28,7 +28,7 @@ public class ZenTransformBottomPanel {
         });
         back_button.setHint(zenScreen.game.locale.get("back")).setSound("click_1");
 
-        turn_counterclockwise_button = new Button("turn_counterclockwise", zenScreen.game, new EventHandler() {
+        turn_counterclockwise_button = new Button("turn_counterclockwise", zenScreen.game, new QuEvent() {
             @Override
             public void execute() {
                 zenScreen.zenBoard.gameplay.counterclockwise_turn();
@@ -36,7 +36,7 @@ public class ZenTransformBottomPanel {
         });
         turn_counterclockwise_button.setHint(zenScreen.game.locale.get("counterclockwise turn")).setSound("click_1");
 
-        turn_clockwise_button = new Button("turn_clockwise", zenScreen.game, new EventHandler() {
+        turn_clockwise_button = new Button("turn_clockwise", zenScreen.game, new QuEvent() {
             @Override
             public void execute() {
                 zenScreen.zenBoard.gameplay.clockwise_turn();
@@ -44,7 +44,7 @@ public class ZenTransformBottomPanel {
         });
         turn_clockwise_button.setHint(zenScreen.game.locale.get("clockwise turn")).setSound("click_1");
 
-        mirror_button = new Button("mirror", zenScreen.game, new EventHandler() {
+        mirror_button = new Button("mirror", zenScreen.game, new QuEvent() {
             @Override
             public void execute() {
                 zenScreen.zenBoard.gameplay.mirror_turn();

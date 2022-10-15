@@ -2,30 +2,31 @@ package com.quartyom.screens.Menu;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.quartyom.MakeTheWay;
+import com.quartyom.LayThePath;
 import com.quartyom.game_elements.Button;
-import com.quartyom.interfaces.EventHandler;
+import com.quartyom.game_elements.QuScreen;
+import com.quartyom.interfaces.QuEvent;
 import com.quartyom.game_elements.InputState;
 import com.quartyom.game_elements.Label;
 import com.quartyom.game_elements.Scroller;
 import com.quartyom.game_elements.TextField;
 
-public class HowToPlayTab implements Screen {
-    final MakeTheWay game;
+public class HowToPlayTab extends QuScreen {
+    final LayThePath game;
 
     Button back_button;
     Label how_to_play_label;
     TextField information_field;
     Scroller scroller;
 
-    public HowToPlayTab(final MakeTheWay game){
+    public HowToPlayTab(final LayThePath game){
         this.game = game;
 
         how_to_play_label = new Label(game, game.locale.get("How to play"));
 
         information_field = new TextField(game, Gdx.files.internal("texts/" + game.userData.locale + "/how_to_play.txt").readString());
 
-        back_button = new Button("in_main_menu", game, new EventHandler() {
+        back_button = new Button("in_main_menu", game, new QuEvent() {
             @Override
             public void execute() {
                 game.setScreen("menu_info");
@@ -70,11 +71,6 @@ public class HowToPlayTab implements Screen {
     }
 
     @Override
-    public void show() {
-        Gdx.gl20.glClearColor(0, 0, 0, 1);
-    }
-
-    @Override
     public void render(float delta) {
         Gdx.gl20.glClear(Gdx.gl20.GL_COLOR_BUFFER_BIT);
 
@@ -106,23 +102,4 @@ public class HowToPlayTab implements Screen {
         scroller.resize_full();
     }
 
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
-
-    }
-
-    @Override
-    public void dispose() {
-
-    }
 }

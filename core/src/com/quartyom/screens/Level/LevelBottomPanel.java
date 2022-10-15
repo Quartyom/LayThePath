@@ -2,7 +2,7 @@ package com.quartyom.screens.Level;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.quartyom.game_elements.Button;
-import com.quartyom.interfaces.EventHandler;
+import com.quartyom.interfaces.QuEvent;
 
 public class LevelBottomPanel {
     boolean is_active = true;
@@ -19,7 +19,7 @@ public class LevelBottomPanel {
 
         texture = levelScreen.game.field_atlas.findRegion("bottom_panel");
 
-        reset_button = new Button("reset", levelScreen.game, new EventHandler() {
+        reset_button = new Button("reset", levelScreen.game, new QuEvent() {
             @Override
             public void execute() {
                 levelScreen.levelBoard.gameplay.reset_body();
@@ -27,7 +27,7 @@ public class LevelBottomPanel {
         });
         reset_button.setHint(levelScreen.game.locale.get("reset level")).setSound("click_1");
 
-        transform_button = new Button("transform", levelScreen.game, new EventHandler() {
+        transform_button = new Button("transform", levelScreen.game, new QuEvent() {
             @Override
             public void execute() {
                 is_active = false;
@@ -36,7 +36,7 @@ public class LevelBottomPanel {
         });
         transform_button.setHint(levelScreen.game.locale.get("transform the field")).setSound("click_1");
 
-        hint_button = new Button("hint", levelScreen.game, new EventHandler() {
+        hint_button = new Button("hint", levelScreen.game, new QuEvent() {
             @Override
             public void execute() {
                 if (levelScreen.levelBoard.boardDrawer.is_hint_shown){
@@ -55,7 +55,7 @@ public class LevelBottomPanel {
         });
         hint_button.setHint(levelScreen.game.locale.get("show hint")).setSound("click_1");
 
-        skip_button = new Button("next", levelScreen.game, new EventHandler() {
+        skip_button = new Button("next", levelScreen.game, new QuEvent() {
             @Override
             public void execute() {
                 if (levelScreen.game.userData.premium_is_on){

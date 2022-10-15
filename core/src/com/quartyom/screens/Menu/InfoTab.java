@@ -2,23 +2,24 @@ package com.quartyom.screens.Menu;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.quartyom.MakeTheWay;
+import com.quartyom.LayThePath;
 import com.quartyom.game_elements.Button;
-import com.quartyom.interfaces.EventHandler;
+import com.quartyom.game_elements.QuScreen;
+import com.quartyom.interfaces.QuEvent;
 import com.quartyom.game_elements.Label;
 
-public class InfoTab implements Screen {
-    final MakeTheWay game;
+public class InfoTab extends QuScreen {
+    final LayThePath game;
 
     Label info_label;
     Button how_to_play_button, about_button, stats_button, /*bug_button,*/ back_button;
 
-    public InfoTab(final MakeTheWay game){
+    public InfoTab(final LayThePath game){
         this.game = game;
 
         info_label = new Label(game, game.locale.get("Info"));
 
-        how_to_play_button = new Button("in_main_menu", game, new EventHandler() {
+        how_to_play_button = new Button("in_main_menu", game, new QuEvent() {
             @Override
             public void execute() {
                 game.setScreen("menu_how_to_play");
@@ -26,7 +27,7 @@ public class InfoTab implements Screen {
         });
         how_to_play_button.setNinePatch(6).setLabel(game.locale.get("How to play"));
 
-        about_button = new Button("in_main_menu", game, new EventHandler() {
+        about_button = new Button("in_main_menu", game, new QuEvent() {
             @Override
             public void execute() {
                 game.setScreen("menu_about");
@@ -34,7 +35,7 @@ public class InfoTab implements Screen {
         });
         about_button.setNinePatch(6).setLabel(game.locale.get("About"));
 
-        stats_button = new Button("in_main_menu", game, new EventHandler() {
+        stats_button = new Button("in_main_menu", game, new QuEvent() {
             @Override
             public void execute() {
                 game.setScreen("menu_stats");
@@ -42,7 +43,7 @@ public class InfoTab implements Screen {
         });
         stats_button.setNinePatch(6).setLabel(game.locale.get("Stats"));
 
-        back_button = new Button("in_main_menu", game, new EventHandler() {
+        back_button = new Button("in_main_menu", game, new QuEvent() {
             @Override
             public void execute() {
                 game.setScreen("menu");
@@ -60,11 +61,6 @@ public class InfoTab implements Screen {
         stats_button.resize(game.upper_button_corner_x, game.upper_button_corner_y - game.down_margin * 3, game.button_w, game.button_h);
         // gap
         back_button.resize(game.upper_button_corner_x, game.upper_button_corner_y - game.down_margin * 5, game.button_w, game.button_h);
-    }
-
-    @Override
-    public void show() {
-        Gdx.gl20.glClearColor(0, 0, 0, 1);
     }
 
     @Override
@@ -92,24 +88,4 @@ public class InfoTab implements Screen {
         }
     }
 
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
-
-    }
-
-    @Override
-    public void dispose() {
-
-    }
 }

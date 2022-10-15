@@ -3,15 +3,16 @@ package com.quartyom.screens.Level;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.utils.Align;
-import com.quartyom.MakeTheWay;
+import com.quartyom.LayThePath;
 import com.quartyom.game_elements.Button;
-import com.quartyom.interfaces.EventHandler;
+import com.quartyom.game_elements.QuScreen;
+import com.quartyom.interfaces.QuEvent;
 import com.quartyom.game_elements.Label;
 import com.quartyom.game_elements.TextField;
 
 
-public class LevelSkipTab implements Screen {
-    final MakeTheWay game;
+public class LevelSkipTab extends QuScreen {
+    final LayThePath game;
     public LevelScreen levelScreen;
 
     Label skip_label;
@@ -26,7 +27,7 @@ public class LevelSkipTab implements Screen {
 
         info_field = new TextField(levelScreen.game, Gdx.files.internal("texts/" + game.userData.locale + "/skip_level.txt").readString());
 
-        back_button = new Button("in_main_menu", game, new EventHandler() {
+        back_button = new Button("in_main_menu", game, new QuEvent() {
             @Override
             public void execute() {
                 game.setScreen("level");
@@ -80,25 +81,5 @@ public class LevelSkipTab implements Screen {
         // gap
         //accept_button.resize(game.upper_button_corner_x, game.upper_button_corner_y - game.down_margin * 4, game.button_w, game.button_h);
         back_button.resize(game.upper_button_corner_x, game.upper_button_corner_y - game.down_margin * 5, game.button_w, game.button_h);
-    }
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
-
-    }
-
-    @Override
-    public void dispose() {
-
     }
 }

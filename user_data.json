@@ -1,14 +1,16 @@
 {
-current_level: 203
-max_level_achieved: 203
+current_level: 204
+max_level_achieved: 204
 zen_is_available: true
 editor_is_available: true
-hints_amount: 3
-volume: 0.5
+hints_amount: 66
+volume: 0.22285713
 vibration_is_on: true
 premium_is_on: true
-locale: ru
-launches: 258
-zen_levels_completed: 11
-stats_views: 28
+is_developer: true
+locale: en
+launches: 87
+zen_levels_passed: 192
+current_zen_level: 5
+stats_views: 1
 }

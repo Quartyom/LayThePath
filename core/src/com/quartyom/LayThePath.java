@@ -18,7 +18,7 @@ import com.quartyom.screens.Level.LevelScreen;
 import com.quartyom.screens.Menu.MenuTab;
 import com.quartyom.screens.Zen.ZenScreen;
 
-public class MakeTheWay extends QuGame implements InputProcessor {
+public class LayThePath extends QuGame implements InputProcessor {
 	public SpriteBatch batch;
 	public FontHolder fontHolder;
 	public GlyphLayout glyphLayout;
@@ -37,18 +37,17 @@ public class MakeTheWay extends QuGame implements InputProcessor {
 	public DrawingQueue drawingQueue;
 
 	public boolean is_back_button_pressed;
+	public boolean is_first_launch;
 
-	public MakeTheWay(){}
+	public LayThePath(){}
 
 	public void create() {
 		batch = new SpriteBatch();
 		glyphLayout = new GlyphLayout();
 		soundHolder = new SoundHolder();
-		//textureHolder = new TextureHolder("textures/", ".png");
 		field_atlas = new TextureAtlas("textures/field.atlas");
 		buttons_atlas = new TextureAtlas("textures/buttons.atlas");
 		sliders_atlas = new TextureAtlas("textures/sliders.atlas");
-		//buttonTextureHolder = new TextureHolder();
 
 		json = new Json();
 
@@ -68,7 +67,7 @@ public class MakeTheWay extends QuGame implements InputProcessor {
 		this.add("level", new LevelScreen(this));
 		this.add("zen", new ZenScreen(this));
 		this.add("editor", new EditorScreen(this));
-		this.setScreen("menu");
+		this.setScreen(is_first_launch? "menu_locale" : "menu");
 
 		Gdx.input.setCatchKey(Input.Keys.BACK, true);
 		Gdx.input.setInputProcessor(this);
@@ -87,7 +86,6 @@ public class MakeTheWay extends QuGame implements InputProcessor {
 		this.add("level", new LevelScreen(this));
 		this.add("zen", new ZenScreen(this));
 		this.add("editor", new EditorScreen(this));
-		this.setScreen("menu");
 	}
 
 	public void save_user_data(){
@@ -100,6 +98,7 @@ public class MakeTheWay extends QuGame implements InputProcessor {
 			a = Gdx.files.local("user_data.json").readString();
 		}
 		catch (Exception exception){
+			is_first_launch = true;
 			a = Gdx.files.internal("default_user_data.json").readString();
 		}
 		finally {

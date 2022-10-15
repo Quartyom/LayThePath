@@ -3,14 +3,15 @@ package com.quartyom.screens.Zen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.utils.Align;
-import com.quartyom.MakeTheWay;
+import com.quartyom.LayThePath;
 import com.quartyom.game_elements.Button;
-import com.quartyom.interfaces.EventHandler;
+import com.quartyom.game_elements.QuScreen;
+import com.quartyom.interfaces.QuEvent;
 import com.quartyom.game_elements.Label;
 import com.quartyom.game_elements.TextField;
 
-public class ZenSkipTab implements Screen {
-    final MakeTheWay game;
+public class ZenSkipTab extends QuScreen {
+    final LayThePath game;
     ZenScreen zenScreen;
 
     Label skip_label;
@@ -25,7 +26,7 @@ public class ZenSkipTab implements Screen {
 
         info_field = new TextField(zenScreen.game, Gdx.files.internal("texts/" + game.userData.locale + "/skip_level.txt").readString());
 
-        back_button = new Button("in_main_menu", game, new EventHandler() {
+        back_button = new Button("in_main_menu", game, new QuEvent() {
             @Override
             public void execute() {
                 game.setScreen("zen");
@@ -57,11 +58,6 @@ public class ZenSkipTab implements Screen {
     }
 
     @Override
-    public void show() {
-        Gdx.gl20.glClearColor(0, 0, 0, 1);
-    }
-
-    @Override
     public void render(float delta) {
         Gdx.gl20.glClear(Gdx.gl20.GL_COLOR_BUFFER_BIT);
 
@@ -78,23 +74,4 @@ public class ZenSkipTab implements Screen {
         //accept_button.update();
     }
 
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
-
-    }
-
-    @Override
-    public void dispose() {
-
-    }
 }

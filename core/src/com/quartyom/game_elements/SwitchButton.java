@@ -2,10 +2,9 @@ package com.quartyom.game_elements;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.quartyom.MakeTheWay;
+import com.quartyom.LayThePath;
 
 import java.util.ArrayList;
 
@@ -16,14 +15,15 @@ public class SwitchButton {
 
     public int state;
     public boolean recently_changed = false;
+    public boolean to_change_state_on_click = true;
 
-    MakeTheWay game;
+    LayThePath game;
 
     Sound click_sound;
 
     Vector2 touch_pos;
 
-    public SwitchButton(MakeTheWay game){
+    public SwitchButton(LayThePath game){
         this.game = game;
         touch_pos = new Vector2();
 
@@ -63,10 +63,14 @@ public class SwitchButton {
 
             // попали ли по кнопке
             if (touch_pos.x >= button_x && touch_pos.y >= button_y && touch_pos.x <= button_x + button_w && touch_pos.y <= button_y + button_h){
-                state += 1;
-                if (state >= textures.size()){
-                    state = 0;
+
+                if (to_change_state_on_click) {
+                    state++;
+                    if (state >= textures.size()) {
+                        state = 0;
+                    }
                 }
+
                 recently_changed = true;
                 click_sound.play(game.userData.volume * 0.5f);
                 return;

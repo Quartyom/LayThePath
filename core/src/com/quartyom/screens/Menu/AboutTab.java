@@ -3,30 +3,31 @@ package com.quartyom.screens.Menu;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.utils.Align;
-import com.quartyom.MakeTheWay;
+import com.quartyom.LayThePath;
 import com.quartyom.game_elements.Button;
-import com.quartyom.interfaces.EventHandler;
+import com.quartyom.game_elements.QuScreen;
+import com.quartyom.interfaces.QuEvent;
 import com.quartyom.game_elements.InputState;
 import com.quartyom.game_elements.Label;
 import com.quartyom.game_elements.Scroller;
 import com.quartyom.game_elements.TextField;
 
-public class AboutTab implements Screen {
-    final MakeTheWay game;
+public class AboutTab extends QuScreen {
+    final LayThePath game;
 
     Button back_button, how_can_i_help_button;
     Label about_label;
     TextField information_field;
     Scroller scroller;
 
-    public AboutTab(final MakeTheWay game){
+    public AboutTab(final LayThePath game){
         this.game = game;
 
         about_label = new Label(game, game.locale.get("About"));
 
         information_field = new TextField(game, Gdx.files.internal("texts/" + game.userData.locale + "/about.txt").readString());
 
-        back_button = new Button("in_main_menu", game, new EventHandler() {
+        back_button = new Button("in_main_menu", game, new QuEvent() {
             @Override
             public void execute() {
                 game.setScreen("menu_info");
@@ -34,7 +35,7 @@ public class AboutTab implements Screen {
         });
         back_button.setNinePatch(6).setLabel(game.locale.get("Back"));
 
-        how_can_i_help_button = new Button("in_main_menu", game, new EventHandler() {
+        how_can_i_help_button = new Button("in_main_menu", game, new QuEvent() {
             @Override
             public void execute() {
                 game.setScreen("menu_how_can_i_help");
@@ -49,7 +50,7 @@ public class AboutTab implements Screen {
 
     public void update(){
         back_button.update();
-        if (back_button.inputState == InputState.UNTOUCHED) {
+        if (back_button.inputState == InputState.UNTOUCHED) {   // если нажатия нет, то тогда проверяем нажатие на другую кнопку, которая снизу
             how_can_i_help_button.update();
         }
 
@@ -86,11 +87,6 @@ public class AboutTab implements Screen {
     }
 
     @Override
-    public void show() {
-        Gdx.gl20.glClearColor(0, 0, 0, 1);
-    }
-
-    @Override
     public void render(float delta) {
         Gdx.gl20.glClear(Gdx.gl20.GL_COLOR_BUFFER_BIT);
 
@@ -111,24 +107,4 @@ public class AboutTab implements Screen {
         }
     }
 
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
-
-    }
-
-    @Override
-    public void dispose() {
-
-    }
 }

@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.quartyom.MakeTheWay;
+import com.quartyom.LayThePath;
 
 // Хитбокс слайдэра задаётся, параметры элементов слайдэра вычисляются, чтобы поместиться в хитбокс
 // Значение слайдэра изменяется в пределах от 0 до 1
@@ -18,18 +18,18 @@ public class Slider {
     private NinePatch line_patch;
 
     public InputState inputState;
-    MakeTheWay game;
+    LayThePath game;
 
     Vector2 touch_pos;
 
-    public Slider(MakeTheWay game){
+    public Slider(LayThePath game){
         this.game = game;
 
         inputState = InputState.UNTOUCHED;
         touch_pos = new Vector2();
     }
 
-    public Slider(String name, MakeTheWay game){
+    public Slider(String name, LayThePath game){
         this(game);
 
         normal_texture = game.sliders_atlas.findRegion( name + "_untouched");

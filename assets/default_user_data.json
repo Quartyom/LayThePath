@@ -8,8 +8,11 @@ volume: 0.5
 vibration_is_on: true
 button_hints_are_on: true
 premium_is_on: false
+abstract_input_is_on: false
+is_developer: false
 locale: en
 launches: 0
-zen_levels_completed: 0
+zen_levels_passed: 0
+current_zen_level: 1
 stats_views: 0
 }
