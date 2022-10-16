@@ -141,7 +141,7 @@ public class EditorBottomPanel {
             if (value != editorScreen.editorBoard.gameplay.field_size) {
                 editorScreen.editorBoard.gameplay.field_size = value;
                 editorScreen.editorBoard.resize();
-
+                editorScreen.editorBoard.gameplay.normalize_obstacles();
             }
 
         }

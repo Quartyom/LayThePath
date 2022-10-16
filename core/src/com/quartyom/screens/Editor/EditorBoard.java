@@ -94,7 +94,6 @@ public class EditorBoard {
     }
 
 
-
     public void update() {
         if (!is_active) {
             return;

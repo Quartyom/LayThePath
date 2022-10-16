@@ -203,6 +203,26 @@ public class Gameplay {
         else if (abstract_input_cursor.y >= field_size){ abstract_input_cursor.y = field_size - 1; }
     }
 
+    private void normalize_obstacle(ArrayList<Vector2> arr){
+        ArrayList<Vector2> items_to_delete = new ArrayList<>();
+        for (Vector2 item: arr){
+            if (item.x < 0 || item.y < 0 || item.x >=field_size || item.y >= field_size){
+                items_to_delete.add(item);
+            }
+        }
+        arr.removeAll(items_to_delete);
+    }
+
+    public void normalize_obstacles(){
+        normalize_obstacle(vertical_walls);
+        normalize_obstacle(horizontal_walls);
+        normalize_obstacle(slash_walls);
+        normalize_obstacle(backslash_walls);
+        normalize_obstacle(boxes);
+        normalize_obstacle(points);
+        normalize_obstacle(crossroads);
+    }
+
     public MoveResult double_tap_make_move(){
         Vector2 xy_to = new Vector2(abstract_input_cursor);
 

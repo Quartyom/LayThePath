@@ -10,6 +10,7 @@ import com.quartyom.game_elements.Scroller;
 import com.quartyom.game_elements.Vibrator;
 import com.quartyom.screens.Level.BoardDrawer;
 import com.quartyom.screens.Level.Gameplay;
+import com.quartyom.screens.Level.LevelsData;
 import com.quartyom.screens.Level.MoveResult;
 
 public abstract class GameBoard {
@@ -35,6 +36,66 @@ public abstract class GameBoard {
 
     protected Vibrator vibrator;
 
+    protected GameBoard(LayThePath game){
+        this.game = game;
+
+        gameplay = new Gameplay();
+        boardDrawer = new BoardDrawer(game, gameplay);
+
+        inputState = InputState.UNTOUCHED;
+
+        scroller = new Scroller(game);
+        pressTimer = new PressTimer(game);
+
+        touch_pos = new Vector2();
+
+        vibrator = game.vibrator;
+
+        move_sound = game.soundHolder.get("low_put");
+        move_back_sound = game.soundHolder.get("low_put_1");
+        body_shortened_sound = game.soundHolder.get("body_shortened");
+        victory_sound = game.soundHolder.get("victory");
+    }
+
+    // !!! needs to be defined actual size
+    public void resize(float topPanelHeight){
+        // выбираем наименьшее расстояние (граница экрана слева или панель сверху)
+        actual_size = game.HALF_HEIGHT - topPanelHeight;
+
+        scroller.resize(-game.HALF_WIDTH, -actual_size , game.WIDTH, 2 * actual_size);
+        pressTimer.resize(-game.HALF_WIDTH, -actual_size , game.WIDTH, 2 * actual_size);
+
+        if (game.HALF_WIDTH < actual_size){
+            actual_size = game.HALF_WIDTH;
+        }
+
+        board_x = -actual_size;
+        board_y = -actual_size;
+        board_w = actual_size * 2;
+        board_h = actual_size * 2;
+
+        square_w = board_w / gameplay.field_size;
+        square_h = board_h / gameplay.field_size;
+
+        // толщина стены 2 / 8 px
+        wall_offset_x = square_w / 16.0f;
+        wall_offset_y = square_h / 16.0f;
+
+        boardDrawer.board_x = board_x;
+        boardDrawer.board_y = board_y;
+        boardDrawer.board_w = board_w;
+        boardDrawer.board_h = board_h;
+
+        boardDrawer.square_w = square_w;
+        boardDrawer.square_h = square_h;
+
+        boardDrawer.wall_offset_x = wall_offset_x;
+        boardDrawer.wall_offset_y = wall_offset_y;
+    }
+
+    public void show(){
+        gameplay.head_is_captured = false;
+    }
 
     public void update(){
         if (game.userData.abstract_input_is_on){
@@ -120,6 +181,7 @@ public abstract class GameBoard {
             MoveResult result = gameplay.just_untouched_make_move((int) touch_pos.x, (int) touch_pos.y);
             if (result == MoveResult.VICTORY){
                 victory_action();
+                victory_sound.play(game.userData.volume);
             }
             else if (result == MoveResult.BODY_IS_SHORTENED){
                 gameplay.false_path.clear();

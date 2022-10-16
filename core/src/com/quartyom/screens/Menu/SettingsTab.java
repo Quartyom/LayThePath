@@ -169,7 +169,8 @@ public class SettingsTab extends QuScreen {
     }
 
     private long previously_launched;
-    private boolean is_too_fast;
+    private boolean is_too_fast = false;
+
     @Override
     public void show() {
         Gdx.gl20.glClearColor(0, 0, 0, 1);

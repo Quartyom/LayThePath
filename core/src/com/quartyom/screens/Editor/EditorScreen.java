@@ -27,7 +27,6 @@ public class EditorScreen extends QuScreen {
     final int MIN_FILED_SIZE = 1;
 
     boolean is_slider_active = false;
-    int which_button_control_the_slider;
 
     public EditorScreen(final LayThePath game){
         this.game = game;

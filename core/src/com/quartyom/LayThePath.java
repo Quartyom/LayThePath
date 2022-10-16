@@ -23,7 +23,6 @@ public class LayThePath extends QuGame implements InputProcessor {
 	public FontHolder fontHolder;
 	public GlyphLayout glyphLayout;
 	public SoundHolder soundHolder;
-	//public TextureHolder textureHolder, buttonTextureHolder;
 	public TextureAtlas field_atlas, buttons_atlas, sliders_atlas;
 	public Json json;
 	public Locale locale;
