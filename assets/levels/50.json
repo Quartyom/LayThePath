@@ -2,11 +2,7 @@
 field_size: 4
 vertical_walls: []
 horizontal_walls: []
-slash_walls: []
-backslash_walls: [
-	{
-		x: 2
-	}
+slash_walls: [
 	{
 		x: 1
 		y: 1
@@ -15,9 +11,11 @@ backslash_walls: [
 		x: 2
 		y: 2
 	}
+]
+backslash_walls: [
 	{
 		x: 1
-		y: 3
+		y: 2
 	}
 ]
 boxes: []
@@ -28,6 +26,9 @@ hint: [
 		x: 2
 		y: 3
 	}
-	{}
+	{
+		x: 3
+		y: 3
+	}
 ]
 }

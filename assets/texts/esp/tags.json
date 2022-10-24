@@ -1,14 +1,13 @@
 {
-  "test" : "hiii"
-  "Menu":"Menú",
-  "Play":"Jugar",
-  "Zen": "Zen",
-  "Editor":"Editor",
-  "Info":"Info",
-  "Settings":"Configuración",
-  "How to play": "Cómo jugar",
-  "About": "Acerca de todo",
-  "Stats":"Estadísticas",
+  "Menu":"Menú"
+  "Play":"Jugar"
+  "Zen": "Zen"
+  "Editor":"Editor"
+  "Info":"Info"
+  "Settings":"Configuración"
+  "How to play": "Cómo jugar"
+  "About": "Acerca de todo"
+  "Stats":"Estadísticas"
   "Back":"Back"
   "How can I help?": "¿En qué puedo ayudar?"
   "Attention":"Atención"
@@ -39,7 +38,8 @@
   "You please": "would You"
   "stop?": "¿parar?"
   "Ughhhh": "Ugh"
-  "Not so fast": "No tan rápido",
-  "Activate":"Activar",
+  "Not so fast": "No tan rápido"
+  "Activate":"Activar"
   "Controls":"Control"
+  "Copied to clipboard": "Copiado al portapapeles"
 }

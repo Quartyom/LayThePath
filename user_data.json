@@ -1,5 +1,5 @@
 {
-current_level: 16
+current_level: 17
 max_level_achieved: 204
 zen_is_available: true
 editor_is_available: true
@@ -9,7 +9,7 @@ vibration_is_on: true
 premium_is_on: true
 is_developer: true
 locale: en
-launches: 102
+launches: 106
 zen_levels_passed: 224
 current_zen_level: 51
 stats_views: 2

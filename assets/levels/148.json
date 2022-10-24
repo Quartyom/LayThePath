@@ -4,62 +4,37 @@ vertical_walls: []
 horizontal_walls: []
 slash_walls: []
 backslash_walls: []
-boxes: []
-points: []
-crossroads: [
-	{
-		x: 1
-	}
-	{
-		y: 1
-	}
-	{
-		y: 4
-	}
-	{
-		x: 1
-		y: 5
-	}
-	{
-		x: 4
-		y: 5
-	}
-	{
-		x: 5
-		y: 4
-	}
-	{
-		x: 5
-		y: 1
-	}
-	{
-		x: 4
-	}
-	{
-		x: 2
-		y: 3
-	}
-	{
-		x: 3
-		y: 3
-	}
+boxes: [
 	{
 		x: 3
 		y: 2
 	}
 	{
 		x: 2
-		y: 2
+		y: 3
+	}
+	{
+		x: 2
+		y: 5
+	}
+	{
+		y: 1
+	}
+	{
+		x: 3
+	}
+	{
+		x: 5
+		y: 3
 	}
 ]
+points: []
+crossroads: []
 hint: [
+	{}
 	{
-		x: 1
+		x: 2
 		y: 4
-	}
-	{
-		x: 1
-		y: 1
 	}
 ]
 }

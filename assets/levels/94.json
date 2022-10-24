@@ -2,58 +2,57 @@
 field_size: 5
 vertical_walls: [
 	{
-		y: 3
+		x: 3
 	}
+]
+horizontal_walls: []
+slash_walls: []
+backslash_walls: [
+	{
+		x: 3
+		y: 4
+	}
+]
+boxes: [
+	{
+		y: 1
+	}
+	{}
 	{
 		x: 1
-		y: 3
+	}
+	{
+		x: 4
+		y: 2
+	}
+]
+points: [
+	{
+		x: 1
+		y: 1
 	}
 	{
 		x: 2
-		y: 1
-	}
-	{
-		x: 3
-		y: 1
-	}
-]
-horizontal_walls: [
-	{
-		x: 1
-		y: 3
-	}
-	{
-		x: 1
-		y: 1
-	}
-	{
-		x: 1
-	}
-	{
-		x: 3
-		y: 3
-	}
-	{
-		x: 3
 		y: 2
 	}
 	{
-		x: 3
-	}
-]
-slash_walls: []
-backslash_walls: []
-boxes: []
-points: []
-crossroads: []
-hint: [
-	{
-		x: 1
+		x: 4
 		y: 3
 	}
+]
+crossroads: [
 	{
-		x: 3
-		y: 1
+		x: 1
+		y: 4
+	}
+]
+hint: [
+	{
+		x: 4
+	}
+	{
+		x: 4
+		y: 4
 	}
 ]
 }
