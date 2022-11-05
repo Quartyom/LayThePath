@@ -18,7 +18,7 @@ import com.quartyom.screens.Level.LevelScreen;
 import com.quartyom.screens.Menu.MenuTab;
 import com.quartyom.screens.Zen.ZenScreen;
 
-public class LayThePath extends QuGame implements InputProcessor {
+public class LayThePath extends QuGame {
 	public SpriteBatch batch;
 	public FontHolder fontHolder;
 	public GlyphLayout glyphLayout;
@@ -38,8 +38,6 @@ public class LayThePath extends QuGame implements InputProcessor {
 	public boolean is_back_button_pressed;
 	public boolean is_first_launch;
 
-	public LayThePath(){}
-
 	public void create() {
 		batch = new SpriteBatch();
 		glyphLayout = new GlyphLayout();
@@ -49,16 +47,12 @@ public class LayThePath extends QuGame implements InputProcessor {
 		sliders_atlas = new TextureAtlas("textures/sliders.atlas");
 
 		json = new Json();
-
 		load_user_data();
-
 		locale = new Locale(this);
 		locale.set(userData.locale);
-
 		fontHolder = new FontHolder("fonts/OpenSans-Light.ttf", userData.locale);
 
-		vibrator = new Vibrator(userData);
-
+		vibrator = new Vibrator(this);
 		drawingQueue = new DrawingQueue(this);
 
 		this.add_default("menu", new MenuTab(this));
@@ -72,13 +66,13 @@ public class LayThePath extends QuGame implements InputProcessor {
 		Gdx.input.setInputProcessor(this);
 	}
 
-	public void set_locale(String language){
-		userData.locale = language;
+	public void change_locale(String language){
 		locale.set(language);
-		save_user_data();
 
-		if (fontHolder != null){fontHolder.dispose();}
+		if (fontHolder != null){ fontHolder.dispose(); }
 		fontHolder = new FontHolder("fonts/OpenSans-Light.ttf", language);
+
+		super.dispose();	// чтобы корректно выгрузить прошлые Screen
 
 		this.add_default("menu", new MenuTab(this));
 		//this.add("hex", new HexTextScreen(this));
@@ -108,11 +102,13 @@ public class LayThePath extends QuGame implements InputProcessor {
 	}
 
 	public void render() {
+		batch.begin();
 		super.render(); // important!
 		drawingQueue.draw();
+		batch.end();
 
 		if (is_back_button_pressed){
-			setScreen(null);
+			setScreen(null);	// установит Screen по умолчанию
 		}
 	}
 
@@ -148,7 +144,6 @@ public class LayThePath extends QuGame implements InputProcessor {
 		button_actual_size_x = HALF_WIDTH * padding;
 		button_actual_size_y = down_margin / 2 * padding;
 
-		//upper_button_center_x = 0;
 		upper_button_center_y = HALF_HEIGHT - down_margin / 2;
 
 		upper_button_corner_x = upper_button_center_x - button_actual_size_x;
@@ -166,41 +161,6 @@ public class LayThePath extends QuGame implements InputProcessor {
 			is_back_button_pressed = true;
 			return true;
 		}
-		return false;
-	}
-
-	@Override
-	public boolean keyUp(int i) {
-		return false;
-	}
-
-	@Override
-	public boolean keyTyped(char c) {
-		return false;
-	}
-
-	@Override
-	public boolean touchDown(int i, int i1, int i2, int i3) {
-		return false;
-	}
-
-	@Override
-	public boolean touchUp(int i, int i1, int i2, int i3) {
-		return false;
-	}
-
-	@Override
-	public boolean touchDragged(int i, int i1, int i2) {
-		return false;
-	}
-
-	@Override
-	public boolean mouseMoved(int i, int i1) {
-		return false;
-	}
-
-	@Override
-	public boolean scrolled(float v, float v1) {
 		return false;
 	}
 

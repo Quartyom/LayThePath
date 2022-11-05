@@ -57,7 +57,6 @@ public abstract class GameBoard {
         victory_sound = game.soundHolder.get("victory");
     }
 
-    // !!! needs to be defined actual size
     public void resize(float topPanelHeight){
         // выбираем наименьшее расстояние (граница экрана слева или панель сверху)
         actual_size = game.HALF_HEIGHT - topPanelHeight;

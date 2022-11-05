@@ -191,8 +191,6 @@ public class SettingsTab extends QuScreen {
     public void render(float delta) {
         Gdx.gl20.glClear(Gdx.gl20.GL_COLOR_BUFFER_BIT);
 
-        game.batch.begin();
-
         settings_label.draw();
         sound_button.draw();
         sound_slider.draw();
@@ -203,8 +201,6 @@ public class SettingsTab extends QuScreen {
         locale_button.draw();
         if (!is_too_fast){ controls_button.draw();}
         back_button.draw();
-
-        game.batch.end();
 
         update();
 

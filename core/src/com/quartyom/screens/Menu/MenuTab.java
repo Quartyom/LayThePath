@@ -15,7 +15,7 @@ public class MenuTab extends QuScreen {
     Button easter_button, play_button, zen_button, editor_button, info_button, settings_button;
     Label menu_label;
 
-    private int times_easter_button_clicked = 0;
+    private int times_easter_button_clicked;
     private boolean back_pressed_before = false;
 
     public MenuTab(final LayThePath game){
@@ -60,7 +60,6 @@ public class MenuTab extends QuScreen {
                 else if (times_easter_button_clicked >= 3){
                     menu_label.set_string(game.locale.get("Auch!"));
                 }
-
             }
         });
 
@@ -146,16 +145,12 @@ public class MenuTab extends QuScreen {
     public void render(float delta) {
         Gdx.gl20.glClear(Gdx.gl20.GL_COLOR_BUFFER_BIT);
 
-        game.batch.begin();
-
         menu_label.draw();
         play_button.draw();
         zen_button.draw();
         editor_button.draw();
         info_button.draw();
         settings_button.draw();
-
-        game.batch.end();
 
         easter_button.update();
         play_button.update();

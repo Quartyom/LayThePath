@@ -51,8 +51,6 @@ public class EditorScreen extends QuScreen {
     public void render(float delta) {
         Gdx.gl20.glClear(Gdx.gl20.GL_COLOR_BUFFER_BIT);
 
-        game.batch.begin();
-
         editorBoard.draw();
         editorLaunchedBoard.draw();
         editorTopPanel.draw();
@@ -60,8 +58,6 @@ public class EditorScreen extends QuScreen {
         editorBottomPanel.draw();
         editorTransformBottomPanel.draw();
         editorLaunchedBottomPanel.draw();
-
-        game.batch.end();
 
         editorLaunchedBoard.update();
         editorTransformBottomPanel.update();

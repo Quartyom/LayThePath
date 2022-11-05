@@ -19,11 +19,9 @@ public class DrawingQueue {
     }
 
     public void draw(){
-        game.batch.begin();
         for (Drawable item: elements){
             item.draw();
         }
         elements.clear();
-        game.batch.end();
     }
 }

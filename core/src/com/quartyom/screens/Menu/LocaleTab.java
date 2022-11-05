@@ -1,7 +1,6 @@
 package com.quartyom.screens.Menu;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.quartyom.LayThePath;
 import com.quartyom.game_elements.Button;
 import com.quartyom.game_elements.InputState;
@@ -31,7 +30,7 @@ public class LocaleTab extends QuScreen {
         english_button = new Button("english", game, new QuEvent() {
             @Override
             public void execute() {
-                game.set_locale("en");
+                game.change_locale("en");
                 game.setScreen("menu_settings");
             }
         });
@@ -39,7 +38,7 @@ public class LocaleTab extends QuScreen {
         spanish_button = new Button("spanish", game, new QuEvent() {
             @Override
             public void execute() {
-                game.set_locale("esp");
+                game.change_locale("esp");
                 game.setScreen("menu_settings");
             }
         });
@@ -47,7 +46,7 @@ public class LocaleTab extends QuScreen {
         german_button = new Button("german", game, new QuEvent() {
             @Override
             public void execute() {
-                game.set_locale("ger");
+                game.change_locale("ger");
                 game.setScreen("menu_settings");
             }
         });
@@ -55,7 +54,7 @@ public class LocaleTab extends QuScreen {
         russian_button = new Button("russian", game, new QuEvent() {
             @Override
             public void execute() {
-                game.set_locale("ru");
+                game.change_locale("ru");
                 game.setScreen("menu_settings");
             }
         });
@@ -118,16 +117,11 @@ public class LocaleTab extends QuScreen {
     public void render(float delta) {
         Gdx.gl20.glClear(Gdx.gl20.GL_COLOR_BUFFER_BIT);
 
-        game.batch.begin();
-
         english_button.draw();
         spanish_button.draw();
         german_button.draw();
         russian_button.draw();
-
         back_button.draw();
-
-        game.batch.end();
 
         update();
 

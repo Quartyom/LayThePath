@@ -1,6 +1,7 @@
 package com.quartyom.screens.Level;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.quartyom.game_elements.Button;
 import com.quartyom.interfaces.QuEvent;
 
@@ -58,7 +59,10 @@ public class LevelBottomPanel {
         skip_button = new Button("next", levelScreen.game, new QuEvent() {
             @Override
             public void execute() {
-                if (levelScreen.game.userData.premium_is_on){
+                if (levelScreen.levelBoard.current_level < levelScreen.game.userData.max_level_achieved ||
+                        TimeUtils.millis() >= levelScreen.game.userData.when_to_skip_level ||
+                        levelScreen.game.userData.premium_is_on){
+
                     levelScreen.levelBoard.current_level++;
                     levelScreen.levelBoard.userData.current_level = levelScreen.levelBoard.current_level;
                     levelScreen.game.save_user_data();

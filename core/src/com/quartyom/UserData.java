@@ -21,4 +21,8 @@ public class UserData {
     public int zen_levels_passed;
     public int current_zen_level;
     public int stats_views;
+
+    public long when_to_skip_level;
+    public long when_to_skip_zen_level;
+    public String premium_public_code;
 }

@@ -17,8 +17,6 @@ public class PremiumTab extends QuScreen {
     Label info_label, code_label;
     Button button_0, button_1, button_2, button_3, button_4, button_5, button_6, button_7, button_8, button_9, button_clean, button_accept, back_button;
 
-    //private String private_code;
-    private String public_code;
     private String current_input;
 
     public PremiumTab(final LayThePath game){
@@ -113,7 +111,7 @@ public class PremiumTab extends QuScreen {
         button_accept = new Button("in_main_menu", game, new QuEvent() {
             @Override
             public void execute() {
-                if (encrypt(current_input).equals(public_code)){
+                if (encrypt(current_input).equals(game.userData.premium_public_code)){
                     game.userData.premium_is_on = true;
                     game.save_user_data();
                     game.setScreen("menu_settings");
@@ -188,16 +186,17 @@ public class PremiumTab extends QuScreen {
 
         //int code = random.nextInt(1_000_000) + 1_000_000;
         //private_code = String.valueOf(code).substring(1, 7);
-        public_code = encrypt(String.valueOf(random.nextInt(1_000_000) + 1_000_000).substring(1, 7));
+        game.userData.premium_public_code = encrypt(String.valueOf(random.nextInt(1_000_000) + 1_000_000).substring(1, 7));
+        game.save_user_data();
 
-        code_label.string = public_code + ": ";
+        code_label.string = game.userData.premium_public_code + ": ";
     }
 
     @Override
     public void show() {
         Gdx.gl20.glClearColor(0, 0, 0, 1);
 
-        if (public_code == null) {
+        if (game.userData.premium_public_code == null) {
             update_code();
         }
 
@@ -209,9 +208,7 @@ public class PremiumTab extends QuScreen {
     public void render(float delta) {
         Gdx.gl20.glClear(Gdx.gl20.GL_COLOR_BUFFER_BIT);
 
-        game.batch.begin();
-
-        code_label.string = public_code + ": " + current_input;
+        code_label.string = game.userData.premium_public_code + ": " + current_input;
 
         info_label.draw();
         code_label.draw();
@@ -228,10 +225,7 @@ public class PremiumTab extends QuScreen {
         button_9.draw();
         button_accept.draw();
         button_clean.draw();
-
         back_button.draw();
-
-        game.batch.end();
 
         button_0.update();
         button_1.update();

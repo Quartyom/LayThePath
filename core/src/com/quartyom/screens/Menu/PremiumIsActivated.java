@@ -60,14 +60,10 @@ public class PremiumIsActivated extends QuScreen {
     public void render(float delta) {
         Gdx.gl20.glClear(Gdx.gl20.GL_COLOR_BUFFER_BIT);
 
-        game.batch.begin();
-
         zen_label.draw();
         info_field.draw();
         deactivate_button.draw();
         back_button.draw();
-
-        game.batch.end();
 
         deactivate_button.update();
         back_button.update();

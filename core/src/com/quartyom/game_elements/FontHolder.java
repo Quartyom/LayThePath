@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.IntConsumer;
 
 
 public class FontHolder {

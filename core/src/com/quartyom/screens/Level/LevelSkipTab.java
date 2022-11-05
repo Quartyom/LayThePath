@@ -59,14 +59,10 @@ public class LevelSkipTab extends QuScreen {
     public void render(float delta) {
         Gdx.gl20.glClear(Gdx.gl20.GL_COLOR_BUFFER_BIT);
 
-        game.batch.begin();
-
         skip_label.draw();
         info_field.draw();
         back_button.draw();
         //accept_button.draw();
-
-        game.batch.end();
 
         back_button.update();
         //accept_button.update();

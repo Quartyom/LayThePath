@@ -42,14 +42,10 @@ public class LevelScreen extends QuScreen {
     public void render(float delta) {
         Gdx.gl20.glClear(Gdx.gl20.GL_COLOR_BUFFER_BIT);
 
-        game.batch.begin();
-
         levelBoard.draw();
         levelTopPanel.draw();
         levelBottomPanel.draw();
         levelTransformBottomPanel.draw();
-
-        game.batch.end();
 
         levelBoard.update();
         levelTopPanel.update();

@@ -123,8 +123,6 @@ public class HowCanIHelpTab extends QuScreen {
     public void render(float delta) {
         Gdx.gl20.glClear(Gdx.gl20.GL_COLOR_BUFFER_BIT);
 
-        game.batch.begin();
-
         about_label.draw();
         information_field.draw();
         if (to_show_copied_label) {
@@ -133,8 +131,6 @@ public class HowCanIHelpTab extends QuScreen {
         bitcoin_button.draw();
         ethereum_button.draw();
         back_button.draw();
-
-        game.batch.end();
 
         update();
 

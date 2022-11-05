@@ -59,14 +59,10 @@ public class LevelsAreOver extends QuScreen {
     public void render(float delta) {
         Gdx.gl20.glClear(Gdx.gl20.GL_COLOR_BUFFER_BIT);
 
-        game.batch.begin();
-
         hint_label.draw();
         info_field.draw();
         start_over_button.draw();
         menu_button.draw();
-
-        game.batch.end();
 
         start_over_button.update();
         menu_button.update();

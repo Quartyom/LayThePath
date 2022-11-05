@@ -40,8 +40,6 @@ public class HexTextScreen implements Screen {
     public void render(float delta) {
         Gdx.gl20.glClear(Gdx.gl20.GL_COLOR_BUFFER_BIT);
 
-        game.batch.begin();
-
         for (int x = -grid_size; x <= grid_size; x++){
             for (int y = -grid_size; y<=grid_size; y++){
                 if (dist(new Vector2(x,y)) >= grid_size){continue;}
@@ -49,7 +47,6 @@ public class HexTextScreen implements Screen {
                 game.batch.draw(texture, (float)(pix.x-hex_size), (float)(pix.y-sqrt(3)/2*hex_size),2 * hex_size, (float)sqrt(3)*hex_size);
             }
         }
-        game.batch.end();
 
         if (Gdx.input.justTouched()){
             touch_pos.x = Gdx.input.getX() - game.HALF_WIDTH;

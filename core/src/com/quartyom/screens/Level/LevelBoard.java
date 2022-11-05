@@ -3,6 +3,7 @@ package com.quartyom.screens.Level;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.quartyom.UserData;
 import com.quartyom.game_elements.GameBoard;
 import com.quartyom.game_elements.InputState;
@@ -84,6 +85,9 @@ public class LevelBoard extends GameBoard {
         String a = Gdx.files.internal("levels/" + current_level + ".json").readString();
         LevelConfiguration levelConfiguration = game.json.fromJson(LevelConfiguration.class, a);
         gameplay.set_level_configuration(levelConfiguration);
+
+        userData.when_to_skip_level = TimeUtils.millis() + (levelConfiguration.field_size - 2) * 60_000L;    // now + N minutes
+        game.save_user_data();
 
         resize(); // чтобы если размер уровня другой, адаптировать экран
         gameplay.normalize_cursor(); // чтобы курсор не выпрыгнул за поле

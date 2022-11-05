@@ -93,7 +93,7 @@ public class Button implements Drawable {
         }
 
         if (hint != null){
-            hint.resize((int)(game.HEIGHT * (1.0f / 32.0f)), 0, game.HALF_HEIGHT * (0.5f / 4));
+            hint.resize((int)(game.HEIGHT * (1.0f / 32.0f)), 0, game.HALF_HEIGHT * (1 / 4.0f));
         }
     }
 

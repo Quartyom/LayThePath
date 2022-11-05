@@ -1,6 +1,7 @@
 package com.quartyom.screens.Zen;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.quartyom.game_elements.Button;
 import com.quartyom.interfaces.QuEvent;
 
@@ -69,7 +70,7 @@ public class ZenBottomPanel {
         skip_button = new Button("next", zenScreen.game, new QuEvent() {
             @Override
             public void execute() {
-                if (zenScreen.game.userData.premium_is_on){
+                if (TimeUtils.millis() >= zenScreen.game.userData.when_to_skip_zen_level ||zenScreen.game.userData.premium_is_on){
 
                     zenScreen.zenBoard.current_level++;
                     zenScreen.game.userData.current_zen_level = zenScreen.zenBoard.current_level;

@@ -2,6 +2,7 @@ package com.quartyom.screens.Zen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.quartyom.game_elements.InputState;
 import com.quartyom.game_elements.PressTimer;
 import com.quartyom.game_elements.Scroller;
@@ -42,6 +43,9 @@ public class ZenBoard extends GameBoard {
         String a = Gdx.files.local("zen_level.json").readString();
         LevelConfiguration levelConfiguration = game.json.fromJson(LevelConfiguration.class, a);
         gameplay.set_level_configuration(levelConfiguration);
+
+        game.userData.when_to_skip_zen_level = TimeUtils.millis() + (levelConfiguration.field_size - 2) * 60_000L;    // now + N-2 minutes
+        game.save_user_data();
 
         resize();
         gameplay.normalize_cursor(); // чтобы курсор не выпрыгнул за поле

@@ -58,13 +58,9 @@ public class StatsTab extends QuScreen {
     public void render(float delta) {
         Gdx.gl20.glClear(Gdx.gl20.GL_COLOR_BUFFER_BIT);
 
-        game.batch.begin();
-
         how_to_play_label.draw();
         information_field.draw();
         back_button.draw();
-
-        game.batch.end();
 
         back_button.update();
 

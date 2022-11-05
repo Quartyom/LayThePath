@@ -36,14 +36,10 @@ public class ZenScreen extends QuScreen {
     public void render(float delta) {
         Gdx.gl20.glClear(Gdx.gl20.GL_COLOR_BUFFER_BIT);
 
-        game.batch.begin();
-
         zenBoard.draw();
         zenTopPanel.draw();
         zenBottomPanel.draw();
         zenTransformBottomPanel.draw();
-
-        game.batch.end();
 
         zenBoard.update();
         zenTopPanel.update();

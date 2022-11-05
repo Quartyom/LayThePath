@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Queue;
 
-public abstract class QuGame implements ApplicationListener {
+public abstract class QuGame implements ApplicationListener, InputProcessor {
 
     protected QuScreen screen;
     protected QuScreen default_screen;
@@ -83,6 +83,44 @@ public abstract class QuGame implements ApplicationListener {
     @Override
     public void resize (int width, int height) {
         if (screen != null) screen.resize(width, height);
+    }
+
+    @Override
+    public boolean keyDown(int i) { return false; }
+
+    @Override
+    public boolean keyUp(int i) {
+        return false;
+    }
+
+    @Override
+    public boolean keyTyped(char c) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDown(int i, int i1, int i2, int i3) {
+        return false;
+    }
+
+    @Override
+    public boolean touchUp(int i, int i1, int i2, int i3) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDragged(int i, int i1, int i2) {
+        return false;
+    }
+
+    @Override
+    public boolean mouseMoved(int i, int i1) {
+        return false;
+    }
+
+    @Override
+    public boolean scrolled(float v, float v1) {
+        return false;
     }
 
 }

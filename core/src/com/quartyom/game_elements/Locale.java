@@ -9,35 +9,29 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Locale {
-    private LayThePath game;
-    private Json json;
+    private final LayThePath game;
     private Map<String, String> tags;
 
     public Locale(LayThePath game){
         this.game = game;
-        json = new Json();
-        tags = new HashMap<String, String>();
+        tags = new HashMap<>();
     }
 
     public void set(String language){
-        FileHandle a = Gdx.files.internal("texts/" + language + "/tags.json");
-        tags.clear();
-        tags = json.fromJson(tags.getClass(), a);
-
+        game.userData.locale = language;
+        game.save_user_data();
+        tags = game.json.fromJson(tags.getClass(), Gdx.files.internal("texts/" + language + "/tags.json"));
     }
 
     public String get(String tag){
-
         if (tags.containsKey(tag)){
             return tags.get(tag);
         }
-
         else if (game.userData.locale.equals("en")){
             return tag;
         }
-
         else {
-            Gdx.files.local("localeee.json").writeString("\""+tag+"\" : \"\"\n", true);
+            //Gdx.files.local("raw_locale.json").writeString("\""+tag+"\" : \"\"\n", true);
             return "[RAW]: " + tag;
         }
     }
