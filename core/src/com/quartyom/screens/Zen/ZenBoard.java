@@ -29,19 +29,27 @@ public class ZenBoard extends GameBoard {
         zenLevelGenerator = new ZenLevelGenerator();
 
         current_level = game.userData.current_zen_level;
-        load_level();
+        load_level(true);
 
     }
+
+    private LevelConfiguration levelConfiguration;
 
     public void new_level() {
-        Gdx.files.local("zen_level.json").writeString(game.json.prettyPrint(zenLevelGenerator.generate_level()), false);
+        levelConfiguration = zenLevelGenerator.generate_level();
+        Gdx.files.local("zen_level.json").writeString(game.json.prettyPrint(levelConfiguration), false);
     }
 
-    public void load_level() {
-        if ( !Gdx.files.local("zen_level.json").exists() ) { new_level(); }
+    public void load_level(boolean to_read_from_file) {
+        if (to_read_from_file) {
+            if (!Gdx.files.local("zen_level.json").exists()) {
+                new_level();
+            }
+            String a = Gdx.files.local("zen_level.json").readString();
+            levelConfiguration = game.json.fromJson(LevelConfiguration.class, a);
+        }
+        // else levelConfiguration is already defined
 
-        String a = Gdx.files.local("zen_level.json").readString();
-        LevelConfiguration levelConfiguration = game.json.fromJson(LevelConfiguration.class, a);
         gameplay.set_level_configuration(levelConfiguration);
 
         game.userData.when_to_skip_zen_level = TimeUtils.millis() + (levelConfiguration.field_size - 2) * 60_000L;    // now + N-2 minutes
@@ -54,7 +62,7 @@ public class ZenBoard extends GameBoard {
 
     public void next_level(){
         new_level();
-        load_level();
+        load_level(false);
     }
 
     public void resize() {
@@ -69,7 +77,7 @@ public class ZenBoard extends GameBoard {
     public void victory_action() {
         current_level++;
         game.userData.current_zen_level = current_level;
-        game.save_user_data();
+        //game.save_user_data();  // not necessary bcs called in next_level
 
         Random random = new Random();
         if (random.nextInt(3) == 0){
@@ -77,7 +85,7 @@ public class ZenBoard extends GameBoard {
         }
 
         game.userData.zen_levels_passed++;     // статистика
-        game.save_user_data();
+        //game.save_user_data();  // not necessary bcs called in next_level
 
         next_level();
     }

@@ -18,7 +18,7 @@ public abstract class QuGame implements ApplicationListener, InputProcessor {
     private Map<String, QuScreen> screens;
 
     public QuGame(){
-        screens = new HashMap<String, QuScreen>();
+        screens = new HashMap<>();
     }
 
     @Override

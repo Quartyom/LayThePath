@@ -14,7 +14,7 @@ import com.quartyom.screens.Level.LevelsData;
 import com.quartyom.screens.Level.MoveResult;
 
 public abstract class GameBoard {
-    protected LayThePath game;
+    public final LayThePath game;
 
     public BoardDrawer boardDrawer;
 

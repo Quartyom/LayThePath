@@ -1,12 +1,10 @@
 package com.quartyom.screens.Level;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.quartyom.LayThePath;
 import com.quartyom.game_elements.QuScreen;
 
 public class LevelScreen extends QuScreen {
-
     final LayThePath game;
 
     LevelTopPanel levelTopPanel;

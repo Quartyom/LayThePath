@@ -1,12 +1,6 @@
 package com.quartyom.screens.Editor;
 
-import com.badlogic.gdx.math.Vector2;
 import com.quartyom.game_elements.GameBoard;
-import com.quartyom.game_elements.InputState;
-import com.quartyom.game_elements.PressTimer;
-import com.quartyom.game_elements.Scroller;
-import com.quartyom.screens.Level.BoardDrawer;
-import com.quartyom.screens.Level.Gameplay;
 
 public class EditorLaunchedBoard extends GameBoard {
     public boolean is_active = false;

@@ -1,39 +1,70 @@
 {
-field_size: 4
+field_size: 7
 vertical_walls: [
 	{
-		x: 2
-	}
-	{
-		x: 2
-		y: 1
-	}
-	{
-		y: 2
-	}
-]
-horizontal_walls: [
-	{
-		y: 1
-	}
-	{
 		x: 1
-		y: 2
+		y: 3
+	}
+	{
+		x: 2
+		y: 3
+	}
+	{
+		y: 4
 	}
 ]
+horizontal_walls: []
 slash_walls: [
 	{
-		x: 1
+		x: 6
 		y: 2
 	}
 ]
 backslash_walls: [
-	{}
+	{
+		x: 6
+		y: 3
+	}
+	{
+		x: 2
+		y: 4
+	}
 ]
 boxes: [
+	{}
+	{
+		x: 1
+	}
+	{
+		y: 1
+	}
 	{
 		x: 3
-		y: 3
+		y: 4
+	}
+	{
+		x: 4
+		y: 4
+	}
+	{
+		x: 6
+		y: 4
+	}
+	{
+		x: 1
+		y: 5
+	}
+	{
+		x: 2
+		y: 5
+	}
+	{
+		x: 3
+		y: 5
+	}
+	{
+		x: 4
+		y: 5
 	}
 ]
 points: [
@@ -41,14 +72,28 @@ points: [
 		x: 1
 		y: 1
 	}
-]
-crossroads: []
-hint: [
 	{
-		x: 3
+		x: 5
+		y: 5
+	}
+]
+crossroads: [
+	{
+		x: 1
+		y: 3
 	}
 	{
-		y: 2
+		x: 2
+		y: 6
+	}
+]
+hint: [
+	{
+		x: 6
+		y: 1
+	}
+	{
+		x: 3
 	}
 ]
 }

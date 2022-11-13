@@ -55,7 +55,6 @@ public class LevelBoard extends GameBoard {
         load_level();   // осторожно, уровень может не загрузиться
     }
 
-
     public void load_level(){
         //System.out.println("Loaded level " + current_level);
         if (current_level > 100 && !userData.zen_is_available){

@@ -13,7 +13,7 @@ public class SoundHolder {
     private Map<String, Sound> sounds;
 
     public SoundHolder(){
-        sounds = new HashMap<String, Sound>();
+        sounds = new HashMap<>();
     }
 
     public void load(String name){
@@ -26,7 +26,6 @@ public class SoundHolder {
         }
         return sounds.get(name);
     }
-
 
     public void dispose(){
         for (Sound item: sounds.values()){

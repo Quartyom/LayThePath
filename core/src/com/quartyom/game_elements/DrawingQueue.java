@@ -11,7 +11,7 @@ public class DrawingQueue {
 
     public DrawingQueue(LayThePath game){
         this.game = game;
-        elements = new Queue<Drawable>();
+        elements = new Queue<>();
     }
 
     public void add(Drawable element){

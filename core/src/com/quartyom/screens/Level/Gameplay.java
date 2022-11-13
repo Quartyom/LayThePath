@@ -1,16 +1,11 @@
 package com.quartyom.screens.Level;
 
 import com.badlogic.gdx.math.Vector2;
-
 import java.util.ArrayList;
 import java.util.Collections;
 
-
 // реализует чистую игровую логику
 public class Gameplay {
-
-    //LevelBoard levelBoard;
-
     public ArrayList<Vector2> vertical_walls, horizontal_walls, slash_walls, backslash_walls, boxes, points, crossroads;
 
     public ArrayList<Vector2> body, body_io;
@@ -29,22 +24,13 @@ public class Gameplay {
 
     public int field_size;
 
-    public Gameplay(/*LevelBoard levelBoard*/){
-        //this.levelBoard = levelBoard;
-
-        body = new ArrayList<Vector2>();
-        body_io = new ArrayList<Vector2>();
-        false_path = new ArrayList<Vector2>();
+    public Gameplay(){
+        body = new ArrayList<>();
+        body_io = new ArrayList<>();
+        false_path = new ArrayList<>();
 
         abstract_input_cursor = new Vector2();
-
     }
-
-    /*public static void reset_game_progress(){
-        String a = Gdx.files.internal("default_user_data.json").readString();
-        Gdx.files.local("user_data.json").writeString(a, false);
-
-    }*/
 
     public void set_level_configuration(LevelConfiguration levelConfiguration){
         vertical_walls = levelConfiguration.vertical_walls;
@@ -54,9 +40,7 @@ public class Gameplay {
         boxes = levelConfiguration.boxes;
         points = levelConfiguration.points;
         crossroads = levelConfiguration.crossroads;
-        if (crossroads == null){crossroads = new ArrayList<Vector2>();}
         hint = levelConfiguration.hint;
-
         field_size = levelConfiguration.field_size;
 
         reset_body();

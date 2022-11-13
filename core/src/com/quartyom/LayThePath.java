@@ -2,7 +2,6 @@ package com.quartyom;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -81,7 +80,14 @@ public class LayThePath extends QuGame {
 		this.add("editor", new EditorScreen(this));
 	}
 
+	private boolean is_requested_to_save_user_data;
+
 	public void save_user_data(){
+		is_requested_to_save_user_data = true;
+	}
+
+	public void save_user_data_immediately(){
+		is_requested_to_save_user_data = false;
 		Gdx.files.local("user_data.json").writeString(json.prettyPrint(userData), false);
 	}
 
@@ -101,17 +107,23 @@ public class LayThePath extends QuGame {
 		}
 	}
 
+	@Override
 	public void render() {
 		batch.begin();
 		super.render(); // important!
 		drawingQueue.draw();
 		batch.end();
 
+		if (is_requested_to_save_user_data) {
+			save_user_data_immediately();
+		}
+
 		if (is_back_button_pressed){
 			setScreen(null);	// установит Screen по умолчанию
 		}
 	}
 
+	@Override
 	public void dispose() {
 		super.dispose(); // important!
 

@@ -43,14 +43,10 @@ public class ZenLevelGenerator {
 
         gameplay.set_level_configuration(levelConfiguration);
 
-
         // определяем позицию головы
         int head_x = random.nextInt(field_size);
         int head_y = random.nextInt(field_size);
 
-        //System.out.println(head_x + " " + head_y);
-
-        boolean already_won = false;
         // внешний цикл
         for (int gg = 0; gg < 2; gg++){
 
@@ -73,15 +69,12 @@ public class ZenLevelGenerator {
                     int direction = free_direction(attempt_direction, rand);
 
 
-
                     if (direction == -1){
                         able_to_move = false;
 
                         break;
                     }
 
-                    //int new_tail_x = new_x_by_direction(tail_x, direction);
-                    //int new_tail_y = new_y_by_direction(tail_y, direction);
                     int new_tail_x = tail_x + x_shift_by_direction[direction];
                     int new_tail_y = tail_y + y_shift_by_direction[direction];
 
@@ -102,17 +95,13 @@ public class ZenLevelGenerator {
                             move_is_done = true;
                             break;
 
-
                         case MOVE_BACK:
                             gameplay.touched_make_move(tail_x, tail_y);
                             attempt_direction[direction] = true;
                             break;
 
-
                         case VICTORY:
                             break;
-
-
 
                         case HEAD_IS_NOT_SET:
                         case OUT_OF_BOUNDS:
@@ -136,13 +125,11 @@ public class ZenLevelGenerator {
                         break;
                     }
 
-
                 }
 
                 if (!move_is_done){
                     able_to_move = false;
                 }
-
 
             }
             gameplay.just_untouched_make_move((int)gameplay.body.get(gameplay.body.size()-1).x, (int)gameplay.body.get(gameplay.body.size()-1).y);
@@ -169,11 +156,6 @@ public class ZenLevelGenerator {
                 break;
             }
         }
-
-        //System.out.println("field size " + field_size);
-        //System.out.println("body size " + gameplay.body.size());
-        //System.out.println(gameplay.body);
-
 
         // в пустоты расставляются коробки
         // вынесено в отдельный цикл, потому что прежде чем расставлять стены требуется поставить ВСЕ коробки
@@ -383,30 +365,5 @@ public class ZenLevelGenerator {
 
     private int x_shift_by_direction[] = {0, 1, 0, -1};
     private int y_shift_by_direction[] = {1, 0, -1, 0};
-
-    /*private int new_x_by_direction(int x, int direction){
-        if (direction == 0 || direction == 2){
-            return x;
-        }
-        else if (direction == 1){
-            return x + 1;
-        }
-        else {
-            return x - 1;
-        }
-    }*/
-
-    /*private int new_y_by_direction(int y, int direction){
-        if (direction == 0){
-            return y + 1;
-        }
-        else if (direction == 1 || direction == 3){
-            return y;
-        }
-        else {
-            return y - 1;
-        }
-    }*/
-
 
 }

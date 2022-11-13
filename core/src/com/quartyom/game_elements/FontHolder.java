@@ -15,15 +15,13 @@ public class FontHolder {
     private FreeTypeFontGenerator.FreeTypeFontParameter parameter;
 
     public FontHolder(String path, String locale){
-        fonts = new HashMap<Integer, BitmapFont>();
+        fonts = new HashMap<>();
         generator = new FreeTypeFontGenerator(Gdx.files.internal(path));
 
         parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.characters = " !\"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz[\\]^_`{|}~";
         parameter.characters += Gdx.files.internal("texts/" + locale + "/alphabet.txt").readString();
-
-        // проверка повторений
-
+        parameter.characters = parameter.characters.replaceAll("(.)\\1{1,}", "$1"); // повторяющиеся символы удалит регулярное выражение
         parameter.color = Color.WHITE;
     }
 
