@@ -1,6 +1,5 @@
 package com.quartyom.game_elements;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -70,13 +69,13 @@ public class Slider {
     }
     public void update(){
         // если нажато
-        if (Gdx.input.isTouched()){
-            touch_pos.x = Gdx.input.getX() - game.HALF_WIDTH;
-            touch_pos.y = game.HALF_HEIGHT - Gdx.input.getY();
+        if (game.isTouched()){
+            touch_pos.x = game.touch_pos.x;
+            touch_pos.y = game.touch_pos.y;
 
-            if (Gdx.input.justTouched()){
+            if (game.inputState == InputState.JUST_TOUCHED){
                 // попали ли
-                if (touch_pos.x >= slider_x && touch_pos.y >= slider_y && touch_pos.x <= slider_x + slider_w && touch_pos.y <= slider_y + slider_h){
+                if (touch_pos.x > slider_x && touch_pos.y > slider_y && touch_pos.x < slider_x + slider_w && touch_pos.y < slider_y + slider_h){
                     inputState = InputState.TOUCHED;
                 }
                 else {
@@ -85,6 +84,7 @@ public class Slider {
                 // не попали по кнопке
             }
             if (inputState == InputState.TOUCHED){
+                game.isTouchRead = true;
                 value = (touch_pos.x - scale_x) / scale_w;
                 if (value < 0){
                     value = 0;

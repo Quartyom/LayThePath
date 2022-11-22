@@ -8,3 +8,5 @@ Wie kann ich den Fortschritt zurücksetzen? Gehen Sie zu den Systemeinstellungen
 
 Applikation:
 Geschrieben in Java, libgdx Framework im Juli 2022.
+
+Automatisch übersetzt.

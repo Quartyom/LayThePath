@@ -17,7 +17,7 @@ public class LevelSkipTab extends QuScreen {
 
     Label skip_label;
     TextField info_field;
-    Button back_button;//, accept_button;
+    Button back_button;
 
     public LevelSkipTab(final LevelScreen levelScreen){
         this.levelScreen = levelScreen;
@@ -34,20 +34,6 @@ public class LevelSkipTab extends QuScreen {
             }
         });
         back_button.setNinePatch(6).setLabel(levelScreen.game.locale.get("Back"));
-
-        /*accept_button = new Button("in_main_menu", game, new EventHandler() {
-            @Override
-            public void execute() {
-                levelScreen.levelBoard.current_level++;
-                levelScreen.levelBoard.userData.current_level = levelScreen.levelBoard.current_level;
-                levelScreen.game.save_user_data();
-                levelScreen.levelBoard.load_level();
-
-                game.setScreen("level");
-            }
-        });
-        accept_button.setNinePatch(6).setLabel("Accept");*/
-
     }
 
     @Override
@@ -62,10 +48,13 @@ public class LevelSkipTab extends QuScreen {
         skip_label.draw();
         info_field.draw();
         back_button.draw();
-        //accept_button.draw();
 
         back_button.update();
-        //accept_button.update();
+
+        if (game.is_back_button_pressed){
+            game.is_back_button_pressed = false;
+            game.setScreen("level");
+        }
     }
 
     @Override
@@ -74,8 +63,7 @@ public class LevelSkipTab extends QuScreen {
 
         int font_size = (int) (levelScreen.game.HEIGHT * (1.0f / 32.0f));
         info_field.resize(game.upper_button_corner_x, game.upper_button_corner_y - game.down_margin + game.button_h, game.button_w, font_size);
-        // gap
-        //accept_button.resize(game.upper_button_corner_x, game.upper_button_corner_y - game.down_margin * 4, game.button_w, game.button_h);
+
         back_button.resize(game.upper_button_corner_x, game.upper_button_corner_y - game.down_margin * 5, game.button_w, game.button_h);
     }
 }

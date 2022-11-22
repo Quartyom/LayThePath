@@ -17,7 +17,7 @@ public class BoardDrawer {
     public float wall_offset_x, wall_offset_y;
 
     public boolean is_hint_shown = false;
-
+    public boolean is_abstract_cursor_visible = true;
 
     public BoardDrawer(LayThePath game, Gameplay gameplay){
         this.game = game;
@@ -127,7 +127,7 @@ public class BoardDrawer {
         draw_body();
 
         // абстрактный курсор
-        if (game.userData.abstract_input_is_on){
+        if (game.userData.abstract_input_is_on && is_abstract_cursor_visible){
             // небольшой костыль, чтобы не модифицировать игровую логику
             // если false_path не пуст, значит был совершён неправильный ход
             if (gameplay.false_path.isEmpty()) {
@@ -171,14 +171,14 @@ public class BoardDrawer {
             );
         }
         else {
-            int head_segment = gameplay.segment_by_io[(int) gameplay.body_io.get(0).y][(int) gameplay.body_io.get(0).y];
+            int head_segment = Gameplay.segment_by_io[(int) gameplay.body_io.get(0).y][(int) gameplay.body_io.get(0).y];
             game.batch.draw(game.field_atlas.findRegion("body", head_segment),
                     board_x + gameplay.body.get(0).x * square_w,
                     board_y + gameplay.body.get(0).y * square_h,
                     square_w,
                     square_h
             );
-            int tail_segment = gameplay.segment_by_io[(int) gameplay.body_io.get(gameplay.body_io.size() - 1).x][(int) gameplay.body_io.get(gameplay.body_io.size() - 1).x];
+            int tail_segment = Gameplay.segment_by_io[(int) gameplay.body_io.get(gameplay.body_io.size() - 1).x][(int) gameplay.body_io.get(gameplay.body_io.size() - 1).x];
             if (gameplay.head_is_captured){tail_segment += 4;}
             game.batch.draw(game.field_atlas.findRegion("body", tail_segment),
                     board_x + gameplay.body.get(gameplay.body.size()-1).x * square_w,
@@ -188,7 +188,7 @@ public class BoardDrawer {
             );
 
             for (int i = 1; i < (gameplay.body.size() - 1); i++) {
-                int body_segment = gameplay.segment_by_io[(int) gameplay.body_io.get(i).x][(int) gameplay.body_io.get(i).y];
+                int body_segment = Gameplay.segment_by_io[(int) gameplay.body_io.get(i).x][(int) gameplay.body_io.get(i).y];
                 game.batch.draw(game.field_atlas.findRegion("body", body_segment),
                         board_x + gameplay.body.get(i).x * square_w,
                         board_y + gameplay.body.get(i).y * square_h,

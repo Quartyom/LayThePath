@@ -10,8 +10,8 @@
   "Stats" : "Statistiken"
   "Back" : "Zurück"
   "How can I help?" : "Wie kann ich helfen?"
-  "Attention" : "Achtung"
-  "How can I help" : "Wie kann ich helfen?"
+  "Attention" : "Achtung",
+  "How I can help" : "Wie ich helfen kann",
   "copy address to clipboard" : "Adresse in Zwischenablage kopieren"
   "Get premium" : "Premium erhalten"
   "Premium is activated already." : "Premium ist bereits aktiviert."
@@ -30,13 +30,13 @@
   "transform" : "konvertieren"
   "only for developers" : "nur für Entwickler"
   "Level " : "Level "
-  "Progress " : "Fortschritt: "
+  "Progress " : "Fortschritt "
   "Current: " : "Aktuell: "
   "Auch!" : "Ah!"
-  "It's annoying" : "Das ist ärgerlich!"
-  "Would" : "Konnte es nicht"
-  "you please" : "würdest du"
-  "stop?" : "aufhören?"
+  "It's annoying" : "Das ist ärgerlich!",
+  "Would" : "Würdest",
+  "you please" : "du bitte",
+  "stop?" : "aufhören?",
   "Ughhhh" : "Ughhhh"
   "Not so fast" : "Nicht so schnell"
   "Activate" : "Aktivieren"

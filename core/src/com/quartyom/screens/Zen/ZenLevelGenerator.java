@@ -1,6 +1,8 @@
 package com.quartyom.screens.Zen;
 
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.TimeUtils;
+import com.quartyom.LayThePath;
 import com.quartyom.screens.Level.Gameplay;
 import com.quartyom.screens.Level.LevelConfiguration;
 import com.quartyom.screens.Level.MoveResult;
@@ -11,151 +13,217 @@ import java.util.Random;
 public class ZenLevelGenerator {
     float QUALITY_COEFFICIENT = 0.75f;
 
+    final LayThePath game;
     Gameplay gameplay;
     LevelConfiguration levelConfiguration;
 
     Random random;
 
-    public ZenLevelGenerator(){
-        random = new Random();
+    public ZenLevelGenerator(final LayThePath game){
+        this.game = game;
+        random = game.random;
 
         levelConfiguration = new LevelConfiguration();
         gameplay = new Gameplay();
     }
 
-    private int free_direction(boolean arr[], int k){
-        int K = k;
+    private boolean test_generate_path(int field_size){
+        boolean success = false;
 
-        for (int i = 0; i<arr.length;i++){
-            if (arr[i]){
-                K++;
-            }
-            else if (i == K){
-                return i;
-            }
-        }
-        return -1;
-    }
-
-    private void generate_path(int field_size){
         levelConfiguration.set_empty();
         levelConfiguration.field_size = field_size;
-
         gameplay.set_level_configuration(levelConfiguration);
 
         // определяем позицию головы
         int head_x = random.nextInt(field_size);
         int head_y = random.nextInt(field_size);
 
-        // внешний цикл
-        for (int gg = 0; gg < 2; gg++){
+        int max_cells_occupied = 0;
+        while (true) {
 
-            // первый раз голова поставится, второй раз переключится
-            gameplay.just_touched_make_move(head_x, head_y);
+            // рисуем путь с обоих концов
+            for (int gg = 0; gg < 2; gg++) {
 
-            int tail_x = head_x;
-            int tail_y = head_y;
+                // первый раз голова поставится, второй раз переключится
+                gameplay.just_touched_make_move(head_x, head_y);
 
-            boolean able_to_move = true;
-            // цикл ходов
-            while (able_to_move){
+                int tail_x = head_x;
+                int tail_y = head_y;
 
-                boolean attempt_direction[] = {false, false, false, false};
-                boolean move_is_done = false;
-                // цикл попыток
-                for (int i = 4; i > 0; i--){
+                boolean able_to_move = true;
+                // цикл ходов
+                while (able_to_move) {
 
-                    int rand = random.nextInt(i);
-                    int direction = free_direction(attempt_direction, rand);
+                    boolean attempt_direction[] = {false, false, false, false};
+                    boolean move_is_done = false;
+                    // цикл попыток
+                    for (int i = 4; i > 0; i--) {
 
+                        int direction = free_direction(attempt_direction, random.nextInt(i));
 
-                    if (direction == -1){
+                        if (direction == -1) {
+                            able_to_move = false;
+                            break;
+                        }
+
+                        int new_tail_x = tail_x + x_shift_by_direction[direction];
+                        int new_tail_y = tail_y + y_shift_by_direction[direction];
+
+                        MoveResult result = gameplay.touched_make_move(new_tail_x, new_tail_y);
+
+                        switch (result) {
+
+                            case HEAD_IS_SET:
+                            case BODY_VISITED:
+                            case SIMPLE_MOVEMENT:
+                            case HEAD_IS_DESTROYED:
+                            case NO_MOVEMENT:
+                            case OTHER_GOOD:
+                                tail_x = new_tail_x;
+                                tail_y = new_tail_y;
+                                move_is_done = true;
+                                break;
+
+                            case MOVE_BACK:
+                                gameplay.touched_make_move(tail_x, tail_y);
+                                break;
+
+                            case VICTORY:
+                            case HEAD_IS_NOT_SET:
+                            case OUT_OF_BOUNDS:
+                            case MOVE_INTO_BOX:
+                            case NOT_A_NEIGHBOR:
+                            case MOVE_THROUGH_SLASH_WALL:
+                            case MOVE_THROUGH_BACKSLASH_WALL:
+                            case MOVE_THROUGH_POINT:
+                            case MOVE_THROUGH_CROSSROAD:
+                            case MOVE_THROUGH_VERTICAL_WALL:
+                            case MOVE_THROUGH_HORIZONTAL_WALL:
+                            case BODY_NOT_VISITED:
+                            case OTHER_BAD:
+                            case HEAD_IS_NOT_CAPTURED:
+                            case BODY_IS_SHORTENED:
+                                break;
+                        }
+
+                        if (move_is_done) {
+                            break;
+                        }
+
+                    }
+
+                    if (!move_is_done) {
                         able_to_move = false;
-
-                        break;
                     }
 
-                    int new_tail_x = tail_x + x_shift_by_direction[direction];
-                    int new_tail_y = tail_y + y_shift_by_direction[direction];
+                }
+                gameplay.just_untouched_make_move((int) gameplay.body.get(gameplay.body.size() - 1).x, (int) gameplay.body.get(gameplay.body.size() - 1).y);
+                if (gg == 0) {
+                    head_x = (int) gameplay.body.get(0).x;
+                    head_y = (int) gameplay.body.get(0).y;
+                }
+            }
 
-                    MoveResult result = gameplay.touched_make_move(new_tail_x, new_tail_y);
+            // проверка качества
+            int cells_occupied = 0;      // количество клеток, где есть тело
+            boolean not_empty_columns[] = new boolean[field_size];
+            boolean not_empty_rows[] = new boolean[field_size];
 
-                    move_is_done = false;
-
-                    switch (result){
-
-                        case HEAD_IS_SET:
-                        case BODY_VISITED:
-                        case SIMPLE_MOVEMENT:
-                        case HEAD_IS_DESTROYED:
-                        case NO_MOVEMENT:
-                        case OTHER_GOOD:
-                            tail_x = new_tail_x;
-                            tail_y = new_tail_y;
-                            move_is_done = true;
-                            break;
-
-                        case MOVE_BACK:
-                            gameplay.touched_make_move(tail_x, tail_y);
-                            attempt_direction[direction] = true;
-                            break;
-
-                        case VICTORY:
-                            break;
-
-                        case HEAD_IS_NOT_SET:
-                        case OUT_OF_BOUNDS:
-                        case MOVE_INTO_BOX:
-                        case NOT_A_NEIGHBOR:
-                        case MOVE_THROUGH_SLASH_WALL:
-                        case MOVE_THROUGH_BACKSLASH_WALL:
-                        case MOVE_THROUGH_POINT:
-                        case MOVE_THROUGH_CROSSROAD:
-                        case MOVE_THROUGH_VERTICAL_WALL:
-                        case MOVE_THROUGH_HORIZONTAL_WALL:
-                        case BODY_NOT_VISITED:
-                        case OTHER_BAD:
-                        case HEAD_IS_NOT_CAPTURED:
-                        case BODY_IS_SHORTENED:
-                            attempt_direction[direction] = true;
-                            break;
+            for (int y = 0; y < field_size; y++) {
+                for (int x = 0; x < field_size; x++) {
+                    if (gameplay.body.contains(new Vector2(x, y))) {
+                        cells_occupied++;
+                        not_empty_columns[x] = true;
+                        not_empty_rows[y] = true;
                     }
+                }
+            }
 
-                    if (move_is_done){
-                        break;
+            if (cells_occupied >= field_size * field_size * QUALITY_COEFFICIENT) {
+                success = true;
+                break;
+            }
+            else {
+
+                // есть ли продвижение по заполнению поля
+                if (cells_occupied <= max_cells_occupied){
+                    break;
+                }
+                else {
+                    max_cells_occupied = cells_occupied;
+                }
+
+                boolean to_continue = false;
+
+                // смещение тела по полю
+                if (not_empty_columns[0] && !not_empty_columns[field_size-1]){  // 1...0
+                    for (int i = 1; i<field_size; i++){
+                        if (!not_empty_columns[i]){
+                            for (Vector2 item: gameplay.body){
+                                item.x += field_size-i;
+                            }
+                            to_continue = true;
+                            break;
+                        }
+                    }
+                }
+                else if (not_empty_columns[field_size-1] && !not_empty_columns[0]){ // 0...1
+                    for (int i = 1; i<field_size; i++){
+                        if (not_empty_columns[i]){
+                            for (Vector2 item: gameplay.body){
+                                item.x -= i;
+                            }
+                            to_continue = true;
+                            break;
+                        }
                     }
 
                 }
 
-                if (!move_is_done){
-                    able_to_move = false;
+                if (not_empty_rows[0] && !not_empty_rows[field_size-1]){    // 1...0
+                    for (int i = 1; i<field_size; i++){
+                        if (!not_empty_rows[i]){
+                            for (Vector2 item: gameplay.body){
+                                item.y += field_size-i;
+                            }
+                            to_continue = true;
+                            break;
+                        }
+                    }
+                }
+                else if (not_empty_rows[field_size-1] && !not_empty_rows[0]){   // 0...1
+                    for (int i = 1; i<field_size; i++){
+                        if (not_empty_rows[i]){
+                            for (Vector2 item: gameplay.body){
+                                item.y -= i;
+                            }
+                            to_continue = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (!to_continue) { break; }
+                else {
+                    head_x = (int) gameplay.body.get(0).x;
+                    head_y = (int) gameplay.body.get(0).y;
                 }
 
             }
-            gameplay.just_untouched_make_move((int)gameplay.body.get(gameplay.body.size()-1).x, (int)gameplay.body.get(gameplay.body.size()-1).y);
+
         }
 
         gameplay.set_hint();
+        return success;
     }
 
     public LevelConfiguration generate_level(){
-        int field_size = random.nextInt(9 - 4) + 4; // от 4 до 8
+        int shift = (game.userData.current_zen_level / 500) + 3;
+        if (shift > 6) { shift = 6; }
 
-        while (true) {
-            generate_path(field_size);
-            int k = 0;      // количество клеток, где есть тело
-            for (int y = 0; y < field_size; y++) {
-                for (int x = 0; x < field_size; x++) {
-                    Vector2 current = new Vector2(x, y);
-                    if (gameplay.body.contains(current)) {
-                        k++;
-                    }
-                }
-            }
-            if (k >= field_size * field_size * QUALITY_COEFFICIENT) {
-                break;
-            }
-        }
+        int field_size = field_size_distribution[ random.nextInt(field_size_distribution.length) ] + shift;
+
+        while (!test_generate_path(field_size));
 
         // в пустоты расставляются коробки
         // вынесено в отдельный цикл, потому что прежде чем расставлять стены требуется поставить ВСЕ коробки
@@ -187,13 +255,13 @@ public class ZenLevelGenerator {
 
                     int segment;
                     if (i==0){
-                        segment = gameplay.segment_by_io[out][out];
+                        segment = Gameplay.segment_by_io[out][out];
                     }
                     else if (i == gameplay.body.size()-1){
-                        segment = gameplay.segment_by_io[inp][inp];
+                        segment = Gameplay.segment_by_io[inp][inp];
                     }
                     else {
-                        segment = gameplay.segment_by_io[inp][out];
+                        segment = Gameplay.segment_by_io[inp][out];
                     }
 
                     // Все исходы равновероятны
@@ -363,7 +431,30 @@ public class ZenLevelGenerator {
         return gameplay.get_level_configuration();
     }
 
-    private int x_shift_by_direction[] = {0, 1, 0, -1};
-    private int y_shift_by_direction[] = {1, 0, -1, 0};
+    private static final int x_shift_by_direction[] = {0, 1, 0, -1};
+    private static final int y_shift_by_direction[] = {1, 0, -1, 0};
+
+    private int free_direction(boolean arr[], int k){
+        int K = k;
+
+        for (int i = 0; i<arr.length; i++){
+            if (arr[i]){
+                K++;
+            }
+            else if (i == K){
+                arr[i] = true; // added
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private static final int field_size_distribution[] = {
+            0,0,
+            1,1,1,
+            2,2,2,2,
+            3,3,3,
+            4,4
+    };
 
 }

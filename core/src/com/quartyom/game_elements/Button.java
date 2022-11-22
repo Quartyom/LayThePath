@@ -1,6 +1,5 @@
 package com.quartyom.game_elements;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -20,15 +19,16 @@ public class Button implements Drawable {
 
     private boolean has_nine_patch = false;
 
-    Label label;
-    Hint hint;
+    private Label label;
+    private Hint hint;
+    private Notification notification;
 
     public InputState inputState;
 
     QuEvent action;
     LayThePath game;
 
-    Vector2 touch_pos;
+    Vector2 touch_pos, initial_touch_pos;
 
     public Button(LayThePath game, QuEvent action){
         this.action = action;
@@ -36,6 +36,7 @@ public class Button implements Drawable {
 
         inputState = InputState.UNTOUCHED;
         touch_pos = new Vector2();
+        initial_touch_pos = new Vector2();
         offset = new Vector2();
     }
 
@@ -55,21 +56,30 @@ public class Button implements Drawable {
     }
 
     public Button setLabel(String string){
-        label = new Label(game, string);
-        label.offset = this.offset;
-        return this;
-    }
-
-    public Button changeLabel(String string){
-        label = new Label(game, string);
-        label.offset = this.offset;
-        label.resize(button_x, button_y, button_w, button_h, Align.center);
+        if (label == null) {
+            label = new Label(game, string);
+            label.offset = this.offset;
+        }
+        else {
+            label.set_string(string);
+        }
         return this;
     }
 
     public Button setHint(String string){
         hint = new Hint(game);
         hint.set_string(string);
+        return this;
+    }
+
+    public Button addNotification(){
+        notification = new Notification(game);
+        notification.offset = this.offset;
+        return this;
+    }
+
+    public Button setNotification(String string){
+        notification.set_string(string);
         return this;
     }
 
@@ -94,6 +104,10 @@ public class Button implements Drawable {
 
         if (hint != null){
             hint.resize((int)(game.HEIGHT * (1.0f / 32.0f)), 0, game.HALF_HEIGHT * (1 / 4.0f));
+        }
+
+        if (notification != null){
+            notification.resize(button_x, button_y + button_h, button_w / 3);
         }
     }
 
@@ -120,22 +134,31 @@ public class Button implements Drawable {
                 game.drawingQueue.add(hint);
             }
         }
+        if (notification != null){
+            notification.draw();
+        }
     }
 
 
     // нажал и отпустил - клик
     public void update(){
         // если нажато
-        if (Gdx.input.isTouched()){
-            touch_pos.x = Gdx.input.getX() - game.HALF_WIDTH - offset.x;
-            touch_pos.y = game.HALF_HEIGHT - Gdx.input.getY() - offset.y;
+        if (game.isTouched()){
+            touch_pos.x = game.touch_pos.x - offset.x;
+            touch_pos.y = game.touch_pos.y - offset.y;
 
             // попали ли по кнопке
-            if (touch_pos.x >= button_x && touch_pos.y >= button_y && touch_pos.x <= button_x + button_w && touch_pos.y <= button_y + button_h){
-                if (Gdx.input.justTouched()) {
+            if (touch_pos.x > button_x && touch_pos.y > button_y && touch_pos.x < button_x + button_w && touch_pos.y < button_y + button_h){
+                if (game.inputState == InputState.JUST_TOUCHED) {
                     inputState = InputState.TOUCHED;
+                    initial_touch_pos.x = game.touch_pos.x;
+                    initial_touch_pos.y = game.touch_pos.y;
                     if (click_sound != null) { click_sound.play(game.userData.volume * 0.5f); }
                     if (hint != null) { hint.is_active = true; }
+                }
+                else if (game.touch_pos.dst(initial_touch_pos) > button_h * 0.5f){
+                    inputState = InputState.UNTOUCHED;
+                    if (hint != null) { hint.is_active = false; }
                 }
             }
             else {
@@ -149,7 +172,7 @@ public class Button implements Drawable {
             // но было нажато
             if (inputState == InputState.TOUCHED) {
                 // палец убрали над кнопкой = клик
-                if (touch_pos.x >= button_x && touch_pos.y >= button_y && touch_pos.x <= button_x + button_w && touch_pos.y <= button_y + button_h){
+                if (touch_pos.x > button_x && touch_pos.y > button_y && touch_pos.x < button_x + button_w && touch_pos.y < button_y + button_h){
                     on_click();
                 }
                 inputState = InputState.UNTOUCHED;

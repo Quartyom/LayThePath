@@ -50,15 +50,7 @@ public class AboutTab extends QuScreen {
 
     public void update(){
         back_button.update();
-        if (back_button.inputState == InputState.UNTOUCHED) {   // если нажатия нет, то тогда проверяем нажатие на другую кнопку, которая снизу
-            how_can_i_help_button.update();
-        }
-
-        if (back_button.inputState == InputState.TOUCHED || how_can_i_help_button.inputState == InputState.TOUCHED){
-            scroller.inputState = InputState.UNTOUCHED;
-            return;     // не обрабатываем
-        }
-
+        how_can_i_help_button.update();
         scroller.update();
 
         if (scroller.value.y < 0){ scroller.value.y = 0; }  // нельзя листать вверх

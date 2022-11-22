@@ -13,7 +13,7 @@ import com.quartyom.game_elements.Label;
 import com.quartyom.game_elements.Scroller;
 import com.quartyom.game_elements.TextField;
 
-public class HowCanIHelpTab extends QuScreen {
+public class HowICanHelpTab extends QuScreen {
     final LayThePath game;
 
     Button bitcoin_button, ethereum_button, back_button;
@@ -24,7 +24,7 @@ public class HowCanIHelpTab extends QuScreen {
     Timer timer;
     boolean to_show_copied_label;
 
-    public HowCanIHelpTab(final LayThePath game){
+    public HowICanHelpTab(final LayThePath game){
         this.game = game;
 
         timer = new Timer(game, new QuEvent() {
@@ -34,10 +34,10 @@ public class HowCanIHelpTab extends QuScreen {
             }
         });
 
-        about_label = new Label(game, game.locale.get("How can I help"));
+        about_label = new Label(game, game.locale.get("How I can help"));
         copied_label = new Label(game, game.locale.get("Copied to clipboard"));
 
-        information_field = new TextField(game, Gdx.files.internal("texts/" + game.userData.locale + "/how_can_i_help.txt").readString());
+        information_field = new TextField(game, Gdx.files.internal("texts/" + game.userData.locale + "/how_i_can_help.txt").readString());
 
         bitcoin_button = new Button("bitcoin", game, new QuEvent() {
             @Override
@@ -75,17 +75,8 @@ public class HowCanIHelpTab extends QuScreen {
     public void update(){
         timer.update();
         back_button.update();
-
-        if (back_button.inputState == InputState.UNTOUCHED) {
-            bitcoin_button.update();
-            ethereum_button.update();
-        }
-
-        if (back_button.inputState == InputState.TOUCHED || bitcoin_button.inputState == InputState.TOUCHED || ethereum_button.inputState == InputState.TOUCHED){
-            scroller.inputState = InputState.UNTOUCHED;
-            return;     // не обрабатываем
-        }
-
+        bitcoin_button.update();
+        ethereum_button.update();
         scroller.update();
 
         if (scroller.value.y < 0){ scroller.value.y = 0; }  // нельзя листать вверх

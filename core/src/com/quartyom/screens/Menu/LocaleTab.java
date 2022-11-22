@@ -8,16 +8,32 @@ import com.quartyom.game_elements.QuScreen;
 import com.quartyom.game_elements.Scroller;
 import com.quartyom.interfaces.QuEvent;
 
+import java.util.ArrayList;
+
 public class LocaleTab extends QuScreen {
     final LayThePath game;
 
     Button back_button;
-    Button english_button, spanish_button, german_button, russian_button;
+    ArrayList<Button> locale_buttons;
 
     Scroller scroller;
 
     public LocaleTab(final LayThePath game){
         this.game = game;
+
+        locale_buttons = new ArrayList<>();
+
+        for (final String key: game.locale.folders.keySet()){
+            Button button = new Button("in_main_menu", game, new QuEvent() {
+                @Override
+                public void execute() {
+                    game.change_locale(key);
+                    game.setScreen("menu_settings");
+                }
+            });
+            button.setNinePatch(6).setLabel(game.locale.folders.get(key));
+            locale_buttons.add(button);
+        }
 
         back_button = new Button("in_main_menu", game, new QuEvent() {
             @Override
@@ -27,39 +43,6 @@ public class LocaleTab extends QuScreen {
         });
         back_button.setNinePatch(6).setLabel(game.locale.get("Back"));
 
-        english_button = new Button("english", game, new QuEvent() {
-            @Override
-            public void execute() {
-                game.change_locale("en");
-                game.setScreen("menu_settings");
-            }
-        });
-
-        spanish_button = new Button("spanish", game, new QuEvent() {
-            @Override
-            public void execute() {
-                game.change_locale("esp");
-                game.setScreen("menu_settings");
-            }
-        });
-
-        german_button = new Button("german", game, new QuEvent() {
-            @Override
-            public void execute() {
-                game.change_locale("ger");
-                game.setScreen("menu_settings");
-            }
-        });
-
-        russian_button = new Button("russian", game, new QuEvent() {
-            @Override
-            public void execute() {
-                game.change_locale("ru");
-                game.setScreen("menu_settings");
-            }
-        });
-
-
         scroller = new Scroller(game);
         scroller.physics_on = true;
 
@@ -68,45 +51,25 @@ public class LocaleTab extends QuScreen {
     public void update(){
         back_button.update();
 
-        if (back_button.inputState == InputState.UNTOUCHED) {   // кнопка назад находится сверху в интерфейсе экрана
-            english_button.update();
-            spanish_button.update();
-            german_button.update();
-            russian_button.update();
-        }
-
-        if (back_button.inputState == InputState.TOUCHED ||
-                english_button.inputState == InputState.TOUCHED ||
-                spanish_button.inputState == InputState.TOUCHED ||
-                german_button.inputState == InputState.TOUCHED ||
-                russian_button.inputState == InputState.TOUCHED) {
-            scroller.inputState = InputState.UNTOUCHED;
-            return;
-        }
+        for (Button item: locale_buttons){ item.update();}
 
         scroller.update();
 
         if (scroller.value.y < 0){ scroller.value.y = 0; }
-        else if (scroller.value.y > game.HALF_HEIGHT){
-            scroller.value.y = game.HALF_HEIGHT;
+        else if (scroller.value.y > game.down_margin * locale_buttons.size()){
+            scroller.value.y = game.down_margin * locale_buttons.size();
         }
 
-        english_button.offset.y = scroller.value.y;
-        spanish_button.offset.y = scroller.value.y;
-        german_button.offset.y = scroller.value.y;
-        russian_button.offset.y = scroller.value.y;
+        for (Button item: locale_buttons){ item.offset.y = scroller.value.y; }
 
     }
 
     @Override
     public void resize(int width, int height) {
-        english_button.resize(game.upper_button_corner_x, game.upper_button_corner_y - game.down_margin, game.button_h, game.button_h);
-
-        float theme_button_corner_x = game.upper_button_corner_x + game.button_w - game.button_h;
-        spanish_button.resize(theme_button_corner_x, game.upper_button_corner_y - game.down_margin, game.button_h, game.button_h);
-
-        german_button.resize(game.upper_button_corner_x, game.upper_button_corner_y - game.down_margin * 2, game.button_h, game.button_h);
-        russian_button.resize(theme_button_corner_x, game.upper_button_corner_y - game.down_margin * 2, game.button_h, game.button_h);
+        int i = 0;
+        for (Button item: locale_buttons){
+            item.resize(game.upper_button_corner_x, game.upper_button_corner_y - game.down_margin * 0.5f * (i++), game.button_w, game.button_h * 0.5f);
+        }
 
         back_button.resize(game.upper_button_corner_x, game.upper_button_corner_y - game.down_margin * 5, game.button_w, game.button_h);
 
@@ -117,10 +80,9 @@ public class LocaleTab extends QuScreen {
     public void render(float delta) {
         Gdx.gl20.glClear(Gdx.gl20.GL_COLOR_BUFFER_BIT);
 
-        english_button.draw();
-        spanish_button.draw();
-        german_button.draw();
-        russian_button.draw();
+        for (Button item : locale_buttons){
+            item.draw();
+        }
         back_button.draw();
 
         update();

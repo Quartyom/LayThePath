@@ -8,6 +8,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.quartyom.LayThePath;
+import com.quartyom.game_elements.InputState;
 
 public class HexTextScreen implements Screen {
 
@@ -48,10 +49,9 @@ public class HexTextScreen implements Screen {
             }
         }
 
-        if (Gdx.input.justTouched()){
-            touch_pos.x = Gdx.input.getX() - game.HALF_WIDTH;
-            touch_pos.y = game.HALF_HEIGHT - Gdx.input.getY();
-            System.out.println(pixel_to_hex(touch_pos));
+        if (game.inputState == InputState.JUST_TOUCHED){
+            touch_pos.x = game.touch_pos.x;
+            touch_pos.y = game.touch_pos.y;
         }
 
     }

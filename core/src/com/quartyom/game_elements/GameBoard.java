@@ -25,7 +25,6 @@ public abstract class GameBoard {
     protected float actual_size;
 
     public Gameplay gameplay;
-    protected InputState inputState;
 
     protected Scroller scroller;
     protected PressTimer pressTimer;
@@ -41,8 +40,6 @@ public abstract class GameBoard {
 
         gameplay = new Gameplay();
         boardDrawer = new BoardDrawer(game, gameplay);
-
-        inputState = InputState.UNTOUCHED;
 
         scroller = new Scroller(game);
         pressTimer = new PressTimer(game);
@@ -108,23 +105,19 @@ public abstract class GameBoard {
     public abstract void victory_action();
 
     public void touch_update() {
-        if (Gdx.input.isTouched()) {
-            touch_pos.x = Gdx.input.getX() - game.HALF_WIDTH;
-            touch_pos.y = game.HALF_HEIGHT - Gdx.input.getY();
+        if (game.isTouched()) {
+            touch_pos.x = game.touch_pos.x;
+            touch_pos.y = game.touch_pos.y;
 
-            if (touch_pos.x >= board_x && touch_pos.y >= board_y && touch_pos.x <= board_x + board_w && touch_pos.y <= board_y + board_h) {
-                //System.out.println("cat");
+            if (touch_pos.x > board_x && touch_pos.y > board_y && touch_pos.x < board_x + board_w && touch_pos.y < board_y + board_h) {
                 touch_pos.x = (touch_pos.x - board_x) / square_w;
                 touch_pos.y = (touch_pos.y - board_y) / square_h;
-                //System.out.println(touch_pos);
 
                 MoveResult result;
                 // если нажатие произошло только что, нужно захватить голову
-                if (Gdx.input.justTouched()) {
-                    inputState = InputState.JUST_TOUCHED;
+                if (game.inputState == InputState.JUST_TOUCHED) {
                     result = gameplay.just_touched_make_move((int) touch_pos.x, (int) touch_pos.y);
                 } else {
-                    inputState = InputState.TOUCHED;
                     result = gameplay.touched_make_move((int) touch_pos.x, (int) touch_pos.y);
                 }
 
@@ -171,25 +164,19 @@ public abstract class GameBoard {
                         }
                         break;
                 }
-
             }
         }
         // палец только убрали
-        else if (inputState == InputState.TOUCHED || inputState == InputState.JUST_TOUCHED){
-            inputState = InputState.JUST_UNTOUCHED;
+        else if (game.inputState == InputState.JUST_UNTOUCHED){
             MoveResult result = gameplay.just_untouched_make_move((int) touch_pos.x, (int) touch_pos.y);
             if (result == MoveResult.VICTORY){
+                victory_sound.play(game.userData.volume);   // потому что действие при победе более ресурсозатратное
                 victory_action();
-                victory_sound.play(game.userData.volume);
             }
             else if (result == MoveResult.BODY_IS_SHORTENED){
                 gameplay.false_path.clear();
                 body_shortened_sound.play(game.userData.volume);
             }
-        }
-        // палец убрали давно либо не ставили вовсе
-        else {
-            inputState = InputState.UNTOUCHED;
         }
 
     }
@@ -214,6 +201,7 @@ public abstract class GameBoard {
                 body_shortened_sound.play(game.userData.volume);
             }
             scroller.inputState = InputState.UNTOUCHED; // чтобы не было одновременно слайда и тапа
+            return;
         }
 
         if (scroller.inputState == InputState.JUST_TOUCHED){
@@ -222,7 +210,6 @@ public abstract class GameBoard {
         }
 
         else if (scroller.inputState == InputState.TOUCHED){
-            inputState = InputState.TOUCHED;
 
             if (scroller.value.x < 0){
                 scroller.value.x = 0;
@@ -265,15 +252,11 @@ public abstract class GameBoard {
                 case VICTORY:
                 case BODY_IS_SHORTENED:
                     gameplay.false_path.clear();
-                    // game {
                     move_sound.play(game.userData.volume);
-                    // }
                     break;
                 case MOVE_BACK:
                     gameplay.false_path.clear();
-                    // game {
                     move_back_sound.play(game.userData.volume);
-                    // }
                     break;
                 // плохие исходы
                 case HEAD_IS_NOT_SET:
@@ -298,13 +281,12 @@ public abstract class GameBoard {
                     }
                     break;
             }
-
         }
 
         else if (scroller.inputState == InputState.JUST_UNTOUCHED){
-            inputState = InputState.JUST_UNTOUCHED;
             MoveResult result = gameplay.slide_just_untouched_make_move();
             if (result == MoveResult.VICTORY){
+                victory_sound.play(game.userData.volume);   // потому что действие при победе более ресурсозатратное
                 victory_action();
             }
             else if (result == MoveResult.BODY_IS_SHORTENED){
@@ -312,9 +294,6 @@ public abstract class GameBoard {
                 body_shortened_sound.play(game.userData.volume);
             }
 
-        }
-        else {
-            inputState = InputState.UNTOUCHED;
         }
     }
 }

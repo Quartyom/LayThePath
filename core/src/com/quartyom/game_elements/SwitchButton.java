@@ -1,6 +1,5 @@
 package com.quartyom.game_elements;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -27,7 +26,7 @@ public class SwitchButton {
         this.game = game;
         touch_pos = new Vector2();
 
-        textures = new ArrayList<TextureRegion>();
+        textures = new ArrayList<>();
 
         click_sound = game.soundHolder.get("click_0");
     }
@@ -57,12 +56,12 @@ public class SwitchButton {
     // нажал и отпустил - клик
     public void update(){
         // если нажато
-        if (Gdx.input.justTouched()){
-            touch_pos.x = Gdx.input.getX() - game.HALF_WIDTH;
-            touch_pos.y = game.HALF_HEIGHT - Gdx.input.getY();
+        if (game.inputState == InputState.JUST_TOUCHED){
+            touch_pos.x = game.touch_pos.x;
+            touch_pos.y = game.touch_pos.y;
 
             // попали ли по кнопке
-            if (touch_pos.x >= button_x && touch_pos.y >= button_y && touch_pos.x <= button_x + button_w && touch_pos.y <= button_y + button_h){
+            if (touch_pos.x > button_x && touch_pos.y > button_y && touch_pos.x < button_x + button_w && touch_pos.y < button_y + button_h){
 
                 if (to_change_state_on_click) {
                     state++;

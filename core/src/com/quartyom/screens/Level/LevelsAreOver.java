@@ -66,6 +66,11 @@ public class LevelsAreOver extends QuScreen {
 
         start_over_button.update();
         menu_button.update();
+
+        if (game.is_back_button_pressed){
+            game.is_back_button_pressed = false;
+            game.setScreen("menu");
+        }
     }
 
     @Override

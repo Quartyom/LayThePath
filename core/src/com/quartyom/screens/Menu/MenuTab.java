@@ -1,7 +1,6 @@
 package com.quartyom.screens.Menu;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.utils.Align;
 import com.quartyom.LayThePath;
 import com.quartyom.game_elements.Button;
@@ -23,7 +22,7 @@ public class MenuTab extends QuScreen {
 
         game.add("menu_about", new AboutTab(game));
         game.add("menu_editor_is_unavailable", new EditorIsUnavailable(game));
-        game.add("menu_how_can_i_help", new HowCanIHelpTab(game));
+        game.add("menu_how_can_i_help", new HowICanHelpTab(game));
         game.add("menu_how_to_play", new HowToPlayTab(game));
         game.add("menu_info", new InfoTab(game));
         game.add("menu_settings", new SettingsTab(game));
@@ -67,7 +66,6 @@ public class MenuTab extends QuScreen {
             @Override
             public void execute() {
                 game.setScreen("level");
-                //game.setScreen("hex");
             }
         });
         play_button.setNinePatch(6).setLabel(game.locale.get("Play"));

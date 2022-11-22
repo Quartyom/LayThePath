@@ -54,7 +54,7 @@ public class Gameplay {
     public void set_hint(){
         if (body != null && body.size()>0){
             if (hint == null){
-                hint = new ArrayList<Vector2>();
+                hint = new ArrayList<>();
             }
             if (!hint.isEmpty()){
                 hint.clear();
@@ -82,7 +82,7 @@ public class Gameplay {
     }
 
     // сегменты dot dot_n... tail_n ... vertical, horizontal, turn ne, turn es...
-    public final int segment_by_io[][] = {
+    public static final int segment_by_io[][] = {
             {1, 11, 9, 14},
             {11, 2, 12, 10},
             {9, 12, 3, 13},
@@ -90,7 +90,7 @@ public class Gameplay {
     };
 
     // [move_direction][visited_segment]
-    private int entrance_to_body[][] = {
+    private static int entrance_to_body[][] = {
             {0,0,0,0,0,0,0,0,0,0,0,     1,0,0,1},
             {0,0,0,0,0,0,0,0,0,0,0,     1,1,0,0},
             {0,0,0,0,0,0,0,0,0,0,0,     0,1,1,0},
@@ -98,34 +98,34 @@ public class Gameplay {
     };
 
     // [input][output] = ответ на вопрос можно ли так походить
-    private int slash_io[][] = {
+    private static int slash_io[][] = {
             {0,0,0,1},
             {0,0,1,0},
             {0,1,0,0},
             {1,0,0,0}
     };
-    private int backslash_io[][] = {
+    private static int backslash_io[][] = {
             {0,1,0,0},
             {1,0,0,0},
             {0,0,0,1},
             {0,0,1,0}
     };
-    private int point_io[][] = {
+    private static int point_io[][] = {
             {0,1,0,1},
             {1,0,1,0},
             {0,1,0,1},
             {1,0,1,0}
     };
-    private int crossroad_io[][] = {
+    private static int crossroad_io[][] = {
             {0,0,1,0},
             {0,0,0,1},
             {1,0,0,0},
             {0,1,0,0}
     };
 
-    private int negate_direction[] = {2,3,0,1};
+    private static int negate_direction[] = {2,3,0,1};
 
-    private int direction_to(int x_from, int y_from, int x_to, int y_to){
+    private static int direction_to(int x_from, int y_from, int x_to, int y_to){
 
         int x_diff = x_to - x_from;
         int y_diff = y_to - y_from;
@@ -188,13 +188,18 @@ public class Gameplay {
     }
 
     private void normalize_obstacle(ArrayList<Vector2> arr){
-        ArrayList<Vector2> items_to_delete = new ArrayList<>();
-        for (Vector2 item: arr){
-            if (item.x < 0 || item.y < 0 || item.x >=field_size || item.y >= field_size){
-                items_to_delete.add(item);
-            }
+        if (field_size <= 1){
+            arr.clear();
         }
-        arr.removeAll(items_to_delete);
+        else {
+            ArrayList<Vector2> items_to_delete = new ArrayList<>();
+            for (Vector2 item : arr) {
+                if (item.x < 0 || item.y < 0 || item.x >= field_size || item.y >= field_size) {
+                    items_to_delete.add(item);
+                }
+            }
+            arr.removeAll(items_to_delete);
+        }
     }
 
     public void normalize_obstacles(){

@@ -9,9 +9,12 @@ import com.quartyom.screens.Level.Gameplay;
 import com.quartyom.screens.Level.LevelConfiguration;
 import com.quartyom.screens.Level.BoardDrawer;
 
+import java.util.ArrayList;
+
 
 public class EditorBoard {
     public boolean is_active = true;
+    private boolean is_erasing = false; // or drawing
 
     public final LayThePath game;
     public final EditorScreen editorScreen;
@@ -24,10 +27,8 @@ public class EditorBoard {
 
     Gameplay gameplay;
     BoardDrawer boardDrawer;
-    InputState inputState;
 
     Vector2 touch_pos;
-    Vector2 prev_touch_pos;
 
     Sound put_sound, unput_sound;
 
@@ -40,11 +41,9 @@ public class EditorBoard {
 
         gameplay = new Gameplay();
         boardDrawer = new BoardDrawer(game, gameplay);
-
-        inputState = InputState.UNTOUCHED;
+        boardDrawer.is_abstract_cursor_visible = false;
 
         touch_pos = new Vector2();
-        prev_touch_pos = new Vector2();
 
         put_sound = game.soundHolder.get("low_put");
         unput_sound = game.soundHolder.get("low_put_1");
@@ -55,7 +54,7 @@ public class EditorBoard {
 
     }
 
-    void resize(){
+    public void resize(){
         // выбираем наименьшее расстояние (граница экрана слева или панель сверху)
         actual_size = game.HALF_HEIGHT - editorScreen.editorTopPanel.getHeight();
 
@@ -89,129 +88,121 @@ public class EditorBoard {
 
     }
 
-    void draw(){
+    public void draw(){
         if (!is_active) { return;}
         boardDrawer.draw();
     }
 
+    private void just_touched_change_cell(ArrayList<Vector2> arr) {
+        if (arr.contains(touch_pos)) {
+            is_erasing = true;
+            arr.remove(touch_pos);
+            unput_sound.play(game.userData.volume);
+        }
+        else {
+            is_erasing = false;
+            arr.add(new Vector2(touch_pos));
+            put_sound.play(game.userData.volume);
+        }
+    }
+
+    private void touched_change_cell(ArrayList<Vector2> arr) {
+        if (is_erasing) {
+            if (arr.contains(touch_pos)) {
+                arr.remove(touch_pos);
+                unput_sound.play(game.userData.volume);
+            }
+        }
+        else if (!arr.contains(touch_pos)) {
+            arr.add(new Vector2(touch_pos));
+            put_sound.play(game.userData.volume);
+        }
+
+    }
+
+    private void erase() {
+        gameplay.vertical_walls.remove(touch_pos);
+        gameplay.horizontal_walls.remove(touch_pos);
+        gameplay.slash_walls.remove(touch_pos);
+        gameplay.backslash_walls.remove(touch_pos);
+        gameplay.boxes.remove(touch_pos);
+        gameplay.points.remove(touch_pos);
+        gameplay.crossroads.remove(touch_pos);
+    }
 
     public void update() {
         if (!is_active) {
             return;
         }
-        if (editorScreen.editorBottomPanel.slider.inputState == InputState.TOUCHED) {
-            return;
-        }
 
-        if (Gdx.input.isTouched()) {
-            touch_pos.x = Gdx.input.getX() - game.HALF_WIDTH;
-            touch_pos.y = game.HALF_HEIGHT - Gdx.input.getY();
+        if (game.isTouched()) {
+            touch_pos.x = game.touch_pos.x;
+            touch_pos.y = game.touch_pos.y;
 
-            if (touch_pos.x >= board_x && touch_pos.y >= board_y && touch_pos.x <= board_x + board_w && touch_pos.y <= board_y + board_h) {
-                //System.out.println("cat");
+            if (touch_pos.x > board_x && touch_pos.y > board_y && touch_pos.x < board_x + board_w && touch_pos.y < board_y + board_h) {
+
                 touch_pos.x = (int) ((touch_pos.x - board_x) / square_w);
                 touch_pos.y = (int) ((touch_pos.y - board_y) / square_h);
-                //System.out.println(touch_pos);
 
-                if (touch_pos.equals(prev_touch_pos)) {
-                    // do nothing
+                if (game.inputState == InputState.JUST_TOUCHED) {
+                    switch (cursor_on_obstacles) {
+                        case 0: // vertical
+                            just_touched_change_cell(gameplay.vertical_walls);
+                            break;
+                        case 1: // horizontal
+                            just_touched_change_cell(gameplay.horizontal_walls);
+                            break;
+                        case 2: //slash
+                            just_touched_change_cell(gameplay.slash_walls);
+                            break;
+                        case 3: // backslash
+                            just_touched_change_cell(gameplay.backslash_walls);
+                            break;
+                        case 4: // box
+                            just_touched_change_cell(gameplay.boxes);
+                            break;
+                        case 5: // point
+                            just_touched_change_cell(gameplay.points);
+                            break;
+                        case 6: // crossroad
+                            just_touched_change_cell(gameplay.crossroads);
+                            break;
+                        case 7: // eraser
+                            erase();
+                            break;
+                    }
                 }
                 else {
-                    inputState = InputState.TOUCHED;
-                    prev_touch_pos.x = touch_pos.x;
-                    prev_touch_pos.y = touch_pos.y;
                     switch (cursor_on_obstacles) {
-                        // vertical
-                        case 0:
-                            if (gameplay.vertical_walls.contains(touch_pos)) {
-                                gameplay.vertical_walls.remove(touch_pos);
-                                unput_sound.play(game.userData.volume);
-                            } else {
-                                gameplay.vertical_walls.add(new Vector2(touch_pos));
-                                put_sound.play(game.userData.volume);
-                            }
+                        case 0: // vertical
+                            touched_change_cell(gameplay.vertical_walls);
                             break;
-                        // horizontal
-                        case 1:
-                            if (gameplay.horizontal_walls.contains(touch_pos)) {
-                                gameplay.horizontal_walls.remove(touch_pos);
-                                unput_sound.play(game.userData.volume);
-                            } else {
-                                gameplay.horizontal_walls.add(new Vector2(touch_pos));
-                                put_sound.play(game.userData.volume);
-                            }
+                        case 1: // horizontal
+                            touched_change_cell(gameplay.horizontal_walls);
                             break;
-                        //slash
-                        case 2:
-                            if (gameplay.slash_walls.contains(touch_pos)) {
-                                gameplay.slash_walls.remove(touch_pos);
-                                unput_sound.play(game.userData.volume);
-                            } else {
-                                gameplay.slash_walls.add(new Vector2(touch_pos));
-                                put_sound.play(game.userData.volume);
-                            }
+                        case 2: //slash
+                            touched_change_cell(gameplay.slash_walls);
                             break;
-                        // backslash
-                        case 3:
-                            if (gameplay.backslash_walls.contains(touch_pos)) {
-                                gameplay.backslash_walls.remove(touch_pos);
-                                unput_sound.play(game.userData.volume);
-                            } else {
-                                gameplay.backslash_walls.add(new Vector2(touch_pos));
-                                put_sound.play(game.userData.volume);
-                            }
+                        case 3: // backslash
+                            touched_change_cell(gameplay.backslash_walls);
                             break;
-                        // box
-                        case 4:
-                            if (gameplay.boxes.contains(touch_pos)) {
-                                gameplay.boxes.remove(touch_pos);
-                                unput_sound.play(game.userData.volume);
-                            } else {
-                                gameplay.boxes.add(new Vector2(touch_pos));
-                                put_sound.play(game.userData.volume);
-                            }
+                        case 4: // box
+                            touched_change_cell(gameplay.boxes);
                             break;
-                        // point
-                        case 5:
-                            if (gameplay.points.contains(touch_pos)) {
-                                gameplay.points.remove(touch_pos);
-                                unput_sound.play(game.userData.volume);
-                            } else {
-                                gameplay.points.add(new Vector2(touch_pos));
-                                put_sound.play(game.userData.volume);
-                            }
+                        case 5: // point
+                            touched_change_cell(gameplay.points);
                             break;
-                        case 6:
-                            if (gameplay.crossroads.contains(touch_pos)) {
-                                gameplay.crossroads.remove(touch_pos);
-                                unput_sound.play(game.userData.volume);
-                            } else {
-                                gameplay.crossroads.add(new Vector2(touch_pos));
-                                put_sound.play(game.userData.volume);
-                            }
+                        case 6: // crossroad
+                            touched_change_cell(gameplay.crossroads);
                             break;
-                        case 7:
-                            gameplay.vertical_walls.remove(touch_pos);
-                            gameplay.horizontal_walls.remove(touch_pos);
-                            gameplay.slash_walls.remove(touch_pos);
-                            gameplay.backslash_walls.remove(touch_pos);
-                            gameplay.boxes.remove(touch_pos);
-                            gameplay.points.remove(touch_pos);
-                            gameplay.crossroads.remove(touch_pos);
+                        case 7: // eraser
+                            erase();
                             break;
                     }
 
                 }
+
             }
-        }
-        // палец только убрали
-        else if (inputState == InputState.TOUCHED || inputState == InputState.JUST_TOUCHED){
-            inputState = InputState.JUST_UNTOUCHED;
-            prev_touch_pos.x = -1000; // чтобы не было совпадения
-        }
-        // палец убрали давно либо не ставили вовсе
-        else {
-            inputState = InputState.UNTOUCHED;
         }
     }
 

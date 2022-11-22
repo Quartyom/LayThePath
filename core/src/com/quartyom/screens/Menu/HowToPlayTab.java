@@ -41,11 +41,6 @@ public class HowToPlayTab extends QuScreen {
 
     public void update(){
         back_button.update();
-
-        if (back_button.inputState == InputState.TOUCHED){
-            return;     // не обрабатываем
-        }
-
         scroller.update();
 
         if (scroller.value.y < 0){ scroller.value.y = 0; }  // нельзя листать вверх

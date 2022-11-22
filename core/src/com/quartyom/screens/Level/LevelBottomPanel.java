@@ -35,33 +35,37 @@ public class LevelBottomPanel extends GameBottomPanel {
         hint_button = new Button("hint", game, new QuEvent() {
             @Override
             public void execute() {
-                if (levelScreen.levelBoard.boardDrawer.is_hint_shown){
-                    levelScreen.levelBoard.boardDrawer.is_hint_shown = false;
-                    return;
+                LevelBoard levelBoard = levelScreen.levelBoard;
+                if (levelBoard.boardDrawer.is_hint_shown){              // уже показана, выключаем
+                    levelBoard.boardDrawer.is_hint_shown = false;
+                    levelBoard.was_hint_used = true;
                 }
-                if (game.userData.hints_amount > 0){
+                else if (levelBoard.was_hint_used){                     // не показана, но была использована
+                    levelBoard.boardDrawer.is_hint_shown = true;
+                }
+                else if (game.userData.hints_amount > 0){               // значит, если они есть, то уменьшаем на 1
                     game.userData.hints_amount--;
-                    levelScreen.levelBoard.boardDrawer.is_hint_shown = true;
+                    levelBoard.boardDrawer.is_hint_shown = true;
                 }
                 else {
-                    //levelScreen.levelHintTab.is_active = true;
                     game.setScreen("level_hint");
                 }
             }
         });
-        hint_button.setHint(game.locale.get("show hint")).setSound("click_1");
+        hint_button.setHint(game.locale.get("show hint")).addNotification().setSound("click_1");
 
         skip_button = new Button("next", game, new QuEvent() {
             @Override
             public void execute() {
-                if (levelScreen.levelBoard.current_level < game.userData.max_level_achieved ||
+                LevelBoard levelBoard = levelScreen.levelBoard;
+                if (levelBoard.current_level < game.userData.max_level_achieved ||
                         TimeUtils.millis() >= game.userData.when_to_skip_level ||
                         game.userData.premium_is_on){
 
-                    levelScreen.levelBoard.current_level++;
-                    levelScreen.levelBoard.userData.current_level = levelScreen.levelBoard.current_level;
+                    levelBoard.current_level++;
+                    levelBoard.userData.current_level = levelBoard.current_level;
                     game.save_user_data();
-                    levelScreen.levelBoard.load_level();
+                    levelBoard.load_level();
 
                     game.setScreen("level");
                 }
@@ -70,7 +74,7 @@ public class LevelBottomPanel extends GameBottomPanel {
                 }
             }
         });
-        skip_button.setHint(game.locale.get("skip level")).setSound("click_1");
+        skip_button.setHint(game.locale.get("skip level")).addNotification().setSound("click_1");
     }
 
     @Override
@@ -99,5 +103,15 @@ public class LevelBottomPanel extends GameBottomPanel {
         transform_button.update();
         hint_button.update();
         skip_button.update();
+
+        hint_button.setNotification(String.valueOf(game.userData.hints_amount));
+        long minutes_left = (game.userData.when_to_skip_level - TimeUtils.millis()) / 60_000L;
+
+        if (levelScreen.levelBoard.current_level < game.userData.max_level_achieved || minutes_left < 0 || game.userData.premium_is_on){
+            skip_button.setNotification(null);
+        }
+        else {
+            skip_button.setNotification("<" + (minutes_left + 1L) + "m");
+        }
     }
 }

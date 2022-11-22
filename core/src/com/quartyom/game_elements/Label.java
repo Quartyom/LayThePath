@@ -32,8 +32,10 @@ public class Label {
     }
 
     public void set_string(String string, int halign){
-        this.string = string;
-        resize(label_x, label_y, label_w, label_h, halign);
+        if (string != this.string){
+            this.string = string;
+            resize(label_x, label_y, label_w, label_h, halign);
+        }
     }
 
     public void draw(){
@@ -60,8 +62,7 @@ public class Label {
 
         int font_size = (int)(h * w_ratio * 0.8f);
 
-        if (font_size > 200){font_size = 200;}  // чтобы не было проблем при отрисовке
-        //if (font_size > 160){font_size = 160;}  // tiny fonts
+        if (font_size > 200){font_size = 200;}  // чтобы не было проблем при отрисовке (хотя теперь и не должно)
 
         font = game.fontHolder.get(font_size); // окончательный шрифт
         game.glyphLayout.setText(font, string);

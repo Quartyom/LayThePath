@@ -92,9 +92,9 @@ public class Hint implements Drawable {
         if (!is_active){return;}
 
         // если нажато
-        if (Gdx.input.isTouched()) {
-            touch_pos.x = Gdx.input.getX() - game.HALF_WIDTH + margin_x;
-            touch_pos.y = game.HALF_HEIGHT - Gdx.input.getY() + margin_y;
+        if (game.isTouched) {
+            touch_pos.x = game.touch_pos.x + margin_x;
+            touch_pos.y = game.touch_pos.y + margin_y;
         }
     }
 

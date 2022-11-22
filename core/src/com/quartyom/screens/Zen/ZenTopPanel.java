@@ -10,14 +10,18 @@ public class ZenTopPanel extends GameTopPanel {
 
     Label level_label, progress_label;
 
+    String level_string, progress_string;
+
     public ZenTopPanel(final ZenScreen zenScreen){
         super(zenScreen.game);
         this.zenScreen = zenScreen;
 
         level_label = new Label(game);
-        level_label.target_string = "Level 1000";
+        level_string = game.locale.get("Level ");
+        progress_string = game.locale.get("Progress ");
+        level_label.target_string = level_string + "1000";
         progress_label = new Label(game);
-        progress_label.target_string = "Progress 100 / 100";
+        progress_label.target_string = progress_string + "100 / 100";
     }
 
     @Override
@@ -32,11 +36,11 @@ public class ZenTopPanel extends GameTopPanel {
     public void draw(){
         super.draw();
 
-        level_label.string = zenScreen.game.locale.get("Level ") + zenScreen.zenBoard.current_level;
+        level_label.string = level_string + zenScreen.zenBoard.current_level;
         level_label.draw();
 
         Gameplay gameplay = zenScreen.zenBoard.gameplay;
-        progress_label.string = zenScreen.game.locale.get("Progress ") + gameplay.how_many_visited + " / " + gameplay.how_many_should_be_visited;
+        progress_label.string = progress_string + gameplay.how_many_visited + " / " + gameplay.how_many_should_be_visited;
         progress_label.draw();
     }
 

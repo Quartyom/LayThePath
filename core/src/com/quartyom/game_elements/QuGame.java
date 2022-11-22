@@ -6,6 +6,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.math.Vector2;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,8 +18,17 @@ public abstract class QuGame implements ApplicationListener, InputProcessor {
     protected QuScreen default_screen;
     private Map<String, QuScreen> screens;
 
+    public InputState inputState;
+    public boolean isTouched, isTouchRead;
+    public Vector2 touch_pos;
+
+    // размеры экрана
+    public float WIDTH, HALF_WIDTH, HEIGHT, HALF_HEIGHT;
+
     public QuGame(){
         screens = new HashMap<>();
+        inputState = InputState.UNTOUCHED;
+        touch_pos = new Vector2();
     }
 
     @Override
@@ -37,10 +47,10 @@ public abstract class QuGame implements ApplicationListener, InputProcessor {
         }
         else if (default_screen != null) {
             this.screen = default_screen;
-            System.out.println("Screen " + name + " is not found: set default Screen");
+            Gdx.app.log("QuGame","Screen " + name + " is not found: set default Screen");
         }
         else {
-            System.out.println("Screen " + name + " is not found, default Screen is not set");
+            Gdx.app.error("QuGame", "Screen " + name + " is not found, default Screen is not set");
             return;
         }
         this.screen.show();
@@ -54,7 +64,7 @@ public abstract class QuGame implements ApplicationListener, InputProcessor {
     public void add(String name, QuScreen screen){
         if (screens.containsKey(name)){
             screens.get(name).dispose();
-            System.out.println("rewritten: Screen " + name);
+            Gdx.app.log("QuGame", "Screen " + name + " is rewritten");
         }
 
         screens.put(name, screen);
@@ -77,7 +87,30 @@ public abstract class QuGame implements ApplicationListener, InputProcessor {
 
     @Override
     public void render () {
-        if (screen != null) screen.render(Gdx.graphics.getDeltaTime());
+        isTouchRead = false;
+        if (Gdx.input.isTouched()){
+            if (inputState == InputState.TOUCHED) {}
+            else if (inputState == InputState.JUST_TOUCHED) { inputState = InputState.TOUCHED; }
+            else { inputState = InputState.JUST_TOUCHED; }
+            isTouched = true;
+            touch_pos.x = Gdx.input.getX() - HALF_WIDTH;
+            touch_pos.y = HALF_HEIGHT - Gdx.input.getY();
+        }
+        else {
+            if (inputState == InputState.UNTOUCHED) {}
+            else if (inputState == InputState.JUST_UNTOUCHED){ inputState = InputState.UNTOUCHED; }
+            else { inputState = InputState.JUST_UNTOUCHED; }
+            isTouched = false;
+        }
+
+        if (screen != null) {
+            screen.render(Gdx.graphics.getDeltaTime());
+        }
+    }
+
+    public boolean isTouched(){
+        if (isTouchRead) { return false; }
+        else { return isTouched; }
     }
 
     @Override
@@ -86,40 +119,37 @@ public abstract class QuGame implements ApplicationListener, InputProcessor {
     }
 
     @Override
-    public boolean keyDown(int i) { return false; }
-
-    @Override
-    public boolean keyUp(int i) {
+    public boolean keyUp (int keycode){
         return false;
     }
 
     @Override
-    public boolean keyTyped(char c) {
+    public boolean keyTyped (char character){
         return false;
     }
 
     @Override
-    public boolean touchDown(int i, int i1, int i2, int i3) {
+    public boolean touchDown (int screenX, int screenY, int pointer, int button){
         return false;
     }
 
     @Override
-    public boolean touchUp(int i, int i1, int i2, int i3) {
+    public boolean touchUp (int screenX, int screenY, int pointer, int button){
         return false;
     }
 
     @Override
-    public boolean touchDragged(int i, int i1, int i2) {
+    public boolean touchDragged (int screenX, int screenY, int pointer){
         return false;
     }
 
     @Override
-    public boolean mouseMoved(int i, int i1) {
+    public boolean mouseMoved (int screenX, int screenY){
         return false;
     }
 
     @Override
-    public boolean scrolled(float v, float v1) {
+    public boolean scrolled (float amountX, float amountY){
         return false;
     }
 

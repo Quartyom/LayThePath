@@ -32,11 +32,11 @@ public class ControlsTab extends QuScreen {
             public void execute() {
                 if (game.userData.abstract_input_is_on){
                     game.userData.abstract_input_is_on = false;
-                    activate_button.changeLabel(game.locale.get("Activate"));
+                    activate_button.setLabel(game.locale.get("Activate"));
                 }
                 else {
                     game.userData.abstract_input_is_on = true;
-                    activate_button.changeLabel(game.locale.get("Deactivate"));
+                    activate_button.setLabel(game.locale.get("Deactivate"));
                 }
                 game.save_user_data();
             }
@@ -77,16 +77,7 @@ public class ControlsTab extends QuScreen {
 
     public void update(){
         back_button.update();
-
-        if (back_button.inputState == InputState.UNTOUCHED) {
-            activate_button.update();
-        }
-
-        if (back_button.inputState == InputState.TOUCHED || activate_button.inputState == InputState.TOUCHED){
-            scroller.inputState = InputState.UNTOUCHED;
-            return;     // не обрабатываем
-        }
-
+        activate_button.update();
         scroller.update();
 
         if (scroller.value.y < 0){ scroller.value.y = 0; }  // нельзя листать вверх

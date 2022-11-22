@@ -17,6 +17,8 @@ import com.quartyom.screens.Level.LevelScreen;
 import com.quartyom.screens.Menu.MenuTab;
 import com.quartyom.screens.Zen.ZenScreen;
 
+import java.util.Random;
+
 public class LayThePath extends QuGame {
 	public SpriteBatch batch;
 	public FontHolder fontHolder;
@@ -25,17 +27,16 @@ public class LayThePath extends QuGame {
 	public TextureAtlas field_atlas, buttons_atlas, sliders_atlas;
 	public Json json;
 	public Locale locale;
+	public Random random;
 
 	public UserData userData;
 	public Vibrator vibrator;
-
-	// размеры экрана
-	public float WIDTH, HALF_WIDTH, HEIGHT, HALF_HEIGHT;
 
 	public DrawingQueue drawingQueue;
 
 	public boolean is_back_button_pressed;
 	public boolean is_first_launch;
+	private boolean is_requested_to_save_user_data;
 
 	public void create() {
 		batch = new SpriteBatch();
@@ -49,13 +50,14 @@ public class LayThePath extends QuGame {
 		load_user_data();
 		locale = new Locale(this);
 		locale.set(userData.locale);
-		fontHolder = new FontHolder("fonts/OpenSans-Light.ttf", userData.locale);
+		fontHolder = new FontHolder(this,"fonts/OpenSans-Light.ttf");
+
+		random = new Random();
 
 		vibrator = new Vibrator(this);
-		drawingQueue = new DrawingQueue(this);
+		drawingQueue = new DrawingQueue();
 
 		this.add_default("menu", new MenuTab(this));
-		//this.add("hex", new HexTextScreen(this));
 		this.add("level", new LevelScreen(this));
 		this.add("zen", new ZenScreen(this));
 		this.add("editor", new EditorScreen(this));
@@ -68,19 +70,13 @@ public class LayThePath extends QuGame {
 	public void change_locale(String language){
 		locale.set(language);
 
-		if (fontHolder != null){ fontHolder.dispose(); }
-		fontHolder = new FontHolder("fonts/OpenSans-Light.ttf", language);
-
 		super.dispose();	// чтобы корректно выгрузить прошлые Screen
 
 		this.add_default("menu", new MenuTab(this));
-		//this.add("hex", new HexTextScreen(this));
 		this.add("level", new LevelScreen(this));
 		this.add("zen", new ZenScreen(this));
 		this.add("editor", new EditorScreen(this));
 	}
-
-	private boolean is_requested_to_save_user_data;
 
 	public void save_user_data(){
 		is_requested_to_save_user_data = true;

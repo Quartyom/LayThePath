@@ -65,7 +65,7 @@ public class EditorLaunchedBottomPanel extends GameBottomPanel {
                 Gdx.files.local("user_levels/" + editorScreen.editorLaunchedBoard.gameplay.field_size + "/" + System.currentTimeMillis() + ".json").writeString(editorScreen.game.json.prettyPrint(levelConfiguration), false);
             }
         });
-        save_button.setHint(game.locale.get("only for developers")).setSound("click_1");
+        save_button.setHint(game.locale.get("save")).setSound("click_1");
     }
 
     @Override
@@ -92,7 +92,9 @@ public class EditorLaunchedBottomPanel extends GameBottomPanel {
         back_button.update();
         reset_button.update();
         transform_button.update();
-        save_button.update();
+        if (game.userData.is_developer) {
+            save_button.update();
+        }
     }
 
 }

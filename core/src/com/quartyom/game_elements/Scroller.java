@@ -43,15 +43,14 @@ public class Scroller {
         this.view_h = view_h;
     }
 
-
     public void update(){
         // если нажато
-        if (Gdx.input.isTouched()) {
-            touch_pos.x = Gdx.input.getX() - game.HALF_WIDTH;
-            touch_pos.y = game.HALF_HEIGHT - Gdx.input.getY();
+        if (game.isTouched()) {
+            touch_pos.x = game.touch_pos.x;
+            touch_pos.y = game.touch_pos.y;
 
-            if (touch_pos.x >= view_x && touch_pos.y >= view_y && touch_pos.x <= view_x + view_w && touch_pos.y <= view_y + view_h){
-
+            if (touch_pos.x > view_x && touch_pos.y > view_y && touch_pos.x < view_x + view_w && touch_pos.y < view_y + view_h){
+                game.isTouchRead = true;
                 if (inputState == InputState.UNTOUCHED) {   // по какой-то причине justTouched() не работает
                     inputState = InputState.JUST_TOUCHED;
                     prev_touch_pos.x = touch_pos.x;

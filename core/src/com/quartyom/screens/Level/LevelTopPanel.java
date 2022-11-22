@@ -13,6 +13,8 @@ public class LevelTopPanel extends GameTopPanel {
     Label level_label, progress_label;
     Scroller scroller;
 
+    String level_string, progress_string;
+
     public LevelTopPanel(final LevelScreen levelScreen){
         super(levelScreen.game);
         this.levelScreen = levelScreen;
@@ -20,9 +22,11 @@ public class LevelTopPanel extends GameTopPanel {
         inputState = InputState.UNTOUCHED;
 
         level_label = new Label(game);
-        level_label.target_string = "Level 1000";
+        level_string = game.locale.get("Level ");
+        progress_string = game.locale.get("Progress ");
+        level_label.target_string = level_string + "1000";
         progress_label = new Label(game);
-        progress_label.target_string = "Progress 100 / 100";
+        progress_label.target_string = progress_string + "100 / 100";
 
         scroller = new Scroller(game);
     }
@@ -40,11 +44,11 @@ public class LevelTopPanel extends GameTopPanel {
     public void draw(){
         super.draw();
 
-        level_label.string = game.locale.get("Level ") + levelScreen.levelBoard.current_level;
+        level_label.string = level_string + levelScreen.levelBoard.current_level;
         level_label.draw();
 
         Gameplay gameplay = levelScreen.levelBoard.gameplay; // просто для сокращения пути
-        progress_label.string = game.locale.get("Progress ") + gameplay.how_many_visited + " / " + gameplay.how_many_should_be_visited;
+        progress_label.string = progress_string + gameplay.how_many_visited + " / " + gameplay.how_many_should_be_visited;
         progress_label.draw();
     }
 
@@ -61,15 +65,28 @@ public class LevelTopPanel extends GameTopPanel {
         }
 
         else if (scroller.inputState == InputState.TOUCHED){
-            if ((int)(Math.round(scroller.value.x / sensitivity)) != levelScreen.levelBoard.current_level){
-                levelScreen.levelBoard.current_level = (int)(Math.round(scroller.value.x / sensitivity));
+            if ((Math.round(scroller.value.x / sensitivity)) != levelScreen.levelBoard.current_level){
+                levelScreen.levelBoard.current_level = (Math.round(scroller.value.x / sensitivity));
 
-                // Нормализуем (изменить)
+                boolean to_change_scroller = true;
+
                 if (levelScreen.levelBoard.current_level < 1){
                     levelScreen.levelBoard.current_level += game.userData.max_level_achieved;
+                    if (levelScreen.levelBoard.current_level > levelScreen.levelBoard.how_many_levels){
+                        levelScreen.levelBoard.current_level = levelScreen.levelBoard.how_many_levels;
+                    }
+                }
+                else if (levelScreen.levelBoard.current_level > levelScreen.levelBoard.how_many_levels){
+                    levelScreen.levelBoard.current_level = 1;
                 }
                 else if (levelScreen.levelBoard.current_level > game.userData.max_level_achieved){
                     levelScreen.levelBoard.current_level -= game.userData.max_level_achieved;
+                }
+                else {
+                    to_change_scroller = false;
+                }
+                if (to_change_scroller){
+                    scroller.value.x = levelScreen.levelBoard.current_level * sensitivity;
                 }
 
                 levelScreen.levelBoard.userData.current_level = levelScreen.levelBoard.current_level;

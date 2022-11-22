@@ -1,4 +1,4 @@
-Allanar el camino para cubrir todas las células de campo disponibles. Mantenga su dedo en el campo y muévalo.
-No puedes cruzarte a TI mismo o a los obstáculos. El camino debe comenzar y terminar en una celda vacía, pero puede pasar a través de paredes diagonales, puntos y sí mismo en las curvas.
-En las intersecciones, solo puedes moverte recto.
-Si el movimiento está Prohibido, lo notará, en otro caso, no se limite y diviértase.
+Coloque el camino para cubrir todas las celdas disponibles del campo. Mantenga su dedo en el tablero y muévalo.
+No puedes cruzarte a ti mismo ni a los obstáculos. Un camino debe comenzar y terminar en una celda vacía, pero puede pasar a través de paredes diagonales, puntos y el camino mismo en los giros.
+Solo puedes moverte recto a través de cruces.
+Si el movimiento está prohibido, lo notarás, de lo contrario, no te limites y diviértete.

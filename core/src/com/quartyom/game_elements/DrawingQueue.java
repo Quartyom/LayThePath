@@ -1,16 +1,12 @@
 package com.quartyom.game_elements;
 
 import com.badlogic.gdx.utils.Queue;
-import com.quartyom.LayThePath;
 import com.quartyom.interfaces.Drawable;
 
 public class DrawingQueue {
     private Queue<Drawable> elements;
 
-    private LayThePath game;
-
-    public DrawingQueue(LayThePath game){
-        this.game = game;
+    public DrawingQueue(){
         elements = new Queue<>();
     }
 

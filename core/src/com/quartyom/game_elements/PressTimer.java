@@ -35,6 +35,8 @@ public class PressTimer {
         button_h = h;
     }
 
+    private boolean to_reset = false;
+
     public void reset(){
         inputState = InputState.UNTOUCHED;
         when_just_touched = 0;
@@ -44,13 +46,13 @@ public class PressTimer {
     // нажал и отпустил - клик
     public void update(){
         // если нажато
-        if (Gdx.input.isTouched()){
-            touch_pos.x = Gdx.input.getX() - game.HALF_WIDTH - offset.x;
-            touch_pos.y = game.HALF_HEIGHT - Gdx.input.getY() - offset.y;
+        if (game.isTouched){
+            touch_pos.x = game.touch_pos.x - offset.x;
+            touch_pos.y = game.touch_pos.y - offset.y;
 
             // попали ли по кнопке
-            if (touch_pos.x >= button_x && touch_pos.y >= button_y && touch_pos.x <= button_x + button_w && touch_pos.y <= button_y + button_h){
-                if (Gdx.input.justTouched()) {
+            if (touch_pos.x > button_x && touch_pos.y > button_y && touch_pos.x < button_x + button_w && touch_pos.y < button_y + button_h){
+                if (game.inputState == InputState.JUST_TOUCHED) {
                     inputState = InputState.TOUCHED;
 
                     long current_time = TimeUtils.millis();
@@ -66,6 +68,11 @@ public class PressTimer {
                     when_just_touched = TimeUtils.millis();
 
                 }
+                else {
+                    if (touch_pos.dst(prev_touch_pos) >= game.WIDTH / 16) {
+                        to_reset = true;
+                    }
+                }
             }
             else {
                 inputState = InputState.UNTOUCHED;
@@ -74,10 +81,14 @@ public class PressTimer {
         }
         // не нажато
         else {
+            if (to_reset){
+                reset();
+                to_reset = false;
+            }
             // но было нажато
             if (inputState == InputState.TOUCHED) {
                 // палец убрали над кнопкой = клик
-                if (touch_pos.x >= button_x && touch_pos.y >= button_y && touch_pos.x <= button_x + button_w && touch_pos.y <= button_y + button_h){
+                if (touch_pos.x > button_x && touch_pos.y > button_y && touch_pos.x < button_x + button_w && touch_pos.y < button_y + button_h){
                     when_just_untouched = TimeUtils.millis();
                 }
                 inputState = InputState.UNTOUCHED;

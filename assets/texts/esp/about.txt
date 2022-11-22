@@ -1,10 +1,12 @@
 Modos de juego:
-Todos los niveles en el Juego han sido seleccionados y añadidos manualmente cuando como en Zen se generan al azar. Por lo tanto, en el primer modo, los niveles son en promedio más difíciles, por otro lado, en la Zona los niveles son infinitos.
-El modo Editor es experimental y fue creado originalmente para simplificar mi vida de desarrollador. También puede diseñar niveles y ejecutar desde. La opción guardar aún no está disponible.
+Todos los niveles en Play fueron seleccionados y agregados manualmente, mientras que en Zen se generan aleatoriamente. Entonces, en el primer modo, los niveles son más difíciles en promedio, pero los niveles de Zen son infinitos por otro lado.
+El modo Editor es experimental y se creó inicialmente para simplificar la vida de mi desarrollador. También puedes construir niveles allí y lanzarlos. La opción de guardar no está disponible hasta el momento.
 
-Pregunta-Respuesta:
-¿Qué pasa si el nivel es intransitable? Bueno, no lo creo. Puede familiarizarse con la sugerencia o omitir el nivel.
-¿Cómo restablecer el progreso? Ir a preferencias del sistema y eliminar los datos.
+Preguntas y respuestas:
+¿Qué pasa si el nivel es impasible? Bueno, poco probable. Puede consultar la pista o saltarse el nivel.
+¿Cómo restablecer el progreso? Vaya a la configuración de su sistema y elimine los datos.
 
 Aplicación:
-Escrito en Java, libgdx framework en julio 2022.
+Codificado en Java, framework libgdx en julio de 2022.
+
+Traducido por Aniel Marín Rodríguez.

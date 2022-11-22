@@ -11,7 +11,7 @@ public class ZenBottomPanel extends GameBottomPanel {
 
     public final ZenScreen zenScreen;
 
-    Button reset_button, transform_button, hint_button, /*save_button*/ skip_button;
+    Button reset_button, transform_button, hint_button, skip_button;
 
     public ZenBottomPanel(final ZenScreen zenScreen){
         super(zenScreen.game);
@@ -37,30 +37,24 @@ public class ZenBottomPanel extends GameBottomPanel {
         hint_button = new Button("hint", game, new QuEvent() {
             @Override
             public void execute() {
-                if (zenScreen.zenBoard.boardDrawer.is_hint_shown){
-                    zenScreen.zenBoard.boardDrawer.is_hint_shown = false;
-                    return;
+                ZenBoard zenBoard = zenScreen.zenBoard;
+                if (zenBoard.boardDrawer.is_hint_shown){              // уже показана, выключаем
+                    zenBoard.boardDrawer.is_hint_shown = false;
+                    zenBoard.was_hint_used = true;
                 }
-                if (game.userData.hints_amount > 0){
+                else if (zenBoard.was_hint_used){                     // не показана, но была использована
+                    zenBoard.boardDrawer.is_hint_shown = true;
+                }
+                else if (game.userData.hints_amount > 0){               // значит, если они есть, то уменьшаем на 1
                     game.userData.hints_amount--;
-                    zenScreen.zenBoard.boardDrawer.is_hint_shown = true;
+                    zenBoard.boardDrawer.is_hint_shown = true;
                 }
                 else {
                     game.setScreen("zen_hint");
                 }
             }
         });
-        hint_button.setHint(game.locale.get("show hint")).setSound("click_1");
-
-        /*save_button = new Button("save", zenScreen.game, new EventHandler() {
-            @Override
-            public void execute() {
-                //System.out.println("pressed save button");
-                LevelConfiguration levelConfiguration = zenScreen.zenBoard.gameplay.get_level_configuration();
-                Gdx.files.local(String.valueOf("user_levels/" + System.currentTimeMillis() + ".json")).writeString(zenScreen.game.json.prettyPrint(levelConfiguration), false);
-            }
-        });
-        save_button.setSound("click_1");*/
+        hint_button.setHint(game.locale.get("show hint")).addNotification().setSound("click_1");
 
         skip_button = new Button("next", game, new QuEvent() {
             @Override
@@ -79,7 +73,7 @@ public class ZenBottomPanel extends GameBottomPanel {
                 }
             }
         });
-        skip_button.setHint(game.locale.get("skip level")).setSound("click_1");
+        skip_button.setHint(game.locale.get("skip level")).addNotification().setSound("click_1");
 
     }
 
@@ -89,7 +83,6 @@ public class ZenBottomPanel extends GameBottomPanel {
         reset_button.resize(first_button_x, first_button_y, button_w, button_h);
         transform_button.resize(first_button_x + panel_w / 4, first_button_y, button_w, button_h);
         hint_button.resize(first_button_x + panel_w / 4 * 2, first_button_y, button_w, button_h);
-        //save_button.resize(first_button_x + panel_w / 4 * 3, first_button_y, button_w, button_h);
         skip_button.resize(first_button_x + panel_w / 4 * 3, first_button_y, button_w, button_h);
     }
 
@@ -101,7 +94,6 @@ public class ZenBottomPanel extends GameBottomPanel {
         reset_button.draw();
         transform_button.draw();
         hint_button.draw();
-        //save_button.draw();
         skip_button.draw();
     }
 
@@ -111,8 +103,18 @@ public class ZenBottomPanel extends GameBottomPanel {
         reset_button.update();
         transform_button.update();
         hint_button.update();
-        //save_button.update();
         skip_button.update();
+
+        hint_button.setNotification(String.valueOf(game.userData.hints_amount));
+
+        long minutes_left = (game.userData.when_to_skip_zen_level - TimeUtils.millis()) / 60_000L;
+
+        if (game.userData.premium_is_on || minutes_left < 0) {
+            skip_button.setNotification(null);
+        }
+        else {
+            skip_button.setNotification("<" + (minutes_left + 1L) + "m");
+        }
     }
 
 }

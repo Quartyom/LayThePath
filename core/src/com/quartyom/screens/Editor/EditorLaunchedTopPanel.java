@@ -10,23 +10,26 @@ public class EditorLaunchedTopPanel extends GameTopPanel {
 
     public final EditorScreen editorScreen;
 
-    Label level_label, progress_label;
+    Label editor_label, progress_label;
+    String progress_string;
 
     public EditorLaunchedTopPanel(final EditorScreen editorScreen){
         super(editorScreen.game);
         this.editorScreen = editorScreen;
 
-        level_label = new Label(game);
-        level_label.target_string = "Level 1000";
+        editor_label = new Label(game);
+        editor_label.string = game.locale.get("Editor");
+
         progress_label = new Label(game);
-        progress_label.target_string = "Progress 100 / 100";
+        progress_string = game.locale.get("Progress ");
+        progress_label.target_string = progress_string + "100 / 100";
     }
 
     @Override
     public void resize(){
         super.resize();
 
-        level_label.resize(panel_x + panel_w * 0.025f, panel_y + panel_h / 2, panel_w * 0.75f, panel_h / 2, Align.left);
+        editor_label.resize(panel_x + panel_w * 0.025f, panel_y + panel_h / 2, panel_w * 0.75f, panel_h / 2, Align.left);
         progress_label.resize(panel_x + panel_w * 0.025f, panel_y, panel_w * 0.75f, panel_h / 2, Align.left);
     }
 
@@ -35,11 +38,10 @@ public class EditorLaunchedTopPanel extends GameTopPanel {
         if (!is_active){return;}
         super.draw();
 
-        level_label.string = game.locale.get("Editor");
-        level_label.draw();
+        editor_label.draw();
 
         Gameplay gameplay = editorScreen.editorLaunchedBoard.gameplay; // просто для сокращения пути
-        progress_label.string = game.locale.get("Progress ") + gameplay.how_many_visited + " / " + gameplay.how_many_should_be_visited;
+        progress_label.string = progress_string + gameplay.how_many_visited + " / " + gameplay.how_many_should_be_visited;
         progress_label.draw();
     }
 

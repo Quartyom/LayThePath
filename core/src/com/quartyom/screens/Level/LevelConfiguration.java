@@ -10,9 +10,7 @@ public class LevelConfiguration {
     public ArrayList<Vector2> vertical_walls, horizontal_walls, slash_walls, backslash_walls, boxes, points, crossroads;
     public ArrayList<Vector2> hint;
 
-    public LevelConfiguration() { set_empty(); }
-
-    public void set_empty(){
+    public LevelConfiguration() {
         vertical_walls = new ArrayList<>();
         horizontal_walls = new ArrayList<>();
         slash_walls = new ArrayList<>();
@@ -21,6 +19,17 @@ public class LevelConfiguration {
         points = new ArrayList<>();
         crossroads = new ArrayList<>();
         hint = new ArrayList<>();
+    }
+
+    public void set_empty(){
+        vertical_walls.clear();
+        horizontal_walls.clear();
+        slash_walls.clear();
+        backslash_walls.clear();
+        boxes.clear();
+        points.clear();
+        crossroads.clear();
+        hint.clear();
     }
 
 }

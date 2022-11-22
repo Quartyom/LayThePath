@@ -21,6 +21,7 @@ public class LevelBoard extends GameBoard {
     UserData userData;
 
     int how_many_levels, current_level;
+    boolean was_hint_used;
 
     public LevelBoard(LevelScreen levelScreen){
         super(levelScreen.game);
@@ -67,30 +68,30 @@ public class LevelBoard extends GameBoard {
             game.save_user_data();
         }
 
-        if (current_level > how_many_levels){
-            game.setScreen("levels_are_over");
-            return;
-        }
-
         if (current_level > userData.max_level_achieved){
-            Random random = new Random();
-            if (random.nextInt(3) == 0){
+            if (game.random.nextInt(3) == 0){
                 userData.hints_amount++;
             }
             userData.max_level_achieved = current_level;
             game.save_user_data();
         }
 
+        if (current_level > how_many_levels){
+            game.setScreen("levels_are_over");
+            return;
+        }
+
         String a = Gdx.files.internal("levels/" + current_level + ".json").readString();
         LevelConfiguration levelConfiguration = game.json.fromJson(LevelConfiguration.class, a);
         gameplay.set_level_configuration(levelConfiguration);
 
-        userData.when_to_skip_level = TimeUtils.millis() + (levelConfiguration.field_size - 2) * 60_000L;    // now + N minutes
+        userData.when_to_skip_level = TimeUtils.millis() + (levelConfiguration.field_size - 2) * 60_000L - 1L;    // now + N minutes
         game.save_user_data();
 
         resize(); // чтобы если размер уровня другой, адаптировать экран
         gameplay.normalize_cursor(); // чтобы курсор не выпрыгнул за поле
         boardDrawer.is_hint_shown = false;
+        was_hint_used = false;
     }
 
 }

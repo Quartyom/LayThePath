@@ -1,9 +1,7 @@
 package com.quartyom.screens.Editor;
 
 import com.badlogic.gdx.utils.Align;
-import com.quartyom.game_elements.Button;
 import com.quartyom.game_elements.GameTopPanel;
-import com.quartyom.interfaces.QuEvent;
 import com.quartyom.game_elements.Label;
 
 public class EditorTopPanel extends GameTopPanel {
@@ -11,23 +9,27 @@ public class EditorTopPanel extends GameTopPanel {
 
     public final EditorScreen editorScreen;
 
-    Label level_label, tool_label;
+    Label editor_label, tool_label;
+    String tool_string;
 
     public EditorTopPanel(final EditorScreen editorScreen){
         super(editorScreen.game);
         this.editorScreen = editorScreen;
 
-        level_label = new Label(game);
-        level_label.target_string = "Level 1000";
+        editor_label = new Label(game);
+        editor_label.string = game.locale.get("Editor");
+
         tool_label = new Label(game);
-        tool_label.target_string = "Current: backslash wall ";
+        tool_string = game.locale.get("Current: ");
+        tool_label.target_string = tool_string + "backslash wall ";
+
     }
 
     @Override
     public void resize(){
         super.resize();
 
-        level_label.resize(panel_x + panel_w * 0.025f, panel_y + panel_h / 2, panel_w * 0.75f, panel_h / 2, Align.left);
+        editor_label.resize(panel_x + panel_w * 0.025f, panel_y + panel_h / 2, panel_w * 0.75f, panel_h / 2, Align.left);
         tool_label.resize(panel_x + panel_w * 0.025f, panel_y, panel_w * 0.75f, panel_h / 2, Align.left);
     }
 
@@ -36,9 +38,8 @@ public class EditorTopPanel extends GameTopPanel {
         if (!is_active){return;}
 
         super.draw();
-        level_label.string = editorScreen.game.locale.get("Editor");
-        level_label.draw();
-        tool_label.string = editorScreen.game.locale.get("Current: ") + editorScreen.editorBoard.obstacles_to_put[editorScreen.editorBoard.cursor_on_obstacles];
+        editor_label.draw();
+        tool_label.string = tool_string + editorScreen.editorBoard.obstacles_to_put[editorScreen.editorBoard.cursor_on_obstacles];
         tool_label.draw();
     }
 
