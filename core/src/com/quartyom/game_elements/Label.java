@@ -17,6 +17,8 @@ public class Label {
     public String string;
     public String target_string;    // для фиксированного размера изменяющегося лэйбла
 
+    public FontType fontType = FontType.LOCALIZED_LIGHT;
+
     public Label(LayThePath game){
         this(game, new String());
     }
@@ -48,7 +50,7 @@ public class Label {
         label_w = w;
         label_h = h;
 
-        font = game.fontHolder.get((int)h);    // шрифт для теста
+        font = game.fontHolder.get((int)h, fontType);    // шрифт для теста
 
         if (target_string == null) {
             game.glyphLayout.setText(font, string);
@@ -64,7 +66,7 @@ public class Label {
 
         if (font_size > 200){font_size = 200;}  // чтобы не было проблем при отрисовке (хотя теперь и не должно)
 
-        font = game.fontHolder.get(font_size); // окончательный шрифт
+        font = game.fontHolder.get(font_size, fontType); // окончательный шрифт
         game.glyphLayout.setText(font, string);
 
         text_w = game.glyphLayout.width;

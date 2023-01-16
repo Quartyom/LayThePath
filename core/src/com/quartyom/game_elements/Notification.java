@@ -34,7 +34,7 @@ public class Notification {
             this.string = string;
             if (string == null) { return; }
 
-            font = game.fontHolder.get((int)notification_w);    // шрифт для теста
+            font = game.fontHolder.get((int)notification_w, FontType.LOCALIZED_WITH_LATIN);    // шрифт для теста
             game.glyphLayout.setText(font, string);
 
             text_w = game.glyphLayout.width;
@@ -47,7 +47,7 @@ public class Notification {
 
             if (font_size > 200) { font_size = 200; }
 
-            font = game.fontHolder.get(font_size); // окончательный шрифт
+            font = game.fontHolder.get(font_size, FontType.LOCALIZED_WITH_LATIN); // окончательный шрифт
             game.glyphLayout.setText(font, string);
 
             text_w = game.glyphLayout.width;

@@ -180,6 +180,7 @@ public class SettingsTab extends QuScreen {
             if (random.nextInt(6) == 0){
                 settings_label.set_string(game.locale.get("Not so fast"));
                 is_too_fast = true;
+                resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
             }
         }
         previously_launched = System.currentTimeMillis();
@@ -214,7 +215,10 @@ public class SettingsTab extends QuScreen {
     @Override
     public void hide() {
         settings_label.set_string(game.locale.get("Settings"));
-        is_too_fast = false;
+        if (is_too_fast){
+            is_too_fast = false;
+            resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        }
     }
 
 }

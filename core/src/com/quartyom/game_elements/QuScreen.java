@@ -4,6 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 
 public abstract class QuScreen implements Screen {
+
+    public boolean is_resize_needed = true; // QuGame может не вызвать resize, если не нужно
+
     @Override
     public void show() {
         Gdx.gl20.glClearColor(0, 0, 0, 1);

@@ -3,6 +3,7 @@ package com.quartyom.screens.Menu;
 import com.badlogic.gdx.Gdx;
 import com.quartyom.LayThePath;
 import com.quartyom.game_elements.Button;
+import com.quartyom.game_elements.FontType;
 import com.quartyom.game_elements.InputState;
 import com.quartyom.game_elements.QuScreen;
 import com.quartyom.game_elements.Scroller;
@@ -31,7 +32,7 @@ public class LocaleTab extends QuScreen {
                     game.setScreen("menu_settings");
                 }
             });
-            button.setNinePatch(6).setLabel(game.locale.folders.get(key));
+            button.setNinePatch(6).setLabel(game.locale.folders.get(key), FontType.INTERNATIONAL);
             locale_buttons.add(button);
         }
 

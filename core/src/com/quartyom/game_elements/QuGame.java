@@ -54,7 +54,10 @@ public abstract class QuGame implements ApplicationListener, InputProcessor {
             return;
         }
         this.screen.show();
-        this.screen.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        if (this.screen.is_resize_needed) {
+            this.screen.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+            this.screen.is_resize_needed = false;
+        }
     }
 
     public Screen getScreen () {
@@ -115,7 +118,13 @@ public abstract class QuGame implements ApplicationListener, InputProcessor {
 
     @Override
     public void resize (int width, int height) {
-        if (screen != null) screen.resize(width, height);
+        if (screen != null) {
+            screen.resize(width, height);
+            screen.is_resize_needed = false;
+        }
+        for (QuScreen item : screens.values()){
+            item.is_resize_needed = true;
+        }
     }
 
     @Override

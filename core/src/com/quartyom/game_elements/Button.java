@@ -56,9 +56,14 @@ public class Button implements Drawable {
     }
 
     public Button setLabel(String string){
+        return setLabel(string, FontType.LOCALIZED_LIGHT);
+    }
+
+    public Button setLabel(String string, FontType fontType){
         if (label == null) {
             label = new Label(game, string);
             label.offset = this.offset;
+            label.fontType = fontType;
         }
         else {
             label.set_string(string);

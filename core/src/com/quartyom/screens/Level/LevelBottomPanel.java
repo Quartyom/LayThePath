@@ -104,7 +104,13 @@ public class LevelBottomPanel extends GameBottomPanel {
         hint_button.update();
         skip_button.update();
 
-        hint_button.setNotification(String.valueOf(game.userData.hints_amount));
+        if (game.userData.hints_amount < 1_000) {
+            hint_button.setNotification(String.valueOf(game.userData.hints_amount));
+        }
+        else {
+            hint_button.setNotification("1k+");
+        }
+
         long minutes_left = (game.userData.when_to_skip_level - TimeUtils.millis()) / 60_000L;
 
         if (levelScreen.levelBoard.current_level < game.userData.max_level_achieved || minutes_left < 0 || game.userData.premium_is_on){

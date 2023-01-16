@@ -1,6 +1,7 @@
 package com.quartyom.screens.Editor;
 
 import com.badlogic.gdx.utils.Align;
+import com.quartyom.game_elements.FontType;
 import com.quartyom.game_elements.GameTopPanel;
 import com.quartyom.game_elements.Label;
 
@@ -20,6 +21,7 @@ public class EditorTopPanel extends GameTopPanel {
         editor_label.string = game.locale.get("Editor");
 
         tool_label = new Label(game);
+        tool_label.fontType = FontType.LOCALIZED_WITH_LATIN;
         tool_string = game.locale.get("Current: ");
         tool_label.target_string = tool_string + "backslash wall ";
 

@@ -1,16 +1,10 @@
 package com.quartyom.game_elements;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.Vector2;
 import com.quartyom.LayThePath;
-import com.quartyom.game_elements.InputState;
-import com.quartyom.game_elements.PressTimer;
-import com.quartyom.game_elements.Scroller;
-import com.quartyom.game_elements.Vibrator;
 import com.quartyom.screens.Level.BoardDrawer;
 import com.quartyom.screens.Level.Gameplay;
-import com.quartyom.screens.Level.LevelsData;
 import com.quartyom.screens.Level.MoveResult;
 
 public abstract class GameBoard {
@@ -29,6 +23,7 @@ public abstract class GameBoard {
     protected Scroller scroller;
     protected PressTimer pressTimer;
 
+    protected InputState inputState;
     protected Vector2 touch_pos;
 
     protected Sound move_sound, move_back_sound, body_shortened_sound, victory_sound;
@@ -44,6 +39,7 @@ public abstract class GameBoard {
         scroller = new Scroller(game);
         pressTimer = new PressTimer(game);
 
+        inputState = InputState.UNTOUCHED;
         touch_pos = new Vector2();
 
         vibrator = game.vibrator;
@@ -110,6 +106,7 @@ public abstract class GameBoard {
             touch_pos.y = game.touch_pos.y;
 
             if (touch_pos.x > board_x && touch_pos.y > board_y && touch_pos.x < board_x + board_w && touch_pos.y < board_y + board_h) {
+                inputState = InputState.TOUCHED;
                 touch_pos.x = (touch_pos.x - board_x) / square_w;
                 touch_pos.y = (touch_pos.y - board_y) / square_h;
 
@@ -166,8 +163,10 @@ public abstract class GameBoard {
                 }
             }
         }
-        // палец только убрали
-        else if (game.inputState == InputState.JUST_UNTOUCHED){
+        // палец только убрали, НО палец до этого касался доски
+        else if (inputState == InputState.TOUCHED){
+            inputState = InputState.UNTOUCHED;
+
             MoveResult result = gameplay.just_untouched_make_move((int) touch_pos.x, (int) touch_pos.y);
             if (result == MoveResult.VICTORY){
                 victory_sound.play(game.userData.volume);   // потому что действие при победе более ресурсозатратное

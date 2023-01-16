@@ -40,7 +40,7 @@ public class Hint implements Drawable {
     }
 
     public void resize(int font_size, float margin_x, float margin_y){
-        font = game.fontHolder.get(font_size);
+        font = game.fontHolder.get(font_size, FontType.LOCALIZED_WITH_LATIN);
 
         game.glyphLayout.setText(font, string, Color.WHITE, game.HALF_WIDTH, Align.left, true);
 

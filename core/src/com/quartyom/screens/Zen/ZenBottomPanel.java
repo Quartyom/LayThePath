@@ -105,7 +105,12 @@ public class ZenBottomPanel extends GameBottomPanel {
         hint_button.update();
         skip_button.update();
 
-        hint_button.setNotification(String.valueOf(game.userData.hints_amount));
+        if (game.userData.hints_amount < 1_000) {
+            hint_button.setNotification(String.valueOf(game.userData.hints_amount));
+        }
+        else {
+            hint_button.setNotification("1k+");
+        }
 
         long minutes_left = (game.userData.when_to_skip_zen_level - TimeUtils.millis()) / 60_000L;
 

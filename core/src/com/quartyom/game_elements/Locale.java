@@ -50,7 +50,7 @@ public class Locale {
             return tag;
         }
         else {
-            return "[RAW]: " + tag;
+            return "[" + tag + "]";
         }
     }
 }

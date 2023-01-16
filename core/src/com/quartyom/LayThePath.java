@@ -69,6 +69,7 @@ public class LayThePath extends QuGame {
 
 	public void change_locale(String language){
 		locale.set(language);
+		fontHolder.update_locale();
 
 		super.dispose();	// чтобы корректно выгрузить прошлые Screen
 

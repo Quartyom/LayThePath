@@ -18,6 +18,7 @@ public class TextField {
     private BitmapFont font;
 
     public String string;
+    public FontType fontType = FontType.LOCALIZED_WITH_LATIN;
 
     public TextField(LayThePath game, String string){
         this.game = game;
@@ -30,7 +31,7 @@ public class TextField {
 
         text_w = w;
 
-        font = game.fontHolder.get(font_size);
+        font = game.fontHolder.get(font_size, fontType);
         game.glyphLayout.setText(font, string, Color.WHITE, text_w, Align.left, true);
         text_h = game.glyphLayout.height;
 
