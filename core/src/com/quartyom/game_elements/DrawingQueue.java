@@ -6,16 +6,16 @@ import com.quartyom.interfaces.Drawable;
 public class DrawingQueue {
     private Queue<Drawable> elements;
 
-    public DrawingQueue(){
+    public DrawingQueue() {
         elements = new Queue<>();
     }
 
-    public void add(Drawable element){
+    public void add(Drawable element) {
         elements.addLast(element);
     }
 
-    public void draw(){
-        for (Drawable item: elements){
+    public void draw() {
+        for (Drawable item : elements) {
             item.draw();
         }
         elements.clear();

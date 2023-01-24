@@ -1,85 +1,90 @@
 package com.quartyom.screens.Menu;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.quartyom.LayThePath;
 import com.quartyom.game_elements.Button;
+import com.quartyom.game_elements.Label;
 import com.quartyom.game_elements.QuScreen;
 import com.quartyom.interfaces.QuEvent;
-import com.quartyom.game_elements.Label;
 
 public class InfoTab extends QuScreen {
+
     final LayThePath game;
 
-    Label info_label;
-    Button how_to_play_button, about_button, stats_button, /*bug_button,*/ back_button;
+    Label infoLabel;
+    Button howToPlayButton, aboutButton, statsButton, backButton;
 
-    public InfoTab(final LayThePath game){
+    public InfoTab(final LayThePath game) {
         this.game = game;
 
-        info_label = new Label(game, game.locale.get("Info"));
+        infoLabel = new Label(game, game.locale.get("Info"));
 
-        how_to_play_button = new Button("in_main_menu", game, new QuEvent() {
+        howToPlayButton = new Button("in_main_menu", game, new QuEvent() {
             @Override
             public void execute() {
                 game.setScreen("menu_how_to_play");
             }
         });
-        how_to_play_button.setNinePatch(6).setLabel(game.locale.get("How to play"));
+        howToPlayButton.setNinePatch(6).setLabel(game.locale.get("How to play"));
 
-        about_button = new Button("in_main_menu", game, new QuEvent() {
+        aboutButton = new Button("in_main_menu", game, new QuEvent() {
             @Override
             public void execute() {
                 game.setScreen("menu_about");
             }
         });
-        about_button.setNinePatch(6).setLabel(game.locale.get("About"));
+        aboutButton.setNinePatch(6).setLabel(game.locale.get("About"));
 
-        stats_button = new Button("in_main_menu", game, new QuEvent() {
+        statsButton = new Button("in_main_menu", game, new QuEvent() {
             @Override
             public void execute() {
                 game.setScreen("menu_stats");
             }
         });
-        stats_button.setNinePatch(6).setLabel(game.locale.get("Stats"));
+        statsButton.setNinePatch(6).setLabel(game.locale.get("Stats"));
 
-        back_button = new Button("in_main_menu", game, new QuEvent() {
+        backButton = new Button("in_main_menu", game, new QuEvent() {
             @Override
             public void execute() {
                 game.setScreen("menu");
             }
         });
-        back_button.setNinePatch(6).setLabel(game.locale.get("Back"));
+        backButton.setNinePatch(6).setLabel(game.locale.get("Back"));
 
     }
 
     @Override
     public void resize(int width, int height) {
-        info_label.resize(game.upper_button_corner_x, game.upper_button_corner_y, game.button_w, game.button_h, 1);
-        how_to_play_button.resize(game.upper_button_corner_x, game.upper_button_corner_y - game.down_margin, game.button_w, game.button_h);
-        about_button.resize(game.upper_button_corner_x, game.upper_button_corner_y - game.down_margin * 2, game.button_w, game.button_h);
-        stats_button.resize(game.upper_button_corner_x, game.upper_button_corner_y - game.down_margin * 3, game.button_w, game.button_h);
+        infoLabel.resize(game.upperButtonCornerX, game.upperButtonCornerY, game.buttonW,
+                game.buttonH, 1);
+        howToPlayButton.resize(game.upperButtonCornerX,
+                game.upperButtonCornerY - game.downMargin, game.buttonW, game.buttonH);
+        aboutButton.resize(game.upperButtonCornerX,
+                game.upperButtonCornerY - game.downMargin * 2, game.buttonW, game.buttonH);
+        statsButton.resize(game.upperButtonCornerX,
+                game.upperButtonCornerY - game.downMargin * 3, game.buttonW, game.buttonH);
         // gap
-        back_button.resize(game.upper_button_corner_x, game.upper_button_corner_y - game.down_margin * 5, game.button_w, game.button_h);
+        backButton.resize(game.upperButtonCornerX,
+                game.upperButtonCornerY - game.downMargin * 5, game.buttonW, game.buttonH);
     }
 
     @Override
     public void render(float delta) {
         Gdx.gl20.glClear(Gdx.gl20.GL_COLOR_BUFFER_BIT);
 
-        info_label.draw();
-        how_to_play_button.draw();
-        about_button.draw();
-        stats_button.draw();
-        back_button.draw();
+        infoLabel.draw();
+        howToPlayButton.draw();
+        aboutButton.draw();
+        statsButton.draw();
+        backButton.draw();
 
-        how_to_play_button.update();
-        about_button.update();
-        stats_button.update();
-        back_button.update();
+        howToPlayButton.update();
+        aboutButton.update();
+        statsButton.update();
+        backButton.update();
 
-        if (game.is_back_button_pressed){
-            game.is_back_button_pressed = false;
+        if (game.isBackButtonPressed) {
+            game.isBackButtonPressed = false;
             game.setScreen("menu");
         }
     }

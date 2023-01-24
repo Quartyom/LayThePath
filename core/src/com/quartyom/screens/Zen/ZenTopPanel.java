@@ -6,42 +6,46 @@ import com.quartyom.game_elements.Label;
 import com.quartyom.screens.Level.Gameplay;
 
 public class ZenTopPanel extends GameTopPanel {
+
     public final ZenScreen zenScreen;
 
-    Label level_label, progress_label;
+    Label levelLabel, progressLabel;
 
-    String level_string, progress_string;
+    String levelString, progressString;
 
-    public ZenTopPanel(final ZenScreen zenScreen){
+    public ZenTopPanel(final ZenScreen zenScreen) {
         super(zenScreen.game);
         this.zenScreen = zenScreen;
 
-        level_label = new Label(game);
-        level_string = game.locale.get("Level ");
-        progress_string = game.locale.get("Progress ");
-        level_label.target_string = level_string + "1000";
-        progress_label = new Label(game);
-        progress_label.target_string = progress_string + "100 / 100";
+        levelLabel = new Label(game);
+        levelString = game.locale.get("Level ");
+        progressString = game.locale.get("Progress ");
+        levelLabel.targetString = levelString + "1000";
+        progressLabel = new Label(game);
+        progressLabel.targetString = progressString + "100 / 100";
     }
 
     @Override
-    public void resize(){
+    public void resize() {
         super.resize();
 
-        level_label.resize(panel_x + panel_w * 0.025f, panel_y + panel_h / 2, panel_w * 0.75f, panel_h / 2, Align.left);
-        progress_label.resize(panel_x + panel_w * 0.025f, panel_y, panel_w * 0.75f, panel_h / 2, Align.left);
+        levelLabel.resize(panelX + panelW * 0.025f, panelY + panelH / 2, panelW * 0.75f,
+                panelH / 2, Align.left);
+        progressLabel.resize(panelX + panelW * 0.025f, panelY, panelW * 0.75f, panelH / 2,
+                Align.left);
     }
 
     @Override
-    public void draw(){
+    public void draw() {
         super.draw();
 
-        level_label.string = level_string + zenScreen.zenBoard.current_level;
-        level_label.draw();
+        levelLabel.string = levelString + zenScreen.zenBoard.currentLevel;
+        levelLabel.draw();
 
         Gameplay gameplay = zenScreen.zenBoard.gameplay;
-        progress_label.string = progress_string + gameplay.how_many_visited + " / " + gameplay.how_many_should_be_visited;
-        progress_label.draw();
+        progressLabel.string =
+                progressString + gameplay.howManyVisited + " / " + gameplay.howManyShouldBeVisited;
+        progressLabel.draw();
     }
 
 }

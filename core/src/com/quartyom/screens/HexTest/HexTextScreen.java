@@ -27,7 +27,7 @@ public class HexTextScreen implements Screen {
 
         touch_pos = new Vector2();
 
-        texture = game.field_atlas.findRegion("full_hex");
+        texture = game.fieldAtlas.findRegion("full_hex");
 
 
     }
@@ -41,17 +41,19 @@ public class HexTextScreen implements Screen {
     public void render(float delta) {
         Gdx.gl20.glClear(Gdx.gl20.GL_COLOR_BUFFER_BIT);
 
-        for (int x = -grid_size; x <= grid_size; x++){
-            for (int y = -grid_size; y<=grid_size; y++){
-                if (dist(new Vector2(x,y)) >= grid_size){continue;}
-                Vector2 pix = hex_to_pixel(new Vector2(x,y));
-                game.batch.draw(texture, (float)(pix.x-hex_size), (float)(pix.y-sqrt(3)/2*hex_size),2 * hex_size, (float)sqrt(3)*hex_size);
+        for (int x = -grid_size; x <= grid_size; x++) {
+            for (int y = -grid_size; y <= grid_size; y++) {
+                if (dist(new Vector2(x, y)) >= grid_size) {
+                    continue;
+                }
+                Vector2 pix = hex_to_pixel(new Vector2(x, y));
+                game.batch.draw(texture, (float) (pix.x - hex_size), (float) (pix.y - sqrt(3) / 2 * hex_size), 2 * hex_size, (float) sqrt(3) * hex_size);
             }
         }
 
-        if (game.inputState == InputState.JUST_TOUCHED){
-            touch_pos.x = game.touch_pos.x;
-            touch_pos.y = game.touch_pos.y;
+        if (game.inputState == InputState.JUST_TOUCHED) {
+            touch_pos.x = game.touchPos.x;
+            touch_pos.y = game.touchPos.y;
         }
 
     }
@@ -90,24 +92,23 @@ public class HexTextScreen implements Screen {
 
     }
 
-    Vector2 hex_to_pixel(Vector2 hex){
-        float x = hex_size * 3/2 * hex.x;
-        float y = (float) (hex_size * sqrt(3) * (hex.y + hex.x/2));
-        return new Vector2(x,y);
+    Vector2 hex_to_pixel(Vector2 hex) {
+        float x = hex_size * 3 / 2 * hex.x;
+        float y = (float) (hex_size * sqrt(3) * (hex.y + hex.x / 2));
+        return new Vector2(x, y);
     }
 
-    Vector2 pixel_to_hex(Vector2 pixel){
-        int q = (int)Math.round(pixel.x / 3*2 / hex_size);
-        int r = (int)Math.round((-pixel.x / 3 + sqrt(3)/3 * pixel.y) / hex_size);
+    Vector2 pixel_to_hex(Vector2 pixel) {
+        int q = (int) Math.round(pixel.x / 3 * 2 / hex_size);
+        int r = (int) Math.round((-pixel.x / 3 + sqrt(3) / 3 * pixel.y) / hex_size);
         //int q = (int)Math.floor(pixel.x / 3*2 / hex_size);
         //int r = (int)Math.floor((-pixel.x / 3 + sqrt(3)/3 * pixel.y) / hex_size);
         return new Vector2(q, r);
     }
 
-    float dist(Vector2 hex){
+    float dist(Vector2 hex) {
         return (abs(hex.x) + abs(hex.y) + abs(0 - hex.x - hex.y)) / 2;
     }
-
 
 
 }

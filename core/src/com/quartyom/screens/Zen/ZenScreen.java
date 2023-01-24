@@ -1,11 +1,11 @@
 package com.quartyom.screens.Zen;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.quartyom.LayThePath;
 import com.quartyom.game_elements.QuScreen;
 
 public class ZenScreen extends QuScreen {
+
     final LayThePath game;
 
     ZenTopPanel zenTopPanel;
@@ -14,7 +14,7 @@ public class ZenScreen extends QuScreen {
     ZenBoard zenBoard;
 
 
-    public ZenScreen(final LayThePath game){
+    public ZenScreen(final LayThePath game) {
         this.game = game;
 
         game.add("zen_hint", new ZenHintTab(this));
@@ -46,8 +46,8 @@ public class ZenScreen extends QuScreen {
         zenBottomPanel.update();
         zenTransformBottomPanel.update();
 
-        if (game.is_back_button_pressed){
-            game.is_back_button_pressed = false;
+        if (game.isBackButtonPressed) {
+            game.isBackButtonPressed = false;
             game.setScreen("menu");
         }
     }

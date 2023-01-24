@@ -3,7 +3,6 @@ package com.quartyom.game_elements;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.utils.Json;
 import com.quartyom.LayThePath;
 
 import java.util.HashMap;
@@ -14,42 +13,38 @@ public class Locale {
     public Map<String, String> folders;
     private Map<String, String> tags;
 
-    public Locale(LayThePath game){
+    public Locale(LayThePath game) {
         this.game = game;
         tags = new HashMap<>();
         folders = new HashMap<>();
 
         if (Gdx.app.getType() == Application.ApplicationType.Android) {
-            for (FileHandle item: Gdx.files.internal("texts").list()){
+            for (FileHandle item : Gdx.files.internal("texts").list()) {
                 folders.put(item.name(), item.child("name.txt").readString());
             }
-        }
-        else {
+        } else {
             folders.put("en", "English");
             folders.put("ru", "Русский");
         }
 
     }
 
-    public void set(String language){
+    public void set(String language) {
         if (folders.containsKey(language)) {
             game.userData.locale = language;
-            game.save_user_data();
+            game.saveUserData();
             tags = game.json.fromJson(tags.getClass(), Gdx.files.internal("texts/" + language + "/tags.json"));
-        }
-        else {
+        } else {
             Gdx.app.error("Locale", language + " is not found");
         }
     }
 
-    public String get(String tag){
-        if (tags.containsKey(tag)){
+    public String get(String tag) {
+        if (tags.containsKey(tag)) {
             return tags.get(tag);
-        }
-        else if (game.userData.locale.equals("en")){
+        } else if (game.userData.locale.equals("en")) {
             return tag;
-        }
-        else {
+        } else {
             return "[" + tag + "]";
         }
     }

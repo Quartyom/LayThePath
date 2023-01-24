@@ -1,17 +1,9 @@
 package com.quartyom.screens.Zen;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
-import com.quartyom.game_elements.InputState;
-import com.quartyom.game_elements.PressTimer;
-import com.quartyom.game_elements.Scroller;
-import com.quartyom.screens.Level.BoardDrawer;
 import com.quartyom.game_elements.GameBoard;
-import com.quartyom.screens.Level.Gameplay;
 import com.quartyom.screens.Level.LevelConfiguration;
-
-import java.util.Random;
 
 
 public class ZenBoard extends GameBoard {
@@ -19,8 +11,8 @@ public class ZenBoard extends GameBoard {
     public final ZenScreen zenScreen;
     ZenLevelGenerator zenLevelGenerator;
 
-    public int current_level;   // Влияет только на визуал верхней панэли
-    boolean was_hint_used;
+    public int currentLevel;   // Влияет только на визуал верхней панэли
+    boolean wasHintUsed;
 
     public ZenBoard(ZenScreen zenScreen) {
         super(zenScreen.game);
@@ -28,42 +20,44 @@ public class ZenBoard extends GameBoard {
 
         zenLevelGenerator = new ZenLevelGenerator(zenScreen.game);
 
-        current_level = game.userData.current_zen_level;
-        load_level(true);
+        currentLevel = game.userData.current_zen_level;
+        loadLevel(true);
 
     }
 
     private LevelConfiguration levelConfiguration;
 
-    public void new_level() {
-        levelConfiguration = zenLevelGenerator.generate_level();
+    public void newLevel() {
+        levelConfiguration = zenLevelGenerator.generateLevel();
         Gdx.files.local("zen_level.json").writeString(game.json.prettyPrint(levelConfiguration), false);
     }
 
-    public void load_level(boolean to_read_from_file) {
-        if (to_read_from_file) {
+    public void loadLevel(boolean toReadFromFile) {
+        if (toReadFromFile) {
             if (!Gdx.files.local("zen_level.json").exists()) {
-                new_level();
+                newLevel();
             }
             String a = Gdx.files.local("zen_level.json").readString();
             levelConfiguration = game.json.fromJson(LevelConfiguration.class, a);
         }
         // else levelConfiguration is already defined
 
-        gameplay.set_level_configuration(levelConfiguration);
+        gameplay.setLevelConfiguration(levelConfiguration);
 
-        game.userData.when_to_skip_zen_level = TimeUtils.millis() + (levelConfiguration.field_size - 2) * 60_000L - 1L;    // now + N-2 minutes
-        game.save_user_data();
+        game.userData.when_to_skip_zen_level =
+                TimeUtils.millis() + (levelConfiguration.field_size - 2) * 60_000L
+                        - 1L;    // now + N-2 minutes
+        game.saveUserData();
 
         resize();
-        gameplay.normalize_cursor(); // чтобы курсор не выпрыгнул за поле
-        boardDrawer.is_hint_shown = false;
-        was_hint_used = false;
+        gameplay.normalizeCursor(); // чтобы курсор не выпрыгнул за поле
+        boardDrawer.isHintShown = false;
+        wasHintUsed = false;
     }
 
-    public void next_level(){
-        new_level();
-        load_level(false);
+    public void nextLevel() {
+        newLevel();
+        loadLevel(false);
     }
 
     public void resize() {
@@ -75,19 +69,19 @@ public class ZenBoard extends GameBoard {
     }
 
     @Override
-    public void victory_action() {
-        current_level++;
-        game.userData.current_zen_level = current_level;
+    public void victoryAction() {
+        currentLevel++;
+        game.userData.current_zen_level = currentLevel;
         //game.save_user_data();  // not necessary bcs called in next_level
 
-        if (game.random.nextInt(3) == 0){
+        if (game.random.nextInt(3) == 0) {
             game.userData.hints_amount++;
         }
 
         game.userData.zen_levels_passed++;     // статистика
         //game.save_user_data();  // not necessary bcs called in next_level
 
-        next_level();
+        nextLevel();
     }
 
 }

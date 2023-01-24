@@ -1,7 +1,6 @@
 package com.quartyom.screens.Editor;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.quartyom.LayThePath;
 import com.quartyom.game_elements.QuScreen;
 
@@ -26,9 +25,9 @@ public class EditorScreen extends QuScreen {
     final int MAX_FIELD_SIZE = 10;
     final int MIN_FILED_SIZE = 1;
 
-    boolean is_slider_active = false;
+    boolean isSliderActive = false;
 
-    public EditorScreen(final LayThePath game){
+    public EditorScreen(final LayThePath game) {
         this.game = game;
 
         editorTopPanel = new EditorTopPanel(this);
@@ -67,8 +66,8 @@ public class EditorScreen extends QuScreen {
         editorBottomPanel.update();
         editorBoard.update();   // обновляется после нижней панели
 
-        if (game.is_back_button_pressed){
-            game.is_back_button_pressed = false;
+        if (game.isBackButtonPressed) {
+            game.isBackButtonPressed = false;
             game.setScreen("menu");
         }
     }

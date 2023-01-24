@@ -9,20 +9,19 @@ public class Timer {
     private LayThePath game;
     private QuEvent action;
 
-    private long when_to_act;
+    private long whenToAct;
 
-    public Timer(LayThePath game, QuEvent action){
+    public Timer(LayThePath game, QuEvent action) {
         this.game = game;
         this.action = action;
-
     }
 
-    public void set(long ms){
-        when_to_act = TimeUtils.millis() + ms;
+    public void set(long ms) {
+        whenToAct = TimeUtils.millis() + ms;
     }
 
-    public void update(){
-        if (TimeUtils.millis() >= when_to_act){
+    public void update() {
+        if (TimeUtils.millis() >= whenToAct) {
             action.execute();
         }
     }

@@ -4,20 +4,21 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Align;
 import com.quartyom.LayThePath;
 import com.quartyom.game_elements.Button;
+import com.quartyom.game_elements.Label;
 import com.quartyom.game_elements.QuScreen;
 import com.quartyom.interfaces.QuEvent;
-import com.quartyom.game_elements.Label;
 
 public class MenuTab extends QuScreen {
+
     final LayThePath game;
 
-    Button easter_button, play_button, zen_button, editor_button, info_button, settings_button;
-    Label menu_label;
+    Button easterButton, playButton, zenButton, editorButton, infoButton, settingsButton;
+    Label menuLabel;
 
-    private int times_easter_button_clicked;
-    private boolean back_pressed_before = false;
+    private int timesEasterButtonClicked;
+    private boolean backPressedBefore = false;
 
-    public MenuTab(final LayThePath game){
+    public MenuTab(final LayThePath game) {
         this.game = game;
 
         game.add("menu_about", new AboutTab(game));
@@ -34,46 +35,41 @@ public class MenuTab extends QuScreen {
         //game.add("menu_zen_after_ads", new ZenAfterAds(game));
         game.add("menu_zen_is_unavailable", new ZenIsUnavailable(game));
 
-        menu_label = new Label(game, game.locale.get("Menu"));
+        menuLabel = new Label(game, game.locale.get("Menu"));
 
-        easter_button = new Button(game, new QuEvent() {
+        easterButton = new Button(game, new QuEvent() {
             @Override
             public void execute() {
-                times_easter_button_clicked++;
+                timesEasterButtonClicked++;
 
-                if (times_easter_button_clicked >= 30){
-                    menu_label.set_string(game.locale.get("Ughhhh"));
-                }
-                else if (times_easter_button_clicked >= 22){
-                    menu_label.set_string(game.locale.get("stop?"));
-                }
-                else if (times_easter_button_clicked >= 20){
-                    menu_label.set_string(game.locale.get("you please"));
-                }
-                else if (times_easter_button_clicked >= 18){
-                    menu_label.set_string(game.locale.get("Would"));
-                }
-                else if (times_easter_button_clicked >= 10){
-                    menu_label.set_string(game.locale.get("It's annoying"));
-                }
-                else if (times_easter_button_clicked >= 3){
-                    menu_label.set_string(game.locale.get("Auch!"));
+                if (timesEasterButtonClicked >= 30) {
+                    menuLabel.setString(game.locale.get("Ughhhh"));
+                } else if (timesEasterButtonClicked >= 22) {
+                    menuLabel.setString(game.locale.get("stop?"));
+                } else if (timesEasterButtonClicked >= 20) {
+                    menuLabel.setString(game.locale.get("you please"));
+                } else if (timesEasterButtonClicked >= 18) {
+                    menuLabel.setString(game.locale.get("Would"));
+                } else if (timesEasterButtonClicked >= 10) {
+                    menuLabel.setString(game.locale.get("It's annoying"));
+                } else if (timesEasterButtonClicked >= 3) {
+                    menuLabel.setString(game.locale.get("Auch!"));
                 }
             }
         });
 
-        play_button = new Button("in_main_menu", game, new QuEvent() {
+        playButton = new Button("in_main_menu", game, new QuEvent() {
             @Override
             public void execute() {
                 game.setScreen("level");
             }
         });
-        play_button.setNinePatch(6).setLabel(game.locale.get("Play"));
+        playButton.setNinePatch(6).setLabel(game.locale.get("Play"));
 
-        zen_button = new Button("in_main_menu", game, new QuEvent() {
+        zenButton = new Button("in_main_menu", game, new QuEvent() {
             @Override
             public void execute() {
-                if (game.userData.zen_is_available){
+                if (game.userData.zen_is_available) {
                     /*if (game.userData.editor_is_available){
                         game.setScreen("zen");
                     }
@@ -81,89 +77,93 @@ public class MenuTab extends QuScreen {
                         game.setScreen("menu_zen_after_ads");
                     }*/
                     game.setScreen("zen");
-                }
-                else {
+                } else {
                     game.setScreen("menu_zen_is_unavailable");
                 }
             }
         });
-        zen_button.setNinePatch(6).setLabel(game.locale.get("Zen"));
+        zenButton.setNinePatch(6).setLabel(game.locale.get("Zen"));
 
-        editor_button = new Button("in_main_menu", game, new QuEvent() {
+        editorButton = new Button("in_main_menu", game, new QuEvent() {
             @Override
             public void execute() {
-                if (game.userData.editor_is_available){
+                if (game.userData.editor_is_available) {
                     game.setScreen("editor");
-                }
-                else {
+                } else {
                     game.setScreen("menu_editor_is_unavailable");
                 }
             }
         });
-        editor_button.setNinePatch(6).setLabel(game.locale.get("Editor"));
+        editorButton.setNinePatch(6).setLabel(game.locale.get("Editor"));
 
-        info_button = new Button("in_main_menu", game, new QuEvent() {
+        infoButton = new Button("in_main_menu", game, new QuEvent() {
             @Override
             public void execute() {
                 game.setScreen("menu_info");
             }
         });
-        info_button.setNinePatch(6).setLabel(game.locale.get("Info"));
+        infoButton.setNinePatch(6).setLabel(game.locale.get("Info"));
 
-        settings_button = new Button("in_main_menu", game, new QuEvent() {
+        settingsButton = new Button("in_main_menu", game, new QuEvent() {
             @Override
             public void execute() {
                 game.setScreen("menu_settings");
             }
         });
-        settings_button.setNinePatch(6).setLabel(game.locale.get("Settings"));
+        settingsButton.setNinePatch(6).setLabel(game.locale.get("Settings"));
 
     }
 
     @Override
     public void resize(int width, int height) {
-        menu_label.resize(game.upper_button_corner_x, game.upper_button_corner_y, game.button_w, game.button_h, Align.center);
-        easter_button.resize(game.upper_button_corner_x, game.upper_button_corner_y, game.button_w, game.button_h);
-        play_button.resize(game.upper_button_corner_x, game.upper_button_corner_y - game.down_margin, game.button_w, game.button_h);
-        zen_button.resize(game.upper_button_corner_x, game.upper_button_corner_y - game.down_margin * 2, game.button_w, game.button_h);
-        editor_button.resize(game.upper_button_corner_x, game.upper_button_corner_y - game.down_margin * 3, game.button_w, game.button_h);
-        info_button.resize(game.upper_button_corner_x, game.upper_button_corner_y - game.down_margin * 4, game.button_w, game.button_h);
-        settings_button.resize(game.upper_button_corner_x, game.upper_button_corner_y - game.down_margin * 5, game.button_w, game.button_h);
+        menuLabel.resize(game.upperButtonCornerX, game.upperButtonCornerY, game.buttonW,
+                game.buttonH, Align.center);
+        easterButton.resize(game.upperButtonCornerX, game.upperButtonCornerY, game.buttonW,
+                game.buttonH);
+        playButton.resize(game.upperButtonCornerX, game.upperButtonCornerY - game.downMargin,
+                game.buttonW, game.buttonH);
+        zenButton.resize(game.upperButtonCornerX, game.upperButtonCornerY - game.downMargin * 2,
+                game.buttonW, game.buttonH);
+        editorButton.resize(game.upperButtonCornerX,
+                game.upperButtonCornerY - game.downMargin * 3, game.buttonW, game.buttonH);
+        infoButton.resize(game.upperButtonCornerX,
+                game.upperButtonCornerY - game.downMargin * 4, game.buttonW, game.buttonH);
+        settingsButton.resize(game.upperButtonCornerX,
+                game.upperButtonCornerY - game.downMargin * 5, game.buttonW, game.buttonH);
     }
 
     @Override
     public void show() {
         Gdx.gl20.glClearColor(0, 0, 0, 1);
-        menu_label.set_string(game.locale.get("Menu"));
-        times_easter_button_clicked = 0;
-        back_pressed_before = false;
+        menuLabel.setString(game.locale.get("Menu"));
+        timesEasterButtonClicked = 0;
+        backPressedBefore = false;
     }
 
     @Override
     public void render(float delta) {
         Gdx.gl20.glClear(Gdx.gl20.GL_COLOR_BUFFER_BIT);
 
-        menu_label.draw();
-        play_button.draw();
-        zen_button.draw();
-        editor_button.draw();
-        info_button.draw();
-        settings_button.draw();
+        menuLabel.draw();
+        playButton.draw();
+        zenButton.draw();
+        editorButton.draw();
+        infoButton.draw();
+        settingsButton.draw();
 
-        easter_button.update();
-        play_button.update();
-        zen_button.update();
-        editor_button.update();
-        info_button.update();
-        settings_button.update();
+        easterButton.update();
+        playButton.update();
+        zenButton.update();
+        editorButton.update();
+        infoButton.update();
+        settingsButton.update();
 
-        if (game.is_back_button_pressed){
-            if (back_pressed_before){
+        if (game.isBackButtonPressed) {
+            if (backPressedBefore) {
                 Gdx.app.exit();
-            }
-            else {
-                back_pressed_before = true;
-                game.is_back_button_pressed = false;
+            } else {
+                backPressedBefore = true;
+                game.isBackButtonPressed = false;
             }
         }
     }

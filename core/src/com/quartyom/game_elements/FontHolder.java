@@ -13,104 +13,99 @@ public class FontHolder {
     LayThePath game;
 
     private FreeTypeFontGenerator generator;
-    private Map<Integer, BitmapFont> fonts_light, fonts_with_latin, international_fonts;
+    private Map<Integer, BitmapFont> fontsLight, fontsWithLatin, internationalFonts;
     private FreeTypeFontGenerator.FreeTypeFontParameter parameter;
-    private String characters_light, characters_with_latin, international_characters;
-    private boolean latin_is_light = false;
+    private String charactersLight, charactersWithLatin, internationalCharacters;
+    private boolean isLatinLight = false;   // are only local characters and local + latin the same
 
     // " !\"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz[\\]^_`{|}~";
-    public static final String default_characters = " !\"#$%&\'()*+,-./0123456789:;<=>?@[\\]^_`{|}~";
-    public static final String latin_characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    public static final String DEFAULT_CHARACTERS = " !\"#$%&\'()*+,-./0123456789:;<=>?@[\\]^_`{|}~";
+    public static final String LATIN_CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 
-    public FontHolder(LayThePath game, String path){
+    public FontHolder(LayThePath game, String path) {
         this.game = game;
 
-        FreeTypeFontGenerator.setMaxTextureSize(2048);  // очень важная строчка, без неё часть символов не отображается
+        FreeTypeFontGenerator.setMaxTextureSize(2048);  // very important string, without it most part of symbols is invisible
         generator = new FreeTypeFontGenerator(Gdx.files.internal(path));
         parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.color = Color.WHITE;
 
-        fonts_light = new HashMap<>();
-        fonts_with_latin = new HashMap<>();
+        fontsLight = new HashMap<>();
+        fontsWithLatin = new HashMap<>();
+        internationalFonts = new HashMap<>();
 
-        update_locale();
-
-        international_fonts = new HashMap<>();
-        international_characters = default_characters + latin_characters;
+        internationalCharacters = DEFAULT_CHARACTERS + LATIN_CHARACTERS;
         for (String key : game.locale.folders.keySet()) {
-            international_characters += Gdx.files.internal("texts/" + key + "/alphabet.txt").readString();
+            internationalCharacters += Gdx.files.internal("texts/" + key + "/alphabet.txt").readString();
         }
-        international_characters = international_characters.replaceAll("(.)\\1{1,}", "$1");
+        internationalCharacters = internationalCharacters.replaceAll("(.)\\1{1,}", "$1");   // avoid repeated chars
+
+        updateLocale();
     }
 
-    public void update_locale(){
-        clear_fonts(fonts_light);
-        clear_fonts(fonts_with_latin);
+    public void updateLocale() {
+        clearFonts(fontsLight);
+        clearFonts(fontsWithLatin);
 
-        String local_characters = Gdx.files.internal("texts/" + game.userData.locale + "/alphabet.txt").readString().replace("*", latin_characters);
-        if (local_characters.contains("*")){
-            latin_is_light = true;
-            local_characters = local_characters.replace("*", latin_characters);
+        String localCharacters = Gdx.files.internal("texts/" + game.userData.locale + "/alphabet.txt").readString();
+        if (localCharacters.contains("*")) {
+            isLatinLight = true;
+            localCharacters = localCharacters.replace("*", LATIN_CHARACTERS);
+        } else {
+            isLatinLight = false;
+            charactersWithLatin = DEFAULT_CHARACTERS + LATIN_CHARACTERS + localCharacters;
+            charactersWithLatin = charactersWithLatin.replaceAll("(.)\\1{1,}", "$1");
         }
-        else {
-            characters_with_latin = default_characters + latin_characters + local_characters;
-            characters_with_latin = characters_with_latin.replaceAll("(.)\\1{1,}", "$1");
-        }
-        characters_light = default_characters + local_characters;
-        characters_light = characters_light.replaceAll("(.)\\1{1,}", "$1"); // повторяющиеся символы удалит регулярное выражение
+        charactersLight = DEFAULT_CHARACTERS + localCharacters;
+        charactersLight = charactersLight.replaceAll("(.)\\1{1,}", "$1"); // avoid repeated chars
+
     }
 
-    public BitmapFont get(Integer font_size, FontType fontType){
-
-        switch (fontType){  // ищем в лёгких, затем латинице, затем международых
+    public BitmapFont get(Integer fontSize, FontType fontType) {    // returns required font from existing, creates new if needed
+        // if required light, latin or international also suffice bcs they contain such symbol
+        switch (fontType) {  // searches in light, then latin, then international
             case LOCALIZED_LIGHT:
-                if (fonts_light.containsKey(font_size)){
-                    return fonts_light.get(font_size);
+                if (fontsLight.containsKey(fontSize)) {
+                    return fontsLight.get(fontSize);
                 }
             case LOCALIZED_WITH_LATIN:
-                if (fonts_with_latin.containsKey(font_size)){
-                    return fonts_with_latin.get(font_size);
+                if (fontsWithLatin.containsKey(fontSize)) {
+                    return fontsWithLatin.get(fontSize);
                 }
             case INTERNATIONAL:
-                if (international_fonts.containsKey(font_size)){
-                    return international_fonts.get(font_size);
+                if (internationalFonts.containsKey(fontSize)) {
+                    return internationalFonts.get(fontSize);
                 }
         }
 
-        Map<Integer, BitmapFont> fonts;
+        Map<Integer, BitmapFont> fonts; // arbitrary fonts map reference
 
-        if (fontType == FontType.LOCALIZED_LIGHT || fontType == FontType.LOCALIZED_WITH_LATIN && latin_is_light){
-            fonts = fonts_light;
-            parameter.characters = characters_light;
-        }
-        else if (fontType == FontType.LOCALIZED_WITH_LATIN){
-            fonts = fonts_with_latin;
-            parameter.characters = characters_with_latin;
-        }
-        else {
-            fonts = international_fonts;
-            parameter.characters = international_characters;
+        if (fontType == FontType.LOCALIZED_LIGHT || fontType == FontType.LOCALIZED_WITH_LATIN && isLatinLight) {
+            fonts = fontsLight;
+            parameter.characters = charactersLight;
+        } else if (fontType == FontType.LOCALIZED_WITH_LATIN) {
+            fonts = fontsWithLatin;
+            parameter.characters = charactersWithLatin;
+        } else {
+            fonts = internationalFonts;
+            parameter.characters = internationalCharacters;
         }
 
-        parameter.size = font_size;
-        BitmapFont font = generator.generateFont(parameter);
-        fonts.put(font_size, font);
+        parameter.size = fontSize;
+        BitmapFont font = generator.generateFont(parameter);    // creating a new font + put in according map
+        fonts.put(fontSize, font);
         return font;
     }
 
-    public int size(){
-        return fonts_light.size();
-    }
-
-    public void dispose(){
-        clear_fonts(fonts_light);
-        clear_fonts(fonts_with_latin);
-        clear_fonts(international_fonts);
+    public void dispose() {
+        clearFonts(fontsLight);
+        clearFonts(fontsWithLatin);
+        clearFonts(internationalFonts);
         generator.dispose();
     }
 
-    public void clear_fonts(Map<Integer, BitmapFont> fonts){
-        for (BitmapFont item: fonts.values()){
+    public void clearFonts(Map<Integer, BitmapFont> fonts) {
+        for (BitmapFont item : fonts.values()) {
             item.dispose();
         }
         fonts.clear();

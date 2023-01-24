@@ -1,95 +1,92 @@
 package com.quartyom.game_elements;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.quartyom.LayThePath;
 
 // двойной тап нажал отпустил через 100мс нажал через 100мс
 public class PressTimer {
-    private float button_x, button_y, button_w, button_h;
+    private float buttonX, buttonY, buttonW, buttonH;
     public Vector2 offset;
 
     public InputState inputState;
 
     LayThePath game;
 
-    Vector2 touch_pos, prev_touch_pos;
+    Vector2 touchPos, prevTouchPos;
 
-    private long when_just_touched, when_just_untouched;
-    private boolean double_tap;
+    private long whenJustTouched, whenJustUntouched;
+    private boolean isDoubleTap;
 
-    public PressTimer(LayThePath game){
+    public PressTimer(LayThePath game) {
         this.game = game;
 
         inputState = InputState.UNTOUCHED;
-        touch_pos = new Vector2();
-        prev_touch_pos = new Vector2();
+        touchPos = new Vector2();
+        prevTouchPos = new Vector2();
         offset = new Vector2();
     }
 
-    public void resize(float x, float y, float w, float h){
-        button_x = x;
-        button_y = y;
-        button_w = w;
-        button_h = h;
+    public void resize(float x, float y, float w, float h) {
+        buttonX = x;
+        buttonY = y;
+        buttonW = w;
+        buttonH = h;
     }
 
-    private boolean to_reset = false;
+    private boolean toReset = false;
 
-    public void reset(){
+    public void reset() {
         inputState = InputState.UNTOUCHED;
-        when_just_touched = 0;
-        when_just_untouched = 0;
+        whenJustTouched = 0;
+        whenJustUntouched = 0;
     }
 
     // нажал и отпустил - клик
-    public void update(){
+    public void update() {
         // если нажато
-        if (game.isTouched){
-            touch_pos.x = game.touch_pos.x - offset.x;
-            touch_pos.y = game.touch_pos.y - offset.y;
+        if (game.isTouched) {
+            touchPos.x = game.touchPos.x - offset.x;
+            touchPos.y = game.touchPos.y - offset.y;
 
             // попали ли по кнопке
-            if (touch_pos.x > button_x && touch_pos.y > button_y && touch_pos.x < button_x + button_w && touch_pos.y < button_y + button_h){
+            if (touchPos.x > buttonX && touchPos.y > buttonY && touchPos.x < buttonX + buttonW && touchPos.y < buttonY + buttonH) {
                 if (game.inputState == InputState.JUST_TOUCHED) {
                     inputState = InputState.TOUCHED;
 
-                    long current_time = TimeUtils.millis();
+                    long currentTime = TimeUtils.millis();
 
                     // двойное ли нажатие?
                     // куча магических чисел
-                    if (current_time - when_just_untouched <= 200 && when_just_untouched - when_just_touched <= 200){
-                        if (touch_pos.dst(prev_touch_pos) <= game.WIDTH / 8) {
-                            double_tap = true;
+                    if (currentTime - whenJustUntouched <= 200 && whenJustUntouched - whenJustTouched <= 200) {
+                        if (touchPos.dst(prevTouchPos) <= game.WIDTH / 8) {
+                            isDoubleTap = true;
                         }
                     }
-                    prev_touch_pos = new Vector2(touch_pos);
-                    when_just_touched = TimeUtils.millis();
+                    prevTouchPos = new Vector2(touchPos);
+                    whenJustTouched = TimeUtils.millis();
 
-                }
-                else {
-                    if (touch_pos.dst(prev_touch_pos) >= game.WIDTH / 16) {
-                        to_reset = true;
+                } else {
+                    if (touchPos.dst(prevTouchPos) >= game.WIDTH / 16) {
+                        toReset = true;
                     }
                 }
-            }
-            else {
+            } else {
                 inputState = InputState.UNTOUCHED;
             }
             // не попали по кнопке
         }
         // не нажато
         else {
-            if (to_reset){
+            if (toReset) {
                 reset();
-                to_reset = false;
+                toReset = false;
             }
             // но было нажато
             if (inputState == InputState.TOUCHED) {
                 // палец убрали над кнопкой = клик
-                if (touch_pos.x > button_x && touch_pos.y > button_y && touch_pos.x < button_x + button_w && touch_pos.y < button_y + button_h){
-                    when_just_untouched = TimeUtils.millis();
+                if (touchPos.x > buttonX && touchPos.y > buttonY && touchPos.x < buttonX + buttonW && touchPos.y < buttonY + buttonH) {
+                    whenJustUntouched = TimeUtils.millis();
                 }
                 inputState = InputState.UNTOUCHED;
 
@@ -97,9 +94,9 @@ public class PressTimer {
         }
     }
 
-    public boolean handle_double_tap(){
-        boolean result = double_tap;
-        double_tap = false;
+    public boolean handle_double_tap() {
+        boolean result = isDoubleTap;
+        isDoubleTap = false;
         return result;
     }
 }

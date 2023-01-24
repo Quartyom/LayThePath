@@ -2,80 +2,73 @@ package com.quartyom.game_elements;
 
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Vector2;
 import com.quartyom.LayThePath;
 
 import java.util.ArrayList;
 
 public class SwitchButton {
-    private float button_x, button_y, button_w, button_h;
+    private float buttonX, buttonY, buttonW, buttonH;
 
     public ArrayList<TextureRegion> textures;
 
     public int state;
-    public boolean recently_changed = false;
-    public boolean to_change_state_on_click = true;
+    public boolean recentlyChanged = false;
+    public boolean toChangeStateOnClick = true;
 
     LayThePath game;
 
     Sound click_sound;
 
-    Vector2 touch_pos;
-
-    public SwitchButton(LayThePath game){
+    public SwitchButton(LayThePath game) {
         this.game = game;
-        touch_pos = new Vector2();
 
         textures = new ArrayList<>();
 
         click_sound = game.soundHolder.get("click_0");
     }
 
-    public SwitchButton add(String path){
-        textures.add(game.buttons_atlas.findRegion(path));
+    public SwitchButton add(String path) {
+        textures.add(game.buttonsAtlas.findRegion(path));
         return this;
     }
 
-    public SwitchButton setSound(String name){
+    public SwitchButton setSound(String name) {
         click_sound = game.soundHolder.get(name);
         return this;
     }
 
-    public void resize(float x, float y, float w, float h){
-        button_x = x;
-        button_y = y;
-        button_w = w;
-        button_h = h;
+    public void resize(float x, float y, float w, float h) {
+        buttonX = x;
+        buttonY = y;
+        buttonW = w;
+        buttonH = h;
     }
 
-    public void draw(){
-        game.batch.draw(textures.get(state), button_x, button_y, button_w, button_h);
+    public void draw() {
+        game.batch.draw(textures.get(state), buttonX, buttonY, buttonW, buttonH);
     }
-
 
     // нажал и отпустил - клик
-    public void update(){
+    public void update() {
         // если нажато
-        if (game.inputState == InputState.JUST_TOUCHED){
-            touch_pos.x = game.touch_pos.x;
-            touch_pos.y = game.touch_pos.y;
+        if (game.inputState == InputState.JUST_TOUCHED) {
 
             // попали ли по кнопке
-            if (touch_pos.x > button_x && touch_pos.y > button_y && touch_pos.x < button_x + button_w && touch_pos.y < button_y + button_h){
+            if (game.touchPos.x > buttonX && game.touchPos.y > buttonY && game.touchPos.x < buttonX + buttonW && game.touchPos.y < buttonY + buttonH) {
 
-                if (to_change_state_on_click) {
+                if (toChangeStateOnClick) {
                     state++;
                     if (state >= textures.size()) {
                         state = 0;
                     }
                 }
 
-                recently_changed = true;
+                recentlyChanged = true;
                 click_sound.play(game.userData.volume * 0.5f);
                 return;
             }
         }
-        recently_changed = false;
+        recentlyChanged = false;
 
     }
 }

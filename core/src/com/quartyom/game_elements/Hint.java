@@ -1,6 +1,5 @@
 package com.quartyom.game_elements;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -9,92 +8,93 @@ import com.badlogic.gdx.utils.Align;
 import com.quartyom.LayThePath;
 import com.quartyom.interfaces.Drawable;
 
-// произвольный текст, максимальный размер половина ширины, половина высоты игры, позиция зависит от курсора
+// arbitrary text, max size: half screen width, half screen height, hint position depends on touch position
 public class Hint implements Drawable {
 
-    public boolean is_active;
-    private float hint_x, hint_y, hint_w, hint_h;
-    private float hint_half_w, hint_half_h;
-    private float text_x, text_y, text_w, text_h;
-    private float text_half_w, text_half_h;
+    private final Button parentButton;
+    private float hintX, hintY, hintW, hintH;
+    private float hintHalfW, hintHalfH;
+    private float textX, textY, textW, textH;
+    private float textHalfW, textHalfH;
 
-    private float margin_x, margin_y;
+    private float marginX, marginY;
 
-    private LayThePath game;
+    public final LayThePath game;
     private BitmapFont font;
 
-    private TextureRegion texture;
+    private final TextureRegion texture;
 
     private String string;
 
-    Vector2 touch_pos;
+    Vector2 touchPos;
 
-    public Hint(LayThePath game){
-        this.game = game;
-        touch_pos = new Vector2();
-        texture = game.field_atlas.findRegion("light_square");
+    Hint(Button parentButton) {
+        this.parentButton = parentButton;
+        this.game = parentButton.game;
+        touchPos = new Vector2();
+        texture = game.fieldAtlas.findRegion("light_square");
     }
 
-    public void set_string(String string){
+    public void setString(String string) {
         this.string = string;
     }
 
-    public void resize(int font_size, float margin_x, float margin_y){
-        font = game.fontHolder.get(font_size, FontType.LOCALIZED_WITH_LATIN);
+    public void resize(int fontSize, float marginX, float marginY) {
+        font = game.fontHolder.get(fontSize, FontType.LOCALIZED_WITH_LATIN);
 
         game.glyphLayout.setText(font, string, Color.WHITE, game.HALF_WIDTH, Align.left, true);
 
-        text_w = game.glyphLayout.width;
-        text_h = game.glyphLayout.height;
-        text_half_w = text_w / 2;
-        text_half_h = text_h / 2;
+        textW = game.glyphLayout.width;
+        textH = game.glyphLayout.height;
+        textHalfW = textW / 2;
+        textHalfH = textH / 2;
 
-        this.margin_x = margin_x;
-        this.margin_y = margin_y;
+        this.marginX = marginX;
+        this.marginY = marginY;
 
-        hint_w = text_w + font_size;
-        hint_h = text_h + font_size;
-        hint_half_w = hint_w / 2;
-        hint_half_h = hint_h / 2;
+        hintW = textW + fontSize;
+        hintH = textH + fontSize;
+        hintHalfW = hintW / 2;
+        hintHalfH = hintH / 2;
     }
 
     public void draw() {
-        if (!is_active){return;}
-
-        // делаем hint так, чтобы не выходили за пределы экрана
-        if (touch_pos.x - hint_half_w < -game.HALF_WIDTH){
-            touch_pos.x = -game.HALF_WIDTH + hint_half_w;
-        }
-        else if (touch_pos.x + hint_half_w > game.HALF_WIDTH){
-            touch_pos.x = game.HALF_WIDTH - hint_half_w;
+        if (parentButton.inputState == InputState.UNTOUCHED) {
+            return;
         }
 
-        if (touch_pos.y - hint_half_h < -game.HALF_HEIGHT){
-            touch_pos.y = -game.HALF_HEIGHT + hint_half_h;
+        // do hint not to go out of screen borders
+        if (touchPos.x - hintHalfW < -game.HALF_WIDTH) {    // horizontal
+            touchPos.x = -game.HALF_WIDTH + hintHalfW;
+        } else if (touchPos.x + hintHalfW > game.HALF_WIDTH) {
+            touchPos.x = game.HALF_WIDTH - hintHalfW;
         }
-        else if (touch_pos.y + hint_half_h > game.HALF_HEIGHT){
-            touch_pos.y = game.HALF_HEIGHT - hint_half_h;
+
+        if (touchPos.y - hintHalfH < -game.HALF_HEIGHT) {      // vertical
+            touchPos.y = -game.HALF_HEIGHT + hintHalfH;
+        } else if (touchPos.y + hintHalfH > game.HALF_HEIGHT) {
+            touchPos.y = game.HALF_HEIGHT - hintHalfH;
         }
 
-        hint_x = touch_pos.x - hint_half_w;
-        hint_y = touch_pos.y - hint_half_h;
+        hintX = touchPos.x - hintHalfW;     // position equals center - half size
+        hintY = touchPos.y - hintHalfH;
 
-        text_x = touch_pos.x - text_half_w;
-        text_y = touch_pos.y + text_half_h;
+        textX = touchPos.x - textHalfW;
+        textY = touchPos.y + textHalfH;
 
-        // отрисовка
-        game.batch.draw(texture, hint_x, hint_y, hint_w, hint_h);
-        font.draw(game.batch, string, text_x, text_y, text_w, Align.left, true);
+        game.batch.draw(texture, hintX, hintY, hintW, hintH);
+        font.draw(game.batch, string, textX, textY, textW, Align.left, true);
 
     }
 
-    public void update(){
-        if (!is_active){return;}
+    public void update() {
+        if (parentButton.inputState == InputState.UNTOUCHED) {
+            return;
+        }
 
-        // если нажато
         if (game.isTouched) {
-            touch_pos.x = game.touch_pos.x + margin_x;
-            touch_pos.y = game.touch_pos.y + margin_y;
+            touchPos.x = game.touchPos.x + marginX;
+            touchPos.y = game.touchPos.y + marginY;
         }
     }
 

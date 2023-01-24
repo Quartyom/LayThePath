@@ -3,46 +3,50 @@ package com.quartyom.screens.Editor;
 import com.quartyom.game_elements.GameBoard;
 
 public class EditorLaunchedBoard extends GameBoard {
-    public boolean is_active = false;
+    public boolean isActive = false;
 
     public final EditorScreen editorScreen;
 
-    public boolean is_level_completed = false;
-    public boolean is_level_saved = false;
+    public boolean isLevelCompleted = false;
+    public boolean isLevelSaved = false;
 
 
-    public EditorLaunchedBoard(EditorScreen editorScreen){
+    public EditorLaunchedBoard(EditorScreen editorScreen) {
         super(editorScreen.game);
         this.editorScreen = editorScreen;
     }
 
-    public void activate(){
-        is_active = true;
-        is_level_completed = false;
-        is_level_saved = false;
-        gameplay.set_level_configuration(editorScreen.editorBoard.gameplay.get_level_configuration());
+    public void activate() {
+        isActive = true;
+        isLevelCompleted = false;
+        isLevelSaved = false;
+        gameplay.setLevelConfiguration(editorScreen.editorBoard.gameplay.getLevelConfiguration());
         resize();
-        gameplay.normalize_cursor(); // чтобы курсор не выпрыгнул за поле
+        gameplay.normalizeCursor(); // чтобы курсор не выпрыгнул за поле
     }
 
-    public void resize(){
+    public void resize() {
         super.resize(editorScreen.editorTopPanel.getHeight());
     }
 
-    void draw(){
-        if (!is_active){return;}
+    void draw() {
+        if (!isActive) {
+            return;
+        }
         boardDrawer.draw();
     }
 
     @Override
-    public void update(){
-        if (!is_active){return;}
+    public void update() {
+        if (!isActive) {
+            return;
+        }
         super.update();
     }
 
     @Override
-    public void victory_action() {
-        is_level_completed = true;
+    public void victoryAction() {
+        isLevelCompleted = true;
     }
 
 }

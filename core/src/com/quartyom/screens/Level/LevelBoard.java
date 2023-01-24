@@ -1,18 +1,9 @@
 package com.quartyom.screens.Level;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.quartyom.UserData;
 import com.quartyom.game_elements.GameBoard;
-import com.quartyom.game_elements.InputState;
-import com.quartyom.game_elements.PressTimer;
-import com.quartyom.game_elements.Scroller;
-import com.quartyom.game_elements.Slider;
-import com.quartyom.game_elements.Vibrator;
-
-import java.util.Random;
 
 public class LevelBoard extends GameBoard {
     public final LevelScreen levelScreen;
@@ -20,78 +11,78 @@ public class LevelBoard extends GameBoard {
     LevelsData levelsData;
     UserData userData;
 
-    int how_many_levels, current_level;
-    boolean was_hint_used;
+    int howManyLevels, currentLevel;
+    boolean wasHintUsed;
 
-    public LevelBoard(LevelScreen levelScreen){
+    public LevelBoard(LevelScreen levelScreen) {
         super(levelScreen.game);
 
         this.levelScreen = levelScreen;
 
         String a = Gdx.files.internal("levels/levels_data.json").readString();
         levelsData = game.json.fromJson(LevelsData.class, a);
-        how_many_levels = levelsData.how_many_levels;
+        howManyLevels = levelsData.how_many_levels;
 
         userData = game.userData;
-        current_level = userData.current_level;
+        currentLevel = userData.current_level;
 
-        load_level();
+        loadLevel();
 
     }
 
-    public void resize(){
+    public void resize() {
         super.resize(levelScreen.levelTopPanel.getHeight());
     }
 
-    void draw(){
+    void draw() {
         boardDrawer.draw();
     }
 
     @Override
-    public void victory_action() {
-        current_level++;
-        userData.current_level = current_level;
-        game.save_user_data();
+    public void victoryAction() {
+        currentLevel++;
+        userData.current_level = currentLevel;
+        game.saveUserData();
 
-        load_level();   // осторожно, уровень может не загрузиться
+        loadLevel();   // осторожно, уровень может не загрузиться
     }
 
-    public void load_level(){
+    public void loadLevel() {
         //System.out.println("Loaded level " + current_level);
-        if (current_level > 100 && !userData.zen_is_available){
+        if (currentLevel > 100 && !userData.zen_is_available) {
             userData.zen_is_available = true;
-            game.save_user_data();
+            game.saveUserData();
         }
 
-        if (current_level > 200 && !userData.editor_is_available){
+        if (currentLevel > 200 && !userData.editor_is_available) {
             userData.editor_is_available = true;
-            game.save_user_data();
+            game.saveUserData();
         }
 
-        if (current_level > userData.max_level_achieved){
-            if (game.random.nextInt(3) == 0){
+        if (currentLevel > userData.max_level_achieved) {
+            if (game.random.nextInt(3) == 0) {
                 userData.hints_amount++;
             }
-            userData.max_level_achieved = current_level;
-            game.save_user_data();
+            userData.max_level_achieved = currentLevel;
+            game.saveUserData();
         }
 
-        if (current_level > how_many_levels){
+        if (currentLevel > howManyLevels) {
             game.setScreen("levels_are_over");
             return;
         }
 
-        String a = Gdx.files.internal("levels/" + current_level + ".json").readString();
+        String a = Gdx.files.internal("levels/" + currentLevel + ".json").readString();
         LevelConfiguration levelConfiguration = game.json.fromJson(LevelConfiguration.class, a);
-        gameplay.set_level_configuration(levelConfiguration);
+        gameplay.setLevelConfiguration(levelConfiguration);
 
         userData.when_to_skip_level = TimeUtils.millis() + (levelConfiguration.field_size - 2) * 60_000L - 1L;    // now + N minutes
-        game.save_user_data();
+        game.saveUserData();
 
         resize(); // чтобы если размер уровня другой, адаптировать экран
-        gameplay.normalize_cursor(); // чтобы курсор не выпрыгнул за поле
-        boardDrawer.is_hint_shown = false;
-        was_hint_used = false;
+        gameplay.normalizeCursor(); // чтобы курсор не выпрыгнул за поле
+        boardDrawer.isHintShown = false;
+        wasHintUsed = false;
     }
 
 }

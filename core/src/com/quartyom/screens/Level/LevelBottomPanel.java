@@ -6,118 +6,116 @@ import com.quartyom.game_elements.GameBottomPanel;
 import com.quartyom.interfaces.QuEvent;
 
 public class LevelBottomPanel extends GameBottomPanel {
-    boolean is_active = true;
+    boolean isActive = true;
 
     public final LevelScreen levelScreen;
-    Button reset_button, transform_button,  hint_button, skip_button;
+    Button resetButton, transformButton, hintButton, skipButton;
 
-    public LevelBottomPanel(final LevelScreen levelScreen){
+    public LevelBottomPanel(final LevelScreen levelScreen) {
         super(levelScreen.game);
         this.levelScreen = levelScreen;
 
-        reset_button = new Button("reset", game, new QuEvent() {
+        resetButton = new Button("reset", game, new QuEvent() {
             @Override
             public void execute() {
-                levelScreen.levelBoard.gameplay.reset_body();
+                levelScreen.levelBoard.gameplay.resetBody();
             }
         });
-        reset_button.setHint(game.locale.get("reset level")).setSound("click_1");
+        resetButton.setHint(game.locale.get("reset level")).setSound("click_1");
 
-        transform_button = new Button("transform", game, new QuEvent() {
+        transformButton = new Button("transform", game, new QuEvent() {
             @Override
             public void execute() {
-                is_active = false;
-                levelScreen.levelTransformBottomPanel.is_active = true;
+                isActive = false;
+                levelScreen.levelTransformBottomPanel.isActive = true;
             }
         });
-        transform_button.setHint(game.locale.get("transform the field")).setSound("click_1");
+        transformButton.setHint(game.locale.get("transform the field")).setSound("click_1");
 
-        hint_button = new Button("hint", game, new QuEvent() {
+        hintButton = new Button("hint", game, new QuEvent() {
             @Override
             public void execute() {
                 LevelBoard levelBoard = levelScreen.levelBoard;
-                if (levelBoard.boardDrawer.is_hint_shown){              // уже показана, выключаем
-                    levelBoard.boardDrawer.is_hint_shown = false;
-                    levelBoard.was_hint_used = true;
-                }
-                else if (levelBoard.was_hint_used){                     // не показана, но была использована
-                    levelBoard.boardDrawer.is_hint_shown = true;
-                }
-                else if (game.userData.hints_amount > 0){               // значит, если они есть, то уменьшаем на 1
+                if (levelBoard.boardDrawer.isHintShown) {              // уже показана, выключаем
+                    levelBoard.boardDrawer.isHintShown = false;
+                    levelBoard.wasHintUsed = true;
+                } else if (levelBoard.wasHintUsed) {                     // не показана, но была использована
+                    levelBoard.boardDrawer.isHintShown = true;
+                } else if (game.userData.hints_amount > 0) {               // значит, если они есть, то уменьшаем на 1
                     game.userData.hints_amount--;
-                    levelBoard.boardDrawer.is_hint_shown = true;
-                }
-                else {
+                    levelBoard.boardDrawer.isHintShown = true;
+                } else {
                     game.setScreen("level_hint");
                 }
             }
         });
-        hint_button.setHint(game.locale.get("show hint")).addNotification().setSound("click_1");
+        hintButton.setHint(game.locale.get("show hint")).addNotification().setSound("click_1");
 
-        skip_button = new Button("next", game, new QuEvent() {
+        skipButton = new Button("next", game, new QuEvent() {
             @Override
             public void execute() {
                 LevelBoard levelBoard = levelScreen.levelBoard;
-                if (levelBoard.current_level < game.userData.max_level_achieved ||
+                if (levelBoard.currentLevel < game.userData.max_level_achieved ||
                         TimeUtils.millis() >= game.userData.when_to_skip_level ||
-                        game.userData.premium_is_on){
+                        game.userData.premium_is_on) {
 
-                    levelBoard.current_level++;
-                    levelBoard.userData.current_level = levelBoard.current_level;
-                    game.save_user_data();
-                    levelBoard.load_level();
+                    levelBoard.currentLevel++;
+                    levelBoard.userData.current_level = levelBoard.currentLevel;
+                    game.saveUserData();
+                    levelBoard.loadLevel();
 
                     game.setScreen("level");
-                }
-                else {
+                } else {
                     game.setScreen("level_skip");
                 }
             }
         });
-        skip_button.setHint(game.locale.get("skip level")).addNotification().setSound("click_1");
+        skipButton.setHint(game.locale.get("skip level")).addNotification().setSound("click_1");
     }
 
     @Override
-    public void resize(){
+    public void resize() {
         super.resize();
 
-        reset_button.resize(first_button_x, first_button_y, button_w, button_h);
-        transform_button.resize(first_button_x + panel_w / 4 * 1, first_button_y, button_w, button_h);
-        hint_button.resize(first_button_x + panel_w / 4 * 2, first_button_y, button_w, button_h);
-        skip_button.resize(first_button_x + panel_w / 4 * 3, first_button_y, button_w, button_h);
+        resetButton.resize(firstButtonX, firstButtonY, buttonW, buttonH);
+        transformButton.resize(firstButtonX + panelW / 4 * 1, firstButtonY, buttonW, buttonH);
+        hintButton.resize(firstButtonX + panelW / 4 * 2, firstButtonY, buttonW, buttonH);
+        skipButton.resize(firstButtonX + panelW / 4 * 3, firstButtonY, buttonW, buttonH);
     }
 
     @Override
-    public void draw(){
-        if (!is_active){return;}
+    public void draw() {
+        if (!isActive) {
+            return;
+        }
         super.draw();
-        reset_button.draw();
-        transform_button.draw();
-        hint_button.draw();
-        skip_button.draw();
+        resetButton.draw();
+        transformButton.draw();
+        hintButton.draw();
+        skipButton.draw();
     }
 
-    public void update(){
-        if (!is_active){return;}
-        reset_button.update();
-        transform_button.update();
-        hint_button.update();
-        skip_button.update();
+    public void update() {
+        if (!isActive) {
+            return;
+        }
+        resetButton.update();
+        transformButton.update();
+        hintButton.update();
+        skipButton.update();
 
         if (game.userData.hints_amount < 1_000) {
-            hint_button.setNotification(String.valueOf(game.userData.hints_amount));
-        }
-        else {
-            hint_button.setNotification("1k+");
+            hintButton.setNotification(String.valueOf(game.userData.hints_amount));
+        } else {
+            hintButton.setNotification("1k+");
         }
 
         long minutes_left = (game.userData.when_to_skip_level - TimeUtils.millis()) / 60_000L;
 
-        if (levelScreen.levelBoard.current_level < game.userData.max_level_achieved || minutes_left < 0 || game.userData.premium_is_on){
-            skip_button.setNotification(null);
-        }
-        else {
-            skip_button.setNotification("<" + (minutes_left + 1L) + "m");
+        if (levelScreen.levelBoard.currentLevel < game.userData.max_level_achieved || minutes_left < 0 || game.userData.premium_is_on) {
+            skipButton.setNotification(null);
+        } else {
+            skipButton.setNotification("<" + (minutes_left + 1L) + "m");
         }
     }
 }

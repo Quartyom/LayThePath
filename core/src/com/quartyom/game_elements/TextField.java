@@ -9,10 +9,10 @@ import com.quartyom.LayThePath;
 // Большой текст в несколько строк, заданный шрифт и ширина, возвращается размер объекта
 public class TextField {
 
-    private float text_x, text_y, text_w, text_h;
+    private float textX, textY, textW, textH;
     public Vector2 offset;
 
-    private int font_size;
+    private int fontSize;
 
     private LayThePath game;
     private BitmapFont font;
@@ -20,32 +20,35 @@ public class TextField {
     public String string;
     public FontType fontType = FontType.LOCALIZED_WITH_LATIN;
 
-    public TextField(LayThePath game, String string){
+    public TextField(LayThePath game, String string) {
         this.game = game;
         this.string = string;
         offset = new Vector2();
     }
 
-    public void resize(float x, float y, float w, int font_size){
-        this.font_size = font_size;
+    public void resize(float x, float y, float w, int font_size) {
+        this.fontSize = font_size;
 
-        text_w = w;
+        textW = w;
 
         font = game.fontHolder.get(font_size, fontType);
-        game.glyphLayout.setText(font, string, Color.WHITE, text_w, Align.left, true);
-        text_h = game.glyphLayout.height;
+        game.glyphLayout.setText(font, string, Color.WHITE, textW, Align.left, true);
+        textH = game.glyphLayout.height;
 
-        text_x = x;
-        text_y = y;
+        textX = x;
+        textY = y;
     }
 
-    public float get_height(){
-        return text_h;
+    public float getHeight() {
+        return textH;
     }
-    public float get_lower_y() { return text_y - text_h;}
 
-    public void draw(){
-        font.draw(game.batch, string, text_x + offset.x, text_y + offset.y, text_w, Align.left, true);
+    public float getLowerY() {
+        return textY - textH;
+    }
+
+    public void draw() {
+        font.draw(game.batch, string, textX + offset.x, textY + offset.y, textW, Align.left, true);
     }
 
 }

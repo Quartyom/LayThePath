@@ -6,48 +6,52 @@ import com.quartyom.game_elements.GameTopPanel;
 import com.quartyom.game_elements.Label;
 
 public class EditorTopPanel extends GameTopPanel {
-    public boolean is_active = true;
+    public boolean isActive = true;
 
     public final EditorScreen editorScreen;
 
-    Label editor_label, tool_label;
-    String tool_string;
+    Label editorLabel, toolLabel;
+    String toolString;
 
-    public EditorTopPanel(final EditorScreen editorScreen){
+    public EditorTopPanel(final EditorScreen editorScreen) {
         super(editorScreen.game);
         this.editorScreen = editorScreen;
 
-        editor_label = new Label(game);
-        editor_label.string = game.locale.get("Editor");
+        editorLabel = new Label(game);
+        editorLabel.string = game.locale.get("Editor");
 
-        tool_label = new Label(game);
-        tool_label.fontType = FontType.LOCALIZED_WITH_LATIN;
-        tool_string = game.locale.get("Current: ");
-        tool_label.target_string = tool_string + "backslash wall ";
+        toolLabel = new Label(game);
+        toolLabel.fontType = FontType.LOCALIZED_WITH_LATIN;
+        toolString = game.locale.get("Current: ");
+        toolLabel.targetString = toolString + "backslash wall ";
 
     }
 
     @Override
-    public void resize(){
+    public void resize() {
         super.resize();
 
-        editor_label.resize(panel_x + panel_w * 0.025f, panel_y + panel_h / 2, panel_w * 0.75f, panel_h / 2, Align.left);
-        tool_label.resize(panel_x + panel_w * 0.025f, panel_y, panel_w * 0.75f, panel_h / 2, Align.left);
+        editorLabel.resize(panelX + panelW * 0.025f, panelY + panelH / 2, panelW * 0.75f, panelH / 2, Align.left);
+        toolLabel.resize(panelX + panelW * 0.025f, panelY, panelW * 0.75f, panelH / 2, Align.left);
     }
 
     @Override
-    public void draw(){
-        if (!is_active){return;}
+    public void draw() {
+        if (!isActive) {
+            return;
+        }
 
         super.draw();
-        editor_label.draw();
-        tool_label.string = tool_string + editorScreen.editorBoard.obstacles_to_put[editorScreen.editorBoard.cursor_on_obstacles];
-        tool_label.draw();
+        editorLabel.draw();
+        toolLabel.string = toolString + editorScreen.editorBoard.obstaclesToPut[editorScreen.editorBoard.cursorOnObstacles];
+        toolLabel.draw();
     }
 
     @Override
-    public void update(){
-        if (!is_active){return;}
+    public void update() {
+        if (!isActive) {
+            return;
+        }
         super.update();
     }
 

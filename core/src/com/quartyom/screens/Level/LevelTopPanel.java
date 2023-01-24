@@ -10,91 +10,85 @@ public class LevelTopPanel extends GameTopPanel {
     public final LevelScreen levelScreen;
     InputState inputState;
 
-    Label level_label, progress_label;
+    Label levelLabel, progressLabel;
     Scroller scroller;
 
-    String level_string, progress_string;
+    String levelString, progressString;
 
-    public LevelTopPanel(final LevelScreen levelScreen){
+    public LevelTopPanel(final LevelScreen levelScreen) {
         super(levelScreen.game);
         this.levelScreen = levelScreen;
 
         inputState = InputState.UNTOUCHED;
 
-        level_label = new Label(game);
-        level_string = game.locale.get("Level ");
-        progress_string = game.locale.get("Progress ");
-        level_label.target_string = level_string + "1000";
-        progress_label = new Label(game);
-        progress_label.target_string = progress_string + "100 / 100";
+        levelLabel = new Label(game);
+        levelString = game.locale.get("Level ");
+        progressString = game.locale.get("Progress ");
+        levelLabel.targetString = levelString + "1000";
+        progressLabel = new Label(game);
+        progressLabel.targetString = progressString + "100 / 100";
 
         scroller = new Scroller(game);
     }
 
     @Override
-    public void resize(){
+    public void resize() {
         super.resize();
 
-        scroller.resize(panel_x + panel_w * 0.025f, panel_y, panel_w * 0.75f, panel_h);
-        level_label.resize(panel_x + panel_w * 0.025f, panel_y + panel_h / 2, panel_w * 0.75f, panel_h / 2, Align.left);
-        progress_label.resize(panel_x + panel_w * 0.025f, panel_y, panel_w * 0.75f, panel_h / 2, Align.left);
+        scroller.resize(panelX + panelW * 0.025f, panelY, panelW * 0.75f, panelH * 0.75f);
+        levelLabel.resize(panelX + panelW * 0.025f, panelY + panelH / 2, panelW * 0.75f, panelH / 2, Align.left);
+        progressLabel.resize(panelX + panelW * 0.025f, panelY, panelW * 0.75f, panelH / 2, Align.left);
     }
 
     @Override
-    public void draw(){
+    public void draw() {
         super.draw();
 
-        level_label.string = level_string + levelScreen.levelBoard.current_level;
-        level_label.draw();
+        levelLabel.string = levelString + levelScreen.levelBoard.currentLevel;
+        levelLabel.draw();
 
         Gameplay gameplay = levelScreen.levelBoard.gameplay; // просто для сокращения пути
-        progress_label.string = progress_string + gameplay.how_many_visited + " / " + gameplay.how_many_should_be_visited;
-        progress_label.draw();
+        progressLabel.string = progressString + gameplay.howManyVisited + " / " + gameplay.howManyShouldBeVisited;
+        progressLabel.draw();
     }
 
     @Override
-    public void update(){
+    public void update() {
         super.update();
 
         scroller.update();
 
         float sensitivity = 50; // количество пикселей, которые нужно пройти, чтобы переключить 1 уровень
 
-        if (scroller.inputState == InputState.JUST_TOUCHED){
-            scroller.value.x = levelScreen.levelBoard.current_level * sensitivity;
-        }
-
-        else if (scroller.inputState == InputState.TOUCHED){
-            if ((Math.round(scroller.value.x / sensitivity)) != levelScreen.levelBoard.current_level){
-                levelScreen.levelBoard.current_level = (Math.round(scroller.value.x / sensitivity));
+        if (scroller.inputState == InputState.JUST_TOUCHED) {
+            scroller.value.x = levelScreen.levelBoard.currentLevel * sensitivity;
+        } else if (scroller.inputState == InputState.TOUCHED) {
+            if ((Math.round(scroller.value.x / sensitivity)) != levelScreen.levelBoard.currentLevel) {
+                levelScreen.levelBoard.currentLevel = (Math.round(scroller.value.x / sensitivity));
 
                 boolean to_change_scroller = true;
 
-                if (levelScreen.levelBoard.current_level < 1){
-                    levelScreen.levelBoard.current_level += game.userData.max_level_achieved;
-                    if (levelScreen.levelBoard.current_level > levelScreen.levelBoard.how_many_levels){
-                        levelScreen.levelBoard.current_level = levelScreen.levelBoard.how_many_levels;
+                if (levelScreen.levelBoard.currentLevel < 1) {
+                    levelScreen.levelBoard.currentLevel += game.userData.max_level_achieved;
+                    if (levelScreen.levelBoard.currentLevel > levelScreen.levelBoard.howManyLevels) {
+                        levelScreen.levelBoard.currentLevel = levelScreen.levelBoard.howManyLevels;
                     }
-                }
-                else if (levelScreen.levelBoard.current_level > levelScreen.levelBoard.how_many_levels){
-                    levelScreen.levelBoard.current_level = 1;
-                }
-                else if (levelScreen.levelBoard.current_level > game.userData.max_level_achieved){
-                    levelScreen.levelBoard.current_level -= game.userData.max_level_achieved;
-                }
-                else {
+                } else if (levelScreen.levelBoard.currentLevel > levelScreen.levelBoard.howManyLevels) {
+                    levelScreen.levelBoard.currentLevel = 1;
+                } else if (levelScreen.levelBoard.currentLevel > game.userData.max_level_achieved) {
+                    levelScreen.levelBoard.currentLevel -= game.userData.max_level_achieved;
+                } else {
                     to_change_scroller = false;
                 }
-                if (to_change_scroller){
-                    scroller.value.x = levelScreen.levelBoard.current_level * sensitivity;
+                if (to_change_scroller) {
+                    scroller.value.x = levelScreen.levelBoard.currentLevel * sensitivity;
                 }
 
-                levelScreen.levelBoard.userData.current_level = levelScreen.levelBoard.current_level;
-                game.save_user_data();
-                levelScreen.levelBoard.load_level();
+                levelScreen.levelBoard.userData.current_level = levelScreen.levelBoard.currentLevel;
+                game.saveUserData();
+                levelScreen.levelBoard.loadLevel();
             }
-        }
-        else if (scroller.inputState == InputState.JUST_UNTOUCHED){
+        } else if (scroller.inputState == InputState.JUST_UNTOUCHED) {
 
         }
     }

@@ -6,48 +6,52 @@ import com.quartyom.game_elements.Label;
 import com.quartyom.screens.Level.Gameplay;
 
 public class EditorLaunchedTopPanel extends GameTopPanel {
-    public boolean is_active = false;
+    public boolean isActive = false;
 
     public final EditorScreen editorScreen;
 
-    Label editor_label, progress_label;
-    String progress_string;
+    Label editorLabel, progressLabel;
+    String progressString;
 
-    public EditorLaunchedTopPanel(final EditorScreen editorScreen){
+    public EditorLaunchedTopPanel(final EditorScreen editorScreen) {
         super(editorScreen.game);
         this.editorScreen = editorScreen;
 
-        editor_label = new Label(game);
-        editor_label.string = game.locale.get("Editor");
+        editorLabel = new Label(game);
+        editorLabel.string = game.locale.get("Editor");
 
-        progress_label = new Label(game);
-        progress_string = game.locale.get("Progress ");
-        progress_label.target_string = progress_string + "100 / 100";
+        progressLabel = new Label(game);
+        progressString = game.locale.get("Progress ");
+        progressLabel.targetString = progressString + "100 / 100";
     }
 
     @Override
-    public void resize(){
+    public void resize() {
         super.resize();
 
-        editor_label.resize(panel_x + panel_w * 0.025f, panel_y + panel_h / 2, panel_w * 0.75f, panel_h / 2, Align.left);
-        progress_label.resize(panel_x + panel_w * 0.025f, panel_y, panel_w * 0.75f, panel_h / 2, Align.left);
+        editorLabel.resize(panelX + panelW * 0.025f, panelY + panelH / 2, panelW * 0.75f, panelH / 2, Align.left);
+        progressLabel.resize(panelX + panelW * 0.025f, panelY, panelW * 0.75f, panelH / 2, Align.left);
     }
 
     @Override
-    public void draw(){
-        if (!is_active){return;}
+    public void draw() {
+        if (!isActive) {
+            return;
+        }
         super.draw();
 
-        editor_label.draw();
+        editorLabel.draw();
 
         Gameplay gameplay = editorScreen.editorLaunchedBoard.gameplay; // просто для сокращения пути
-        progress_label.string = progress_string + gameplay.how_many_visited + " / " + gameplay.how_many_should_be_visited;
-        progress_label.draw();
+        progressLabel.string = progressString + gameplay.howManyVisited + " / " + gameplay.howManyShouldBeVisited;
+        progressLabel.draw();
     }
 
     @Override
-    public void update(){
-        if (!is_active){return;}
+    public void update() {
+        if (!isActive) {
+            return;
+        }
         super.update();
     }
 

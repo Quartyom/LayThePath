@@ -1,96 +1,104 @@
 package com.quartyom.screens.Menu;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.utils.Align;
 import com.quartyom.LayThePath;
 import com.quartyom.game_elements.Button;
-import com.quartyom.game_elements.QuScreen;
-import com.quartyom.interfaces.QuEvent;
-import com.quartyom.game_elements.InputState;
 import com.quartyom.game_elements.Label;
+import com.quartyom.game_elements.QuScreen;
 import com.quartyom.game_elements.Scroller;
 import com.quartyom.game_elements.TextField;
+import com.quartyom.interfaces.QuEvent;
 
 public class AboutTab extends QuScreen {
+
     final LayThePath game;
 
-    Button back_button, how_can_i_help_button;
-    Label about_label;
-    TextField information_field;
+    Button backButton, howCanIHelpButton;
+    Label aboutLabel;
+    TextField informationField;
     Scroller scroller;
 
-    public AboutTab(final LayThePath game){
+    public AboutTab(final LayThePath game) {
         this.game = game;
 
-        about_label = new Label(game, game.locale.get("About"));
+        aboutLabel = new Label(game, game.locale.get("About"));
 
-        information_field = new TextField(game, Gdx.files.internal("texts/" + game.userData.locale + "/about.txt").readString());
+        informationField = new TextField(game,
+                Gdx.files.internal("texts/" + game.userData.locale + "/about.txt").readString());
 
-        back_button = new Button("in_main_menu", game, new QuEvent() {
+        backButton = new Button("in_main_menu", game, new QuEvent() {
             @Override
             public void execute() {
                 game.setScreen("menu_info");
             }
         });
-        back_button.setNinePatch(6).setLabel(game.locale.get("Back"));
+        backButton.setNinePatch(6).setLabel(game.locale.get("Back"));
 
-        how_can_i_help_button = new Button("in_main_menu", game, new QuEvent() {
+        howCanIHelpButton = new Button("in_main_menu", game, new QuEvent() {
             @Override
             public void execute() {
                 game.setScreen("menu_how_can_i_help");
             }
         });
-        how_can_i_help_button.setNinePatch(6).setLabel(game.locale.get("How can I help?"));
+        howCanIHelpButton.setNinePatch(6).setLabel(game.locale.get("How can I help?"));
 
         scroller = new Scroller(game);
-        scroller.physics_on = true;
+        scroller.physicsOn = true;
 
     }
 
-    public void update(){
-        back_button.update();
-        how_can_i_help_button.update();
+    public void update() {
+        backButton.update();
+        howCanIHelpButton.update();
         scroller.update();
 
-        if (scroller.value.y < 0){ scroller.value.y = 0; }  // нельзя листать вверх
-        else if (scroller.value.y > information_field.get_height()){    // вниз нельзя листать дальше, чем высота текста
-            scroller.value.y = information_field.get_height();
+        if (scroller.value.y < 0) {
+            scroller.value.y = 0;
+        }  // нельзя листать вверх
+        else if (scroller.value.y
+                > informationField.getHeight()) {    // вниз нельзя листать дальше, чем высота текста
+            scroller.value.y = informationField.getHeight();
         }
 
-        about_label.offset.y = scroller.value.y;
-        information_field.offset.y = scroller.value.y;
-        how_can_i_help_button.offset.y = scroller.value.y;
+        aboutLabel.offset.y = scroller.value.y;
+        informationField.offset.y = scroller.value.y;
+        howCanIHelpButton.offset.y = scroller.value.y;
 
     }
 
     @Override
     public void resize(int width, int height) {
-        about_label.resize(game.upper_button_corner_x, game.upper_button_corner_y, game.button_w, game.button_h, Align.center);
+        aboutLabel.resize(game.upperButtonCornerX, game.upperButtonCornerY, game.buttonW,
+                game.buttonH, Align.center);
 
         int font_size = (int) (game.HEIGHT * (1.0f / 32.0f));
-        information_field.resize(game.upper_button_corner_x, game.upper_button_corner_y - game.down_margin + game.button_h, game.button_w, font_size);
+        informationField.resize(game.upperButtonCornerX,
+                game.upperButtonCornerY - game.downMargin + game.buttonH, game.buttonW, font_size);
 
-        how_can_i_help_button.resize(game.upper_button_corner_x, game.upper_button_corner_y - game.down_margin * 2 - information_field.get_height(), game.button_w, game.button_h);
+        howCanIHelpButton.resize(game.upperButtonCornerX,
+                game.upperButtonCornerY - game.downMargin * 2 - informationField.getHeight(),
+                game.buttonW, game.buttonH);
 
-        back_button.resize(game.upper_button_corner_x, game.upper_button_corner_y - game.down_margin * 5, game.button_w, game.button_h);
+        backButton.resize(game.upperButtonCornerX,
+                game.upperButtonCornerY - game.downMargin * 5, game.buttonW, game.buttonH);
 
-        scroller.resize_full();
+        scroller.resizeFull();
     }
 
     @Override
     public void render(float delta) {
         Gdx.gl20.glClear(Gdx.gl20.GL_COLOR_BUFFER_BIT);
 
-        about_label.draw();
-        information_field.draw();
-        how_can_i_help_button.draw();
-        back_button.draw();
+        aboutLabel.draw();
+        informationField.draw();
+        howCanIHelpButton.draw();
+        backButton.draw();
 
         update();
 
-        if (game.is_back_button_pressed){
-            game.is_back_button_pressed = false;
+        if (game.isBackButtonPressed) {
+            game.isBackButtonPressed = false;
             game.setScreen("menu_info");
         }
     }

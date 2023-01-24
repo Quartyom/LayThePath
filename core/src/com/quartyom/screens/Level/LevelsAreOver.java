@@ -1,57 +1,50 @@
 package com.quartyom.screens.Level;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.utils.Align;
 import com.quartyom.LayThePath;
 import com.quartyom.game_elements.Button;
-import com.quartyom.game_elements.QuScreen;
-import com.quartyom.interfaces.QuEvent;
 import com.quartyom.game_elements.Label;
+import com.quartyom.game_elements.QuScreen;
 import com.quartyom.game_elements.TextField;
-
-import java.util.Random;
+import com.quartyom.interfaces.QuEvent;
 
 public class LevelsAreOver extends QuScreen {
     final LayThePath game;
     public LevelScreen levelScreen;
 
-    Label hint_label;
-    TextField info_field;
-    Button start_over_button, menu_button;
+    Label hintLabel;
+    TextField infoField;
+    Button startOverButton, menuButton;
 
-    private Random random;
-
-    public LevelsAreOver(final LevelScreen levelScreen){
+    public LevelsAreOver(final LevelScreen levelScreen) {
         this.levelScreen = levelScreen;
         game = levelScreen.game;
 
-        random = new Random();
+        hintLabel = new Label(game, levelScreen.game.locale.get("Attention"));
 
-        hint_label = new Label(game, levelScreen.game.locale.get("Attention"));
+        infoField = new TextField(levelScreen.game, Gdx.files.internal("texts/" + game.userData.locale + "/levels_are_over.txt").readString());
 
-        info_field = new TextField(levelScreen.game, Gdx.files.internal("texts/" + game.userData.locale + "/levels_are_over.txt").readString());
-
-        start_over_button = new Button("in_main_menu", game, new QuEvent() {
+        startOverButton = new Button("in_main_menu", game, new QuEvent() {
             @Override
             public void execute() {
-                levelScreen.levelBoard.current_level = 1;
+                levelScreen.levelBoard.currentLevel = 1;
                 game.userData.current_level = 1;
-                game.save_user_data();
-                levelScreen.levelBoard.load_level();
+                game.saveUserData();
+                levelScreen.levelBoard.loadLevel();
 
                 game.setScreen("level");
             }
         });
-        start_over_button.setNinePatch(6).setLabel(levelScreen.game.locale.get("Start over"));
+        startOverButton.setNinePatch(6).setLabel(levelScreen.game.locale.get("Start over"));
 
-        menu_button = new Button("in_main_menu", game, new QuEvent() {
+        menuButton = new Button("in_main_menu", game, new QuEvent() {
             @Override
             public void execute() {
                 levelScreen.game.setScreen("menu");
             }
         });
-        menu_button.setNinePatch(6).setLabel(levelScreen.game.locale.get("Go to Menu"));
+        menuButton.setNinePatch(6).setLabel(levelScreen.game.locale.get("Go to Menu"));
 
     }
 
@@ -59,29 +52,29 @@ public class LevelsAreOver extends QuScreen {
     public void render(float delta) {
         Gdx.gl20.glClear(Gdx.gl20.GL_COLOR_BUFFER_BIT);
 
-        hint_label.draw();
-        info_field.draw();
-        start_over_button.draw();
-        menu_button.draw();
+        hintLabel.draw();
+        infoField.draw();
+        startOverButton.draw();
+        menuButton.draw();
 
-        start_over_button.update();
-        menu_button.update();
+        startOverButton.update();
+        menuButton.update();
 
-        if (game.is_back_button_pressed){
-            game.is_back_button_pressed = false;
+        if (game.isBackButtonPressed) {
+            game.isBackButtonPressed = false;
             game.setScreen("menu");
         }
     }
 
     @Override
     public void resize(int width, int height) {
-        hint_label.resize(game.upper_button_corner_x, game.upper_button_corner_y, game.button_w, game.button_h, Align.center);
+        hintLabel.resize(game.upperButtonCornerX, game.upperButtonCornerY, game.buttonW, game.buttonH, Align.center);
 
         int font_size = (int) (levelScreen.game.HEIGHT * (1.0f / 32.0f));
-        info_field.resize(game.upper_button_corner_x, game.upper_button_corner_y - game.down_margin + game.button_h, game.button_w, font_size);
+        infoField.resize(game.upperButtonCornerX, game.upperButtonCornerY - game.downMargin + game.buttonH, game.buttonW, font_size);
         // gap
-        start_over_button.resize(game.upper_button_corner_x, game.upper_button_corner_y - game.down_margin * 4, game.button_w, game.button_h);
-        menu_button.resize(game.upper_button_corner_x, game.upper_button_corner_y - game.down_margin * 5, game.button_w, game.button_h);
+        startOverButton.resize(game.upperButtonCornerX, game.upperButtonCornerY - game.downMargin * 4, game.buttonW, game.buttonH);
+        menuButton.resize(game.upperButtonCornerX, game.upperButtonCornerY - game.downMargin * 5, game.buttonW, game.buttonH);
     }
 
 }

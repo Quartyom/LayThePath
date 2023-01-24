@@ -1,10 +1,5 @@
 package com.quartyom.screens.Level;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.math.Vector2;
-
-import java.util.Collections;
-
 public enum MoveResult {
     HEAD_IS_SET,
     HEAD_IS_NOT_SET,

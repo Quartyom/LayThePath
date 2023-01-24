@@ -1,7 +1,6 @@
 package com.quartyom.screens.Menu;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.utils.Align;
 import com.quartyom.LayThePath;
 import com.quartyom.game_elements.Button;
@@ -12,78 +11,79 @@ import com.quartyom.interfaces.QuEvent;
 import java.util.Random;
 
 public class PremiumTab extends QuScreen {
+
     final LayThePath game;
 
-    Label info_label, code_label;
-    Button button_0, button_1, button_2, button_3, button_4, button_5, button_6, button_7, button_8, button_9, button_clean, button_accept, back_button;
+    Label infoLabel, codeLabel;
+    Button button_0, button_1, button_2, button_3, button_4, button_5, button_6, button_7, button_8, button_9, buttonClean, buttonAccept, backButton;
 
-    private String current_input;
+    private String currentInput;
 
-    public PremiumTab(final LayThePath game){
+    public PremiumTab(final LayThePath game) {
         this.game = game;
 
-        info_label = new Label(game, game.locale.get("Get premium"));
-        code_label = new Label(game);
-        code_label.target_string = "000000: 00000000";
+        infoLabel = new Label(game, game.locale.get("Get premium"));
+        codeLabel = new Label(game);
+        codeLabel.targetString = "000000: 00000000";
 
         button_0 = new Button("in_main_menu", game, new QuEvent() {
             @Override
             public void execute() {
-                current_input += 0;
+                currentInput += 0;
             }
         });
         button_1 = new Button("in_main_menu", game, new QuEvent() {
             @Override
             public void execute() {
-                current_input += 1;
+                currentInput += 1;
             }
         });
         button_2 = new Button("in_main_menu", game, new QuEvent() {
             @Override
             public void execute() {
-                current_input += 2;
+                currentInput += 2;
             }
         });
         button_3 = new Button("in_main_menu", game, new QuEvent() {
             @Override
             public void execute() {
-                current_input += 3;
+                currentInput += 3;
             }
         });
         button_4 = new Button("in_main_menu", game, new QuEvent() {
             @Override
             public void execute() {
-                current_input += 4;
+                currentInput += 4;
             }
         });
         button_5 = new Button("in_main_menu", game, new QuEvent() {
             @Override
             public void execute() {
-                current_input += 5;
+                currentInput += 5;
             }
         });
         button_6 = new Button("in_main_menu", game, new QuEvent() {
             @Override
             public void execute() {
-                current_input += 6;
+                currentInput += 6;
             }
         });
         button_7 = new Button("in_main_menu", game, new QuEvent() {
             @Override
             public void execute() {
-                current_input += 7;
+                currentInput += 7;
             }
         });
         button_8 = new Button("in_main_menu", game, new QuEvent() {
             @Override
             public void execute() {
-                current_input += 8;
+                currentInput += 8;
             }
         });
         button_9 = new Button("in_main_menu", game, new QuEvent() {
             @Override
             public void execute() {
-                current_input += 9;
+                currentInput += 9;
             }
         });
 
@@ -98,54 +98,55 @@ public class PremiumTab extends QuScreen {
         button_8.setNinePatch(6).setSound("click_1").setLabel("8");
         button_9.setNinePatch(6).setSound("click_1").setLabel("9");
 
-        button_clean = new Button("in_main_menu", game, new QuEvent() {
+        buttonClean = new Button("in_main_menu", game, new QuEvent() {
             @Override
             public void execute() {
-                if (current_input.length() > 0) {
-                    current_input = current_input.substring(0, current_input.length() - 1);
+                if (currentInput.length() > 0) {
+                    currentInput = currentInput.substring(0, currentInput.length() - 1);
                 }
             }
         });
-        button_clean.setNinePatch(6).setSound("click_1").setLabel("<");
+        buttonClean.setNinePatch(6).setSound("click_1").setLabel("<");
 
-        button_accept = new Button("in_main_menu", game, new QuEvent() {
+        buttonAccept = new Button("in_main_menu", game, new QuEvent() {
             @Override
             public void execute() {
-                if (encrypt(current_input).equals(game.userData.premium_public_code)){
+                if (encrypt(currentInput).equals(game.userData.premium_public_code)) {
                     game.userData.premium_is_on = true;
-                    game.save_user_data();
+                    game.saveUserData();
                     game.setScreen("menu_settings");
+                } else {
+                    updateCode();
                 }
-                else {
-                    update_code();
-                }
-                current_input = "";
+                currentInput = "";
             }
         });
-        button_accept.setNinePatch(6).setSound("click_1").setLabel(">");
+        buttonAccept.setNinePatch(6).setSound("click_1").setLabel(">");
 
-        back_button = new Button("in_main_menu", game, new QuEvent() {
+        backButton = new Button("in_main_menu", game, new QuEvent() {
             @Override
             public void execute() {
                 game.setScreen("menu_settings");
             }
         });
-        back_button.setNinePatch(6).setLabel(game.locale.get("Back"));
+        backButton.setNinePatch(6).setLabel(game.locale.get("Back"));
 
     }
 
     @Override
     public void resize(int width, int height) {
-        info_label.resize(game.upper_button_corner_x, game.upper_button_corner_y, game.button_w, game.button_h, 1);
+        infoLabel.resize(game.upperButtonCornerX, game.upperButtonCornerY, game.buttonW,
+                game.buttonH, 1);
 
-        float num_pad_x = game.upper_button_corner_x;
-        float num_pad_y = game.upper_button_corner_y - game.down_margin * 4;
-        float num_pad_w = game.button_w;
-        float num_pad_h = game.upper_button_corner_y - game.down_margin + game.button_h - num_pad_y;
+        float num_pad_x = game.upperButtonCornerX;
+        float num_pad_y = game.upperButtonCornerY - game.downMargin * 4;
+        float num_pad_w = game.buttonW;
+        float num_pad_h = game.upperButtonCornerY - game.downMargin + game.buttonH - num_pad_y;
 
-        float code_label_h = game.button_h * 0.3f;
+        float code_label_h = game.buttonH * 0.3f;
 
-        code_label.resize(num_pad_x, num_pad_y + num_pad_h - code_label_h, num_pad_w, code_label_h, Align.left);
+        codeLabel.resize(num_pad_x, num_pad_y + num_pad_h - code_label_h, num_pad_w, code_label_h,
+                Align.left);
 
         num_pad_h -= code_label_h;
 
@@ -161,35 +162,49 @@ public class PremiumTab extends QuScreen {
         float num_pad_button_corner_x = num_pad_button_center_x - num_pad_button_w / 2;
         float num_pad_button_corner_y = num_pad_button_center_y - num_pad_button_h / 2;
 
-        button_clean.resize(num_pad_button_corner_x, num_pad_button_corner_y, num_pad_button_w, num_pad_button_h);
-        button_0.resize(num_pad_button_corner_x + num_pad_button_margin_x, num_pad_button_corner_y, num_pad_button_w, num_pad_button_h);
-        button_accept.resize(num_pad_button_corner_x + num_pad_button_margin_x * 2, num_pad_button_corner_y, num_pad_button_w, num_pad_button_h);
+        buttonClean.resize(num_pad_button_corner_x, num_pad_button_corner_y, num_pad_button_w,
+                num_pad_button_h);
+        button_0.resize(num_pad_button_corner_x + num_pad_button_margin_x, num_pad_button_corner_y,
+                num_pad_button_w, num_pad_button_h);
+        buttonAccept.resize(num_pad_button_corner_x + num_pad_button_margin_x * 2,
+                num_pad_button_corner_y, num_pad_button_w, num_pad_button_h);
 
-        button_7.resize(num_pad_button_corner_x, num_pad_button_corner_y + num_pad_button_margin_y, num_pad_button_w, num_pad_button_h);
-        button_8.resize(num_pad_button_corner_x + num_pad_button_margin_x, num_pad_button_corner_y + num_pad_button_margin_y, num_pad_button_w, num_pad_button_h);
-        button_9.resize(num_pad_button_corner_x + num_pad_button_margin_x * 2, num_pad_button_corner_y + num_pad_button_margin_y, num_pad_button_w, num_pad_button_h);
+        button_7.resize(num_pad_button_corner_x, num_pad_button_corner_y + num_pad_button_margin_y,
+                num_pad_button_w, num_pad_button_h);
+        button_8.resize(num_pad_button_corner_x + num_pad_button_margin_x,
+                num_pad_button_corner_y + num_pad_button_margin_y, num_pad_button_w, num_pad_button_h);
+        button_9.resize(num_pad_button_corner_x + num_pad_button_margin_x * 2,
+                num_pad_button_corner_y + num_pad_button_margin_y, num_pad_button_w, num_pad_button_h);
 
-        button_4.resize(num_pad_button_corner_x, num_pad_button_corner_y + num_pad_button_margin_y * 2, num_pad_button_w, num_pad_button_h);
-        button_5.resize(num_pad_button_corner_x + num_pad_button_margin_x, num_pad_button_corner_y + num_pad_button_margin_y * 2, num_pad_button_w, num_pad_button_h);
-        button_6.resize(num_pad_button_corner_x + num_pad_button_margin_x * 2, num_pad_button_corner_y + num_pad_button_margin_y * 2, num_pad_button_w, num_pad_button_h);
+        button_4.resize(num_pad_button_corner_x, num_pad_button_corner_y + num_pad_button_margin_y * 2,
+                num_pad_button_w, num_pad_button_h);
+        button_5.resize(num_pad_button_corner_x + num_pad_button_margin_x,
+                num_pad_button_corner_y + num_pad_button_margin_y * 2, num_pad_button_w, num_pad_button_h);
+        button_6.resize(num_pad_button_corner_x + num_pad_button_margin_x * 2,
+                num_pad_button_corner_y + num_pad_button_margin_y * 2, num_pad_button_w, num_pad_button_h);
 
-        button_1.resize(num_pad_button_corner_x, num_pad_button_corner_y + num_pad_button_margin_y * 3, num_pad_button_w, num_pad_button_h);
-        button_2.resize(num_pad_button_corner_x + num_pad_button_margin_x, num_pad_button_corner_y + num_pad_button_margin_y * 3, num_pad_button_w, num_pad_button_h);
-        button_3.resize(num_pad_button_corner_x + num_pad_button_margin_x * 2, num_pad_button_corner_y + num_pad_button_margin_y * 3, num_pad_button_w, num_pad_button_h);
+        button_1.resize(num_pad_button_corner_x, num_pad_button_corner_y + num_pad_button_margin_y * 3,
+                num_pad_button_w, num_pad_button_h);
+        button_2.resize(num_pad_button_corner_x + num_pad_button_margin_x,
+                num_pad_button_corner_y + num_pad_button_margin_y * 3, num_pad_button_w, num_pad_button_h);
+        button_3.resize(num_pad_button_corner_x + num_pad_button_margin_x * 2,
+                num_pad_button_corner_y + num_pad_button_margin_y * 3, num_pad_button_w, num_pad_button_h);
 
         // gap
-        back_button.resize(game.upper_button_corner_x, game.upper_button_corner_y - game.down_margin * 5, game.button_w, game.button_h);
+        backButton.resize(game.upperButtonCornerX,
+                game.upperButtonCornerY - game.downMargin * 5, game.buttonW, game.buttonH);
     }
 
-    private void update_code(){
+    private void updateCode() {
         Random random = new Random();
 
         //int code = random.nextInt(1_000_000) + 1_000_000;
         //private_code = String.valueOf(code).substring(1, 7);
-        game.userData.premium_public_code = encrypt(String.valueOf(random.nextInt(1_000_000) + 1_000_000).substring(1, 7));
-        game.save_user_data();
+        game.userData.premium_public_code = encrypt(
+                String.valueOf(random.nextInt(1_000_000) + 1_000_000).substring(1, 7));
+        game.saveUserData();
 
-        code_label.string = game.userData.premium_public_code + ": ";
+        codeLabel.string = game.userData.premium_public_code + ": ";
     }
 
     @Override
@@ -197,10 +212,10 @@ public class PremiumTab extends QuScreen {
         Gdx.gl20.glClearColor(0, 0, 0, 1);
 
         if (game.userData.premium_public_code == null) {
-            update_code();
+            updateCode();
         }
 
-        current_input = "";
+        currentInput = "";
 
     }
 
@@ -208,10 +223,10 @@ public class PremiumTab extends QuScreen {
     public void render(float delta) {
         Gdx.gl20.glClear(Gdx.gl20.GL_COLOR_BUFFER_BIT);
 
-        code_label.string = game.userData.premium_public_code + ": " + current_input;
+        codeLabel.string = game.userData.premium_public_code + ": " + currentInput;
 
-        info_label.draw();
-        code_label.draw();
+        infoLabel.draw();
+        codeLabel.draw();
 
         button_0.draw();
         button_1.draw();
@@ -223,9 +238,9 @@ public class PremiumTab extends QuScreen {
         button_7.draw();
         button_8.draw();
         button_9.draw();
-        button_accept.draw();
-        button_clean.draw();
-        back_button.draw();
+        buttonAccept.draw();
+        buttonClean.draw();
+        backButton.draw();
 
         button_0.update();
         button_1.update();
@@ -237,23 +252,23 @@ public class PremiumTab extends QuScreen {
         button_7.update();
         button_8.update();
         button_9.update();
-        button_accept.update();
-        button_clean.update();
+        buttonAccept.update();
+        buttonClean.update();
 
-        if (current_input.length() > 8){
-            current_input = "";
-            update_code();
+        if (currentInput.length() > 8) {
+            currentInput = "";
+            updateCode();
         }
 
-        back_button.update();
+        backButton.update();
 
-        if (game.is_back_button_pressed){
-            game.is_back_button_pressed = false;
+        if (game.isBackButtonPressed) {
+            game.isBackButtonPressed = false;
             game.setScreen("menu_settings");
         }
     }
 
-    private String encrypt(String n){
+    private String encrypt(String n) {
         long k = Long.valueOf("1" + n) + 39L;
         long a = 6_180_339_887L;
         long d = 10_000_000_000L;

@@ -1,8 +1,8 @@
 package com.quartyom.screens.Level;
 
 import com.badlogic.gdx.math.Vector2;
+
 import java.util.ArrayList;
-import java.util.Arrays;
 
 // хранит состояние уровня
 public class LevelConfiguration {
@@ -21,7 +21,7 @@ public class LevelConfiguration {
         hint = new ArrayList<>();
     }
 
-    public void set_empty(){
+    public void setEmpty() {
         vertical_walls.clear();
         horizontal_walls.clear();
         slash_walls.clear();

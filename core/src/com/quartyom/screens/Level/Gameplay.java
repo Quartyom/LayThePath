@@ -1,6 +1,7 @@
 package com.quartyom.screens.Level;
 
 import com.badlogic.gdx.math.Vector2;
+
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -9,30 +10,30 @@ public class Gameplay {
     public ArrayList<Vector2> vertical_walls, horizontal_walls, slash_walls, backslash_walls, boxes, points, crossroads;
 
     public ArrayList<Vector2> body, body_io;
-    public ArrayList<Vector2> false_path;
+    public ArrayList<Vector2> falsePath;
     public ArrayList<Vector2> hint;
 
-    public Vector2 abstract_input_cursor;
+    public Vector2 abstractInputCursor;
 
-    public boolean head_is_captured;    // держит ли палец на голове
+    public boolean headIsCaptured;    // держит ли палец на голове
     // когда только поставили голову - false, при ходе назад - false, если держит палец на голове или хвосте - true
-    public boolean is_tending_to_destroy_the_head;
+    public boolean isTendingToDestroyTheHead;
 
 
-    public int how_many_visited;
-    public int how_many_should_be_visited;
+    public int howManyVisited;
+    public int howManyShouldBeVisited;
 
     public int field_size;
 
-    public Gameplay(){
+    public Gameplay() {
         body = new ArrayList<>();
         body_io = new ArrayList<>();
-        false_path = new ArrayList<>();
+        falsePath = new ArrayList<>();
 
-        abstract_input_cursor = new Vector2();
+        abstractInputCursor = new Vector2();
     }
 
-    public void set_level_configuration(LevelConfiguration levelConfiguration){
+    public void setLevelConfiguration(LevelConfiguration levelConfiguration) {
         vertical_walls = levelConfiguration.vertical_walls;
         horizontal_walls = levelConfiguration.horizontal_walls;
         slash_walls = levelConfiguration.slash_walls;
@@ -43,29 +44,29 @@ public class Gameplay {
         hint = levelConfiguration.hint;
         field_size = levelConfiguration.field_size;
 
-        reset_body();
-        how_many_visited = 0;
-        how_many_should_be_visited = field_size * field_size - boxes.size();
+        resetBody();
+        howManyVisited = 0;
+        howManyShouldBeVisited = field_size * field_size - boxes.size();
 
-        head_is_captured = false;
-        is_tending_to_destroy_the_head = false;
+        headIsCaptured = false;
+        isTendingToDestroyTheHead = false;
     }
 
-    public void set_hint(){
-        if (body != null && body.size()>0){
-            if (hint == null){
+    public void setHint() {
+        if (body != null && body.size() > 0) {
+            if (hint == null) {
                 hint = new ArrayList<>();
             }
-            if (!hint.isEmpty()){
+            if (!hint.isEmpty()) {
                 hint.clear();
             }
             hint.add(body.get(0));
-            hint.add(body.get(body.size()-1));
+            hint.add(body.get(body.size() - 1));
         }
     }
 
 
-    public LevelConfiguration get_level_configuration(){
+    public LevelConfiguration getLevelConfiguration() {
         LevelConfiguration levelConfiguration = new LevelConfiguration();
         levelConfiguration.vertical_walls = vertical_walls;
         levelConfiguration.horizontal_walls = horizontal_walls;
@@ -82,7 +83,7 @@ public class Gameplay {
     }
 
     // сегменты dot dot_n... tail_n ... vertical, horizontal, turn ne, turn es...
-    public static final int segment_by_io[][] = {
+    public static final int SEGMENT_BY_IO[][] = {
             {1, 11, 9, 14},
             {11, 2, 12, 10},
             {9, 12, 3, 13},
@@ -90,144 +91,144 @@ public class Gameplay {
     };
 
     // [move_direction][visited_segment]
-    private static int entrance_to_body[][] = {
-            {0,0,0,0,0,0,0,0,0,0,0,     1,0,0,1},
-            {0,0,0,0,0,0,0,0,0,0,0,     1,1,0,0},
-            {0,0,0,0,0,0,0,0,0,0,0,     0,1,1,0},
-            {0,0,0,0,0,0,0,0,0,0,0,     0,0,1,1}
+    private static final int ENTRANCE_TO_BODY[][] = {
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1}
     };
 
     // [input][output] = ответ на вопрос можно ли так походить
-    private static int slash_io[][] = {
-            {0,0,0,1},
-            {0,0,1,0},
-            {0,1,0,0},
-            {1,0,0,0}
+    private static final int SLASH_IO[][] = {
+            {0, 0, 0, 1},
+            {0, 0, 1, 0},
+            {0, 1, 0, 0},
+            {1, 0, 0, 0}
     };
-    private static int backslash_io[][] = {
-            {0,1,0,0},
-            {1,0,0,0},
-            {0,0,0,1},
-            {0,0,1,0}
+    private static final int BACKSLASH_IO[][] = {
+            {0, 1, 0, 0},
+            {1, 0, 0, 0},
+            {0, 0, 0, 1},
+            {0, 0, 1, 0}
     };
-    private static int point_io[][] = {
-            {0,1,0,1},
-            {1,0,1,0},
-            {0,1,0,1},
-            {1,0,1,0}
+    private static final int POINT_IO[][] = {
+            {0, 1, 0, 1},
+            {1, 0, 1, 0},
+            {0, 1, 0, 1},
+            {1, 0, 1, 0}
     };
-    private static int crossroad_io[][] = {
-            {0,0,1,0},
-            {0,0,0,1},
-            {1,0,0,0},
-            {0,1,0,0}
+    private static final int CROSSROAD_IO[][] = {
+            {0, 0, 1, 0},
+            {0, 0, 0, 1},
+            {1, 0, 0, 0},
+            {0, 1, 0, 0}
     };
 
-    private static int negate_direction[] = {2,3,0,1};
+    private static final int NEGATE_DIRECTION[] = {2, 3, 0, 1};
 
-    private static int direction_to(int x_from, int y_from, int x_to, int y_to){
+    private static int directionTo(int xFrom, int yFrom, int xTo, int yTo) {
 
-        int x_diff = x_to - x_from;
-        int y_diff = y_to - y_from;
+        int xDiff = xTo - xFrom;
+        int yDiff = yTo - yFrom;
 
-        if (x_diff == 0 && y_diff == 1){
+        if (xDiff == 0 && yDiff == 1) {
             return 0;
-        }
-        else if (x_diff == 1 && y_diff == 0){
+        } else if (xDiff == 1 && yDiff == 0) {
             return 1;
-        }
-        else if (x_diff == 0 && y_diff == -1){
+        } else if (xDiff == 0 && yDiff == -1) {
             return 2;
-        }
-        else if (x_diff == -1 && y_diff == 0){
+        } else if (xDiff == -1 && yDiff == 0) {
             return 3;
-        }
-        else {
+        } else {
             return -1;
         }
     }
 
-    boolean can_stay_here(Vector2 xy_to){
+    boolean canStayHere(Vector2 xy_to) {
         return !slash_walls.contains(xy_to) && !backslash_walls.contains(xy_to) && !boxes.contains(xy_to) && !points.contains(xy_to) && !crossroads.contains(xy_to) && body.indexOf(xy_to) == (body.size() - 1);
     }
 
-    public void update_how_many_visited(){
+    public void updateHowManyVisited() {
 
-        how_many_visited = 0;
+        howManyVisited = 0;
 
-        for (int x=0; x<field_size; x++){
-            for (int y=0; y<field_size; y++){
-                if (body.contains(new Vector2(x,y))){
-                    how_many_visited++;
+        for (int x = 0; x < field_size; x++) {
+            for (int y = 0; y < field_size; y++) {
+                if (body.contains(new Vector2(x, y))) {
+                    howManyVisited++;
                 }
             }
         }
     }
 
-    private void cut_tail(){
-        body.remove(body.size()-1);
-        body_io.remove(body_io.size()-1);
-        body_io.get(body_io.size()-1).y = -1;
+    private void cutTail() {
+        body.remove(body.size() - 1);
+        body_io.remove(body_io.size() - 1);
+        body_io.get(body_io.size() - 1).y = -1;
 
-        update_how_many_visited();
+        updateHowManyVisited();
     }
 
-    public void reset_body(){
-        how_many_visited = 0;
+    public void resetBody() {
+        howManyVisited = 0;
         body.clear();
         body_io.clear();
-        false_path.clear();
-        head_is_captured = false; /// new one
+        falsePath.clear();
+        headIsCaptured = false; /// new one
     }
 
-    public void normalize_cursor(){
-        if (abstract_input_cursor.x < 0){ abstract_input_cursor.x = 0; }
-        else if (abstract_input_cursor.x >= field_size){ abstract_input_cursor.x = field_size - 1; }
-        if (abstract_input_cursor.y < 0){ abstract_input_cursor.y = 0; }
-        else if (abstract_input_cursor.y >= field_size){ abstract_input_cursor.y = field_size - 1; }
-    }
-
-    private void normalize_obstacle(ArrayList<Vector2> arr){
-        if (field_size <= 1){
-            arr.clear();
+    public void normalizeCursor() {
+        if (abstractInputCursor.x < 0) {
+            abstractInputCursor.x = 0;
+        } else if (abstractInputCursor.x >= field_size) {
+            abstractInputCursor.x = field_size - 1;
         }
-        else {
-            ArrayList<Vector2> items_to_delete = new ArrayList<>();
+        if (abstractInputCursor.y < 0) {
+            abstractInputCursor.y = 0;
+        } else if (abstractInputCursor.y >= field_size) {
+            abstractInputCursor.y = field_size - 1;
+        }
+    }
+
+    private void normalizeObstacle(ArrayList<Vector2> arr) {
+        if (field_size <= 1) {
+            arr.clear();
+        } else {
+            ArrayList<Vector2> itemsToDelete = new ArrayList<>();
             for (Vector2 item : arr) {
                 if (item.x < 0 || item.y < 0 || item.x >= field_size || item.y >= field_size) {
-                    items_to_delete.add(item);
+                    itemsToDelete.add(item);
                 }
             }
-            arr.removeAll(items_to_delete);
+            arr.removeAll(itemsToDelete);
         }
     }
 
-    public void normalize_obstacles(){
-        normalize_obstacle(vertical_walls);
-        normalize_obstacle(horizontal_walls);
-        normalize_obstacle(slash_walls);
-        normalize_obstacle(backslash_walls);
-        normalize_obstacle(boxes);
-        normalize_obstacle(points);
-        normalize_obstacle(crossroads);
+    public void normalizeObstacles() {
+        normalizeObstacle(vertical_walls);
+        normalizeObstacle(horizontal_walls);
+        normalizeObstacle(slash_walls);
+        normalizeObstacle(backslash_walls);
+        normalizeObstacle(boxes);
+        normalizeObstacle(points);
+        normalizeObstacle(crossroads);
     }
 
-    public MoveResult double_tap_make_move(){
-        Vector2 xy_to = new Vector2(abstract_input_cursor);
+    public MoveResult doubleTapMakeMove() {
+        Vector2 xy_to = new Vector2(abstractInputCursor);
 
         // либо тела нет, тогда нужно поставить голову
         if (body.size() == 0) {
             // можно ли ставить
-            if (can_stay_here(xy_to)){
+            if (canStayHere(xy_to)) {
                 body.add(xy_to);
-                body_io.add(new Vector2(-1,-1));
+                body_io.add(new Vector2(-1, -1));
                 //System.out.println("Head is set on " + xy_to);
-                how_many_visited = 1;
-                head_is_captured = true;
-                is_tending_to_destroy_the_head = false;
+                howManyVisited = 1;
+                headIsCaptured = true;
+                isTendingToDestroyTheHead = false;
                 return MoveResult.HEAD_IS_SET;
-            }
-            else {
+            } else {
                 return MoveResult.HEAD_IS_NOT_SET;
             }
         }
@@ -242,23 +243,22 @@ public class Gameplay {
                 if (body.size() == 1) {
                     body.clear();
                     body_io.clear();
-                    how_many_visited = 0;
+                    howManyVisited = 0;
                     //is_tending_to_destroy_the_head = false;
-                    head_is_captured = false;
+                    headIsCaptured = false;
                     return MoveResult.HEAD_IS_DESTROYED;
                 }
                 // курсор уже на хвосте, тогда переключаем на голову
                 else {
-                    abstract_input_cursor = new Vector2(body.get(0));
+                    abstractInputCursor = new Vector2(body.get(0));
 
-                    boolean body_shortened = false;
-                    while (body.size() > 0){
-                        if (can_stay_here(body.get(body.size() - 1) )){
+                    boolean bodyShortened = false;
+                    while (body.size() > 0) {
+                        if (canStayHere(body.get(body.size() - 1))) {
                             break;
-                        }
-                        else {
-                            body_shortened = true;
-                            cut_tail();
+                        } else {
+                            bodyShortened = true;
+                            cutTail();
                         }
                     }
 
@@ -272,10 +272,10 @@ public class Gameplay {
                     //System.out.println(body);
                     //System.out.println(body_io);
                     //is_tending_to_destroy_the_head = true;
-                    head_is_captured = true;
-                    false_path.clear(); // чтобы стереть красную дорожку за курсором
+                    headIsCaptured = true;
+                    falsePath.clear(); // чтобы стереть красную дорожку за курсором
 
-                    if (body_shortened){
+                    if (bodyShortened) {
                         return MoveResult.BODY_IS_SHORTENED;
                     }
 
@@ -285,57 +285,55 @@ public class Gameplay {
             }
             // курсор не на хвосте, тогда переключаем на хвост
             else {
-                abstract_input_cursor = new Vector2(body.get(body.size() - 1));
-                head_is_captured = true;
-                false_path.clear(); // чтобы стереть красную дорожку за курсором
+                abstractInputCursor = new Vector2(body.get(body.size() - 1));
+                headIsCaptured = true;
+                falsePath.clear(); // чтобы стереть красную дорожку за курсором
                 return MoveResult.OTHER_GOOD;
             }
         }
     }
 
-    public MoveResult just_touched_make_move(int x_to, int y_to){
+    public MoveResult justTouchedMakeMove(int x_to, int y_to) {
         Vector2 xy_to = new Vector2(x_to, y_to);
 
         // либо тела нет, тогда нужно поставить голову
         if (body.size() == 0) {
             // можно ли ставить
-            if (can_stay_here(xy_to)){
+            if (canStayHere(xy_to)) {
                 body.add(xy_to);
-                body_io.add(new Vector2(-1,-1));
+                body_io.add(new Vector2(-1, -1));
                 //System.out.println("Head is set on " + xy_to);
-                how_many_visited = 1;
-                head_is_captured = true;
-                is_tending_to_destroy_the_head = false;
+                howManyVisited = 1;
+                headIsCaptured = true;
+                isTendingToDestroyTheHead = false;
                 return MoveResult.HEAD_IS_SET;
-            }
-            else {
+            } else {
                 //System.out.println("Cant set the head here");
                 return MoveResult.HEAD_IS_NOT_SET;
             }
         }
         // если тело есть
         else {
-            Vector2 tail = body.get(body.size()-1);
+            Vector2 tail = body.get(body.size() - 1);
             //System.out.println("Tail: " + tail);
 
             // выбрал хвост
-            if (xy_to.equals(tail)){
-                is_tending_to_destroy_the_head = true;
-                head_is_captured = true;
+            if (xy_to.equals(tail)) {
+                isTendingToDestroyTheHead = true;
+                headIsCaptured = true;
 
                 return MoveResult.OTHER_GOOD;
             }
             // выбрал голову
-            if (xy_to.equals(body.get(0))){
+            if (xy_to.equals(body.get(0))) {
 
-                boolean body_shortened = false;
-                while (body.size() > 0){
-                    if (can_stay_here(body.get(body.size() - 1) )){
+                boolean bodyShortened = false;
+                while (body.size() > 0) {
+                    if (canStayHere(body.get(body.size() - 1))) {
                         break;
-                    }
-                    else {
-                        body_shortened = true;
-                        cut_tail();
+                    } else {
+                        bodyShortened = true;
+                        cutTail();
                     }
                 }
 
@@ -343,15 +341,15 @@ public class Gameplay {
                 //System.out.println("You chose head");
                 Collections.reverse(body);
                 Collections.reverse(body_io);
-                for (Vector2 item : body_io){
+                for (Vector2 item : body_io) {
                     float tmp = item.x;
                     item.x = item.y;
                     item.y = tmp;
                 }
                 //System.out.println(body);
                 //System.out.println(body_io);
-                is_tending_to_destroy_the_head = true;
-                head_is_captured = true;
+                isTendingToDestroyTheHead = true;
+                headIsCaptured = true;
 
                 return MoveResult.OTHER_GOOD;
 
@@ -362,50 +360,49 @@ public class Gameplay {
         }
     }
 
-    public MoveResult slide_just_untouched_make_move(){
-        if (how_many_visited == how_many_should_be_visited && can_stay_here(body.get(body.size() - 1) )){
+    public MoveResult slideJustUntouchedMakeMove() {
+        if (howManyVisited == howManyShouldBeVisited && canStayHere(body.get(body.size() - 1))) {
             return MoveResult.VICTORY;
         }
 
         return MoveResult.OTHER_GOOD;
     }
 
-    public MoveResult just_untouched_make_move(int x_to, int y_to){
-        head_is_captured = false;
-        if (is_tending_to_destroy_the_head) {
+    public MoveResult justUntouchedMakeMove(int x_to, int y_to) {
+        headIsCaptured = false;
+        if (isTendingToDestroyTheHead) {
             if (body.size() == 1 && body.get(body.size() - 1).equals(new Vector2(x_to, y_to))) {
                 // убрать тело
                 if (body.size() == 1) {
                     //System.out.println("The head is destroyed");
                     body.clear();
                     body_io.clear();
-                    how_many_visited = 0;
-                    is_tending_to_destroy_the_head = false;
+                    howManyVisited = 0;
+                    isTendingToDestroyTheHead = false;
 
                     return MoveResult.HEAD_IS_DESTROYED;
                 }
             }
         }
 
-        false_path.clear();
+        falsePath.clear();
 
-        boolean body_shortened = false;
-        while (body.size() > 0){
-            if (can_stay_here(body.get(body.size() - 1) )){
+        boolean bodyShortened = false;
+        while (body.size() > 0) {
+            if (canStayHere(body.get(body.size() - 1))) {
                 break;
-            }
-            else {
-                body_shortened = true;
-                cut_tail();
+            } else {
+                bodyShortened = true;
+                cutTail();
             }
         }
 
-        if (how_many_visited == how_many_should_be_visited){
+        if (howManyVisited == howManyShouldBeVisited) {
             return MoveResult.VICTORY;
         }
 
         // сначала идёт проверка на победу на случай, если палец завёл тело слишком далеко и укорочение привело к победе
-        if (body_shortened){
+        if (bodyShortened) {
             return MoveResult.BODY_IS_SHORTENED;
         }
 
@@ -413,12 +410,12 @@ public class Gameplay {
 
     }
 
-    public MoveResult slide_touched_make_move(){
-        return touched_make_move((int)abstract_input_cursor.x, (int)abstract_input_cursor.y);
+    public MoveResult slideTouchedMakeMove() {
+        return touchedMakeMove((int) abstractInputCursor.x, (int) abstractInputCursor.y);
     }
 
-    public MoveResult touched_make_move(int x_to, int y_to){
-        if (!head_is_captured){
+    public MoveResult touchedMakeMove(int x_to, int y_to) {
+        if (!headIsCaptured) {
             //System.out.println("Head is not captured");
             return MoveResult.HEAD_IS_NOT_CAPTURED;
         }
@@ -426,62 +423,61 @@ public class Gameplay {
 
         Vector2 xy_to = new Vector2(x_to, y_to);
         // граница карты
-        if (x_to < 0 || y_to < 0 || x_to >= field_size || y_to >= field_size){
+        if (x_to < 0 || y_to < 0 || x_to >= field_size || y_to >= field_size) {
             //System.out.println("Out of bounds");
             return MoveResult.OUT_OF_BOUNDS;
         }
 
         // коробка
-        if (boxes.contains(xy_to)){
+        if (boxes.contains(xy_to)) {
             //System.out.println("Move on the box");
             return MoveResult.MOVE_INTO_BOX;
         }
 
         // если нет тела
-        if (body.size() == 0){
+        if (body.size() == 0) {
             return MoveResult.OTHER_BAD;
-        }
-        else {
-            Vector2 tail = body.get(body.size()-1);
+        } else {
+            Vector2 tail = body.get(body.size() - 1);
             //System.out.println("Tail: " + tail);
 
             // остался ли на месте
-            if (xy_to.equals(tail)){
+            if (xy_to.equals(tail)) {
                 //System.out.println("No movement");
                 return MoveResult.NO_MOVEMENT;
             }
 
             // ход назад
-            if (body.size() >= 2 && xy_to.equals(body.get(body.size()-2))){
+            if (body.size() >= 2 && xy_to.equals(body.get(body.size() - 2))) {
                 //System.out.println("Move back");
-                cut_tail();
-                is_tending_to_destroy_the_head = false;
+                cutTail();
+                isTendingToDestroyTheHead = false;
                 return MoveResult.MOVE_BACK;
             }
 
             // направление
-            int move_direction = direction_to((int)tail.x, (int)tail.y, x_to, y_to);
+            int moveDirection = directionTo((int) tail.x, (int) tail.y, x_to, y_to);
             //System.out.println("Move direction: " + move_direction);
 
 
             // сосед ли
-            if (move_direction == -1){
+            if (moveDirection == -1) {
                 //System.out.println("Not a neighbor");
                 return MoveResult.NOT_A_NEIGHBOR;
             }
 
             // диагональные стенки
-            if (slash_walls.contains(tail)){
-                int can_visit = slash_io[(int)body_io.get(body_io.size()-1).x][move_direction];
-                if (can_visit == 0){
+            if (slash_walls.contains(tail)) {
+                int canVisit = SLASH_IO[(int) body_io.get(body_io.size() - 1).x][moveDirection];
+                if (canVisit == 0) {
                     //System.out.println("Movement through the slash wall");
                     return MoveResult.MOVE_THROUGH_SLASH_WALL;
                 }
 
             }
-            if (backslash_walls.contains(tail)){
-                int can_visit = backslash_io[(int)body_io.get(body_io.size()-1).x][move_direction];
-                if (can_visit == 0){
+            if (backslash_walls.contains(tail)) {
+                int canVisit = BACKSLASH_IO[(int) body_io.get(body_io.size() - 1).x][moveDirection];
+                if (canVisit == 0) {
                     //System.out.println("Movement through the backslash wall");
                     return MoveResult.MOVE_THROUGH_BACKSLASH_WALL;
                 }
@@ -489,74 +485,73 @@ public class Gameplay {
             }
 
             // точка
-            if (points.contains(tail)){
-                int can_visit = point_io[(int)body_io.get(body_io.size()-1).x][move_direction];
-                if (can_visit == 0){
+            if (points.contains(tail)) {
+                int canVisit = POINT_IO[(int) body_io.get(body_io.size() - 1).x][moveDirection];
+                if (canVisit == 0) {
                     //System.out.println("Movement through the point");
                     return MoveResult.MOVE_THROUGH_POINT;
                 }
             }
 
             // перекрёсток
-            if (crossroads.contains(tail)){
-                int can_visit = crossroad_io[(int)body_io.get(body_io.size()-1).x][move_direction];
-                if (can_visit == 0){
+            if (crossroads.contains(tail)) {
+                int canVisit = CROSSROAD_IO[(int) body_io.get(body_io.size() - 1).x][moveDirection];
+                if (canVisit == 0) {
                     //System.out.println("Movement through the crossroad");
                     return MoveResult.MOVE_THROUGH_CROSSROAD;
                 }
             }
 
-            if (move_direction == 0){
-                if (horizontal_walls.contains(tail)){
+            if (moveDirection == 0) {
+                if (horizontal_walls.contains(tail)) {
                     //System.out.println("Movement through the horizontal_wall");
                     return MoveResult.MOVE_THROUGH_HORIZONTAL_WALL;
                 }
             }
-            if (move_direction == 2){
-                if (horizontal_walls.contains(xy_to)){
+            if (moveDirection == 2) {
+                if (horizontal_walls.contains(xy_to)) {
                     //System.out.println("Movement through the horizontal_wall");
                     return MoveResult.MOVE_THROUGH_HORIZONTAL_WALL;
                 }
             }
-            if (move_direction == 1){
-                if (vertical_walls.contains(tail)){
+            if (moveDirection == 1) {
+                if (vertical_walls.contains(tail)) {
                     //System.out.println("Movement through the vertical_wall");
                     return MoveResult.MOVE_THROUGH_VERTICAL_WALL;
                 }
             }
-            if (move_direction == 3){
-                if (vertical_walls.contains(xy_to)){
+            if (moveDirection == 3) {
+                if (vertical_walls.contains(xy_to)) {
                     //System.out.println("Movement through the vertical_wall");
                     return MoveResult.MOVE_THROUGH_VERTICAL_WALL;
                 }
             }
 
             int i = body.indexOf(xy_to);
-            if (i != -1){
+            if (i != -1) {
                 //System.out.println("Segment " + i + ": " + body.get(i) + " is at the same position");
 
-                if (i==0){
+                if (i == 0) {
                     //System.out.println("This is my tail");
                     return MoveResult.BODY_NOT_VISITED;
                 }
-                if (body.lastIndexOf(xy_to) != i){
+                if (body.lastIndexOf(xy_to) != i) {
                     //System.out.println("Triple visited");
                     return MoveResult.BODY_NOT_VISITED;
                 }
 
-                int visited_segment = segment_by_io[(int)body_io.get(i).x][(int)body_io.get(i).y];
+                int visitedSegment = SEGMENT_BY_IO[(int) body_io.get(i).x][(int) body_io.get(i).y];
                 //System.out.println("Visited segment: " + visited_segment);
 
-                int can_visit = entrance_to_body[move_direction][visited_segment];
+                int canVisit = ENTRANCE_TO_BODY[moveDirection][visitedSegment];
 
-                if (can_visit > 0){
+                if (canVisit > 0) {
                     //System.out.println("Move is done");
                     body.add(xy_to);
-                    body_io.get(body_io.size()-1).y = move_direction;
-                    body_io.add(new Vector2(negate_direction[move_direction], -1));
+                    body_io.get(body_io.size() - 1).y = moveDirection;
+                    body_io.add(new Vector2(NEGATE_DIRECTION[moveDirection], -1));
                     return MoveResult.BODY_VISITED;
-                }
-                else {
+                } else {
                     //System.out.println("Can't visit by rules");
                     return MoveResult.BODY_NOT_VISITED;
                 }
@@ -565,136 +560,142 @@ public class Gameplay {
 
             //System.out.println("Simple movement");
             body.add(xy_to);
-            body_io.get(body_io.size()-1).y = move_direction;
-            body_io.add(new Vector2(negate_direction[move_direction], -1));
+            body_io.get(body_io.size() - 1).y = moveDirection;
+            body_io.add(new Vector2(NEGATE_DIRECTION[moveDirection], -1));
 
-            how_many_visited++; //update_how_many_visited();
+            howManyVisited++; //update_how_many_visited();
 
             return MoveResult.SIMPLE_MOVEMENT;
         }
     }
 
-    private void clockwise_turn_item(Vector2 item){
-        float new_x = item.y;
-        float new_y = -item.x + (field_size - 1);
-        item.x = new_x;
-        item.y = new_y;
+    private void clockwiseTurnItem(Vector2 item) {
+        float newX = item.y;
+        float newY = -item.x + (field_size - 1);
+        item.x = newX;
+        item.y = newY;
     }
-    private void clockwise_turn_array(ArrayList<Vector2> arr){
-        for (Vector2 item: arr){
-            clockwise_turn_item(item);
+
+    private void clockwiseTurnArray(ArrayList<Vector2> arr) {
+        for (Vector2 item : arr) {
+            clockwiseTurnItem(item);
         }
     }
-    public void clockwise_turn(){
+
+    public void clockwiseTurn() {
         ArrayList<Vector2> tmp;
 
-        clockwise_turn_array(vertical_walls);
-        for (Vector2 item: vertical_walls){
+        clockwiseTurnArray(vertical_walls);
+        for (Vector2 item : vertical_walls) {
             item.y--;
         }
-        clockwise_turn_array(horizontal_walls);
+        clockwiseTurnArray(horizontal_walls);
         // тк горизонтальные <--> вертикальные
         tmp = vertical_walls;
         vertical_walls = horizontal_walls;
         horizontal_walls = tmp;
 
 
-        clockwise_turn_array(slash_walls);
-        clockwise_turn_array(backslash_walls);
+        clockwiseTurnArray(slash_walls);
+        clockwiseTurnArray(backslash_walls);
         // тк slash <--> backslash
         tmp = slash_walls;
         slash_walls = backslash_walls;
         backslash_walls = tmp;
 
-        clockwise_turn_array(boxes);
-        clockwise_turn_array(points);
-        clockwise_turn_array(crossroads);
-        clockwise_turn_array(hint);
-        clockwise_turn_item(abstract_input_cursor);
+        clockwiseTurnArray(boxes);
+        clockwiseTurnArray(points);
+        clockwiseTurnArray(crossroads);
+        clockwiseTurnArray(hint);
+        clockwiseTurnItem(abstractInputCursor);
 
-        clockwise_turn_array(body);
-        for (Vector2 item: body_io){
+        clockwiseTurnArray(body);
+        for (Vector2 item : body_io) {
             item.x = (item.x + 1) % 4;
             item.y = (item.y + 1) % 4;
         }
     }
 
-    private void counterclockwise_turn_item(Vector2 item){
-        float new_x = -item.y + (field_size - 1);
-        float new_y = item.x;
-        item.x = new_x;
-        item.y = new_y;
+    private void counterclockwiseTurnItem(Vector2 item) {
+        float newX = -item.y + (field_size - 1);
+        float newY = item.x;
+        item.x = newX;
+        item.y = newY;
     }
-    private void counterclockwise_turn_array(ArrayList<Vector2> arr){
-        for (Vector2 item: arr){
-            counterclockwise_turn_item(item);
+
+    private void counterclockwiseTurnArray(ArrayList<Vector2> arr) {
+        for (Vector2 item : arr) {
+            counterclockwiseTurnItem(item);
         }
     }
-    public void counterclockwise_turn(){
+
+    public void counterclockwiseTurn() {
         ArrayList<Vector2> tmp;
 
-        counterclockwise_turn_array(vertical_walls);
-        counterclockwise_turn_array(horizontal_walls);
-        for (Vector2 item: horizontal_walls){
-            item.x-=1;
+        counterclockwiseTurnArray(vertical_walls);
+        counterclockwiseTurnArray(horizontal_walls);
+        for (Vector2 item : horizontal_walls) {
+            item.x -= 1;
         }
         tmp = vertical_walls;
         vertical_walls = horizontal_walls;
         horizontal_walls = tmp;
 
-        counterclockwise_turn_array(slash_walls);
-        counterclockwise_turn_array(backslash_walls);
+        counterclockwiseTurnArray(slash_walls);
+        counterclockwiseTurnArray(backslash_walls);
         tmp = slash_walls;
         slash_walls = backslash_walls;
         backslash_walls = tmp;
 
-        counterclockwise_turn_array(boxes);
-        counterclockwise_turn_array(points);
-        counterclockwise_turn_array(crossroads);
-        counterclockwise_turn_array(hint);
-        counterclockwise_turn_item(abstract_input_cursor);
+        counterclockwiseTurnArray(boxes);
+        counterclockwiseTurnArray(points);
+        counterclockwiseTurnArray(crossroads);
+        counterclockwiseTurnArray(hint);
+        counterclockwiseTurnItem(abstractInputCursor);
 
-        counterclockwise_turn_array(body);
-        for (Vector2 item: body_io){
+        counterclockwiseTurnArray(body);
+        for (Vector2 item : body_io) {
             item.x = (item.x + 3) % 4;  // +3 по модулю 4 равно -1
             item.y = (item.y + 3) % 4;
         }
     }
 
-    private void mirror_turn_item(Vector2 item){
+    private void mirrorTurnItem(Vector2 item) {
         item.x = field_size - 1 - item.x;
     }
-    private void mirror_turn_array(ArrayList<Vector2> arr){
-        for (Vector2 item: arr){
-            mirror_turn_item(item);
+
+    private void mirrorTurnArray(ArrayList<Vector2> arr) {
+        for (Vector2 item : arr) {
+            mirrorTurnItem(item);
         }
     }
-    public void mirror_turn(){
+
+    public void mirrorTurn() {
         ArrayList<Vector2> tmp;
-        mirror_turn_array(vertical_walls);
-        for (Vector2 item: vertical_walls){
+        mirrorTurnArray(vertical_walls);
+        for (Vector2 item : vertical_walls) {
             item.x--;
         }
-        mirror_turn_array(horizontal_walls);
-        mirror_turn_array(slash_walls);
-        mirror_turn_array(backslash_walls);
+        mirrorTurnArray(horizontal_walls);
+        mirrorTurnArray(slash_walls);
+        mirrorTurnArray(backslash_walls);
 
         tmp = slash_walls;
         slash_walls = backslash_walls;
         backslash_walls = tmp;
 
-        mirror_turn_array(boxes);
-        mirror_turn_array(points);
-        mirror_turn_array(crossroads);
-        mirror_turn_array(hint);
-        mirror_turn_item(abstract_input_cursor);
+        mirrorTurnArray(boxes);
+        mirrorTurnArray(points);
+        mirrorTurnArray(crossroads);
+        mirrorTurnArray(hint);
+        mirrorTurnItem(abstractInputCursor);
 
-        mirror_turn_array(body);
-        for (Vector2 item: body_io){
-            if (item.x % 2 != 0){
+        mirrorTurnArray(body);
+        for (Vector2 item : body_io) {
+            if (item.x % 2 != 0) {
                 item.x = (item.x + 2) % 4;  // равносильно двум поворотам по часовой
             }
-            if (item.y % 2 != 0){
+            if (item.y % 2 != 0) {
                 item.y = (item.y + 2) % 4;
             }
         }

@@ -31,7 +31,7 @@ public class LevelScreen extends QuScreen {
         Gdx.gl20.glClearColor(0.25f, 0.25f, 0.25f, 1);
         levelBoard.show();
 
-        if (levelBoard.current_level > levelBoard.how_many_levels){
+        if (levelBoard.currentLevel > levelBoard.howManyLevels) {
             game.setScreen("levels_are_over");
         }
     }
@@ -50,8 +50,8 @@ public class LevelScreen extends QuScreen {
         levelBottomPanel.update();
         levelTransformBottomPanel.update();
 
-        if (game.is_back_button_pressed){
-            game.is_back_button_pressed = false;
+        if (game.isBackButtonPressed) {
+            game.isBackButtonPressed = false;
             game.setScreen("menu");
         }
 

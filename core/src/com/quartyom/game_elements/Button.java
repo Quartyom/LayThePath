@@ -10,182 +10,168 @@ import com.quartyom.interfaces.Drawable;
 import com.quartyom.interfaces.QuEvent;
 
 public class Button implements Drawable {
-    private float button_x, button_y, button_w, button_h;
-    public Vector2 offset;
+    private float buttonX, buttonY, buttonW, buttonH;   // button position and size
+    public Vector2 offset;                              // button offset for scrolling
 
-    public TextureRegion normal_texture, pressed_texture;
-    public NinePatch normal_patch, pressed_patch;
-    Sound click_sound;
+    public TextureRegion normalTexture, pressedTexture;
+    public NinePatch normalPatch, pressedPatch;
+    private boolean hasNinePatch = false;
 
-    private boolean has_nine_patch = false;
+    Sound clickSound;
 
-    private Label label;
-    private Hint hint;
-    private Notification notification;
+    private Label label;                    // text on button
+    private Hint hint;                      // text, when you hold the button
+    private Notification notification;      // tiny round icon with text on button's corner
 
     public InputState inputState;
 
-    QuEvent action;
-    LayThePath game;
+    QuEvent onClickAction;
+    public final LayThePath game;
 
-    Vector2 touch_pos, initial_touch_pos;
+    Vector2 touchPos, initialTouchPos;
 
-    public Button(LayThePath game, QuEvent action){
-        this.action = action;
+    public Button(LayThePath game, QuEvent onClickAction) {
+        this.onClickAction = onClickAction;
         this.game = game;
 
         inputState = InputState.UNTOUCHED;
-        touch_pos = new Vector2();
-        initial_touch_pos = new Vector2();
+        touchPos = new Vector2();
+        initialTouchPos = new Vector2();
         offset = new Vector2();
     }
 
-    public Button(String name, LayThePath game, QuEvent action){
-        this(game, action);
-        normal_texture = game.buttons_atlas.findRegion(name + "_normal");
-        pressed_texture = game.buttons_atlas.findRegion(name + "_pressed");
-        click_sound = game.soundHolder.get("click_0");
+    public Button(String name, LayThePath game, QuEvent onClickAction) {
+        this(game, onClickAction);
+        normalTexture = game.buttonsAtlas.findRegion(name + "_normal");
+        pressedTexture = game.buttonsAtlas.findRegion(name + "_pressed");
+        clickSound = game.soundHolder.get("click_0");
 
     }
 
-    public Button setNinePatch(int padding){
-        normal_patch = new NinePatch(normal_texture, padding, padding, padding, padding);
-        pressed_patch = new NinePatch(pressed_texture, padding, padding, padding, padding);
-        has_nine_patch = true;
+    public Button setNinePatch(int padding) {
+        normalPatch = new NinePatch(normalTexture, padding, padding, padding, padding);
+        pressedPatch = new NinePatch(pressedTexture, padding, padding, padding, padding);
+        hasNinePatch = true;
         return this;
     }
 
-    public Button setLabel(String string){
+    public Button setLabel(String string) {
         return setLabel(string, FontType.LOCALIZED_LIGHT);
     }
 
-    public Button setLabel(String string, FontType fontType){
+    public Button setLabel(String string, FontType fontType) {
         if (label == null) {
             label = new Label(game, string);
             label.offset = this.offset;
             label.fontType = fontType;
-        }
-        else {
-            label.set_string(string);
+        } else {
+            label.setString(string);
         }
         return this;
     }
 
-    public Button setHint(String string){
-        hint = new Hint(game);
-        hint.set_string(string);
+    public Button setHint(String string) {
+        hint = new Hint(this);
+        hint.setString(string);
         return this;
     }
 
-    public Button addNotification(){
+    public Button addNotification() {
         notification = new Notification(game);
         notification.offset = this.offset;
         return this;
     }
 
-    public Button setNotification(String string){
-        notification.set_string(string);
+    public Button setNotification(String string) {
+        notification.setString(string);
         return this;
     }
 
-    public Button setSound(String name){
-        click_sound = game.soundHolder.get(name);
+    public Button setSound(String name) {
+        clickSound = game.soundHolder.get(name);
         return this;
     }
 
-    public void on_click(){
-        action.execute();
-    }
+    public void resize(float x, float y, float w, float h) {
+        buttonX = x;
+        buttonY = y;
+        buttonW = w;
+        buttonH = h;
 
-    public void resize(float x, float y, float w, float h){
-        button_x = x;
-        button_y = y;
-        button_w = w;
-        button_h = h;
-
-        if (label != null){
+        if (label != null) {
             label.resize(x, y, w, h, Align.center);
         }
 
-        if (hint != null){
-            hint.resize((int)(game.HEIGHT * (1.0f / 32.0f)), 0, game.HALF_HEIGHT * (1 / 4.0f));
+        if (hint != null) {
+            hint.resize((int) (game.HEIGHT * (1.0f / 32.0f)), 0, game.HALF_HEIGHT * (1 / 4.0f));
         }
 
-        if (notification != null){
-            notification.resize(button_x, button_y + button_h, button_w / 3);
+        if (notification != null) {
+            notification.resize(buttonX, buttonY + buttonH, buttonW / 3);
         }
     }
 
-    public void draw(){
-        if (!has_nine_patch) {
+    public void draw() {
+        if (!hasNinePatch) {
             if (inputState == InputState.UNTOUCHED) {
-                game.batch.draw(normal_texture, button_x + offset.x, button_y + offset.y, button_w, button_h);
+                game.batch.draw(normalTexture, buttonX + offset.x, buttonY + offset.y, buttonW, buttonH);
             } else if (inputState == InputState.TOUCHED) {
-                game.batch.draw(pressed_texture, button_x + offset.x, button_y + offset.y, button_w, button_h);
+                game.batch.draw(pressedTexture, buttonX + offset.x, buttonY + offset.y, buttonW, buttonH);
+            }
+        } else {
+            if (inputState == InputState.UNTOUCHED) {
+                normalPatch.draw(game.batch, buttonX + offset.x, buttonY + offset.y, buttonW, buttonH);
+            } else if (inputState == InputState.TOUCHED) {
+                pressedPatch.draw(game.batch, buttonX + offset.x, buttonY + offset.y, buttonW, buttonH);
             }
         }
-        else {
-            if (inputState == InputState.UNTOUCHED) {
-                normal_patch.draw(game.batch, button_x + offset.x, button_y + offset.y, button_w, button_h);
-            } else if (inputState == InputState.TOUCHED) {
-                pressed_patch.draw(game.batch, button_x + offset.x, button_y + offset.y, button_w, button_h);
-            }
-        }
-        if (label != null){
+        if (label != null) {
             label.draw();
         }
-        if (hint != null){
-            if (game.userData.button_hints_are_on){     // подсказки могут быть выключены
+        if (hint != null) {
+            if (game.userData.button_hints_are_on) {     // for case if hints turned off
                 game.drawingQueue.add(hint);
             }
         }
-        if (notification != null){
+        if (notification != null) {
             notification.draw();
         }
     }
 
+    // tapped and released above the button, not sliding more than buttonH * 0.5f - click
+    public void update() {
+        if (game.isTouched()) {
+            touchPos.x = game.touchPos.x - offset.x;
+            touchPos.y = game.touchPos.y - offset.y;
 
-    // нажал и отпустил - клик
-    public void update(){
-        // если нажато
-        if (game.isTouched()){
-            touch_pos.x = game.touch_pos.x - offset.x;
-            touch_pos.y = game.touch_pos.y - offset.y;
-
-            // попали ли по кнопке
-            if (touch_pos.x > button_x && touch_pos.y > button_y && touch_pos.x < button_x + button_w && touch_pos.y < button_y + button_h){
+            // tapped above the button
+            if (touchPos.x > buttonX && touchPos.y > buttonY && touchPos.x < buttonX + buttonW && touchPos.y < buttonY + buttonH) {
                 if (game.inputState == InputState.JUST_TOUCHED) {
                     inputState = InputState.TOUCHED;
-                    initial_touch_pos.x = game.touch_pos.x;
-                    initial_touch_pos.y = game.touch_pos.y;
-                    if (click_sound != null) { click_sound.play(game.userData.volume * 0.5f); }
-                    if (hint != null) { hint.is_active = true; }
-                }
-                else if (game.touch_pos.dst(initial_touch_pos) > button_h * 0.5f){
+                    initialTouchPos.x = game.touchPos.x;
+                    initialTouchPos.y = game.touchPos.y;
+                    if (clickSound != null) {
+                        clickSound.play(game.userData.volume * 0.5f);
+                    }
+                } else if (game.touchPos.dst(initialTouchPos) > buttonH * 0.5f) {  // sliding too far - no click: untouched
                     inputState = InputState.UNTOUCHED;
-                    if (hint != null) { hint.is_active = false; }
                 }
-            }
-            else {
+            } else {
                 inputState = InputState.UNTOUCHED;
-                if (hint != null) { hint.is_active = false; }
             }
-            // не попали по кнопке
         }
-        // не нажато
         else {
-            // но было нажато
+            // not touched, but was touched before
             if (inputState == InputState.TOUCHED) {
-                // палец убрали над кнопкой = клик
-                if (touch_pos.x > button_x && touch_pos.y > button_y && touch_pos.x < button_x + button_w && touch_pos.y < button_y + button_h){
-                    on_click();
+                // and finger was released above the button
+                if (touchPos.x > buttonX && touchPos.y > buttonY && touchPos.x < buttonX + buttonW && touchPos.y < buttonY + buttonH) {
+                    onClickAction.execute();
                 }
                 inputState = InputState.UNTOUCHED;
-                if (hint != null) { hint.is_active = false; }
             }
         }
 
-        if (hint != null){
+        if (hint != null) {
             hint.update();
         }
 

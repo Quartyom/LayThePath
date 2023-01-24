@@ -2,211 +2,219 @@ package com.quartyom.screens.Menu;
 
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.quartyom.LayThePath;
 import com.quartyom.game_elements.Button;
 import com.quartyom.game_elements.InputState;
-import com.quartyom.game_elements.QuScreen;
-import com.quartyom.interfaces.QuEvent;
 import com.quartyom.game_elements.Label;
+import com.quartyom.game_elements.QuScreen;
 import com.quartyom.game_elements.Slider;
 import com.quartyom.game_elements.SwitchButton;
 import com.quartyom.game_elements.Vibrator;
+import com.quartyom.interfaces.QuEvent;
 
 import java.util.Random;
 
 public class SettingsTab extends QuScreen {
+
     final LayThePath game;
 
     Vibrator vibrator;
 
-    Label settings_label;
-    Button locale_button, controls_button, back_button;
-    SwitchButton sound_button, vibration_button, hints_button, premium_button;
-    Slider sound_slider;
+    Label settingsLabel;
+    Button localeButton, controlsButton, backButton;
+    SwitchButton soundButton, vibrationButton, hintsButton, premiumButton;
+    Slider soundSlider;
 
-    public SettingsTab(final LayThePath game){
+    public SettingsTab(final LayThePath game) {
         this.game = game;
 
         vibrator = game.vibrator;
 
-        settings_label = new Label(game, game.locale.get("Settings"));
+        settingsLabel = new Label(game, game.locale.get("Settings"));
 
-        sound_slider = new Slider("regular", game);
-        sound_slider.value = game.userData.volume;
+        soundSlider = new Slider("regular", game);
+        soundSlider.value = game.userData.volume;
 
-        sound_button = new SwitchButton(game);
-        sound_button.add("sound_off").add("sound_on");
-        sound_button.state = game.userData.volume > 0 ? 1 : 0;
+        soundButton = new SwitchButton(game);
+        soundButton.add("sound_off").add("sound_on");
+        soundButton.state = game.userData.volume > 0 ? 1 : 0;
 
-        vibration_button = new SwitchButton(game);
-        vibration_button.add("vibration_off").add("vibration_on");
-        vibration_button.state = game.userData.vibration_is_on ? 1 : 0;
+        vibrationButton = new SwitchButton(game);
+        vibrationButton.add("vibration_off").add("vibration_on");
+        vibrationButton.state = game.userData.vibration_is_on ? 1 : 0;
 
-        hints_button = new SwitchButton(game);
-        hints_button.add("button_hints_off").add("button_hints_on");    // обратный порядок
-        hints_button.state = game.userData.button_hints_are_on ? 1 : 0;
+        hintsButton = new SwitchButton(game);
+        hintsButton.add("button_hints_off").add("button_hints_on");    // обратный порядок
+        hintsButton.state = game.userData.button_hints_are_on ? 1 : 0;
 
-        locale_button = new Button("locale", game, new QuEvent() {
+        localeButton = new Button("locale", game, new QuEvent() {
             @Override
             public void execute() {
                 game.setScreen("menu_locale");
             }
         });
 
-
-        premium_button = new SwitchButton(game);
-        premium_button.add("premium_normal").add("premium_pressed");
+        premiumButton = new SwitchButton(game);
+        premiumButton.add("premium_normal").add("premium_pressed");
         //premium_button.state = game.userData.premium_is_on ? 1 : 0;   // уже есть в show()
-        premium_button.to_change_state_on_click = false;
+        premiumButton.toChangeStateOnClick = false;
 
-        controls_button = new Button("controls", game, new QuEvent() {
+        controlsButton = new Button("controls", game, new QuEvent() {
             @Override
             public void execute() {
                 game.setScreen("menu_controls");
             }
         });
 
-        back_button = new Button("in_main_menu", game, new QuEvent() {
+        backButton = new Button("in_main_menu", game, new QuEvent() {
             @Override
             public void execute() {
                 game.setScreen("menu");
             }
         });
-        back_button.setNinePatch(6).setLabel(game.locale.get("Back"));
+        backButton.setNinePatch(6).setLabel(game.locale.get("Back"));
 
     }
 
-    public void update(){
-        sound_button.update();
-        if (sound_button.recently_changed){
-            if (sound_button.state == 0){
+    public void update() {
+        soundButton.update();
+        if (soundButton.recentlyChanged) {
+            if (soundButton.state == 0) {
                 game.userData.volume = 0;
-                sound_slider.value = 0;
-                game.save_user_data();
-            }
-            else {
+                soundSlider.value = 0;
+                game.saveUserData();
+            } else {
                 game.userData.volume = 0.5f;
-                sound_slider.value = 0.5f;
-                game.save_user_data();
+                soundSlider.value = 0.5f;
+                game.saveUserData();
             }
-        }
-        else {
-            sound_slider.update();
-            if (game.userData.volume != sound_slider.value) {
-                game.userData.volume = sound_slider.value;
-                if (sound_slider.value != 0) {
-                    sound_button.state = 1;
-                }
-                else {
-                    sound_button.state = 0;
+        } else {
+            soundSlider.update();
+            if (game.userData.volume != soundSlider.value) {
+                game.userData.volume = soundSlider.value;
+                if (soundSlider.value != 0) {
+                    soundButton.state = 1;
+                } else {
+                    soundButton.state = 0;
                 }
                 //game.save_user_data();
             }
-            if (sound_slider.inputState == InputState.JUST_UNTOUCHED){
-                game.save_user_data();
+            if (soundSlider.inputState == InputState.JUST_UNTOUCHED) {
+                game.saveUserData();
             }
         }
 
-        vibration_button.update();
-        if (vibration_button.recently_changed){
-            game.userData.vibration_is_on = vibration_button.state == 1;
-            if (game.userData.vibration_is_on){
+        vibrationButton.update();
+        if (vibrationButton.recentlyChanged) {
+            game.userData.vibration_is_on = vibrationButton.state == 1;
+            if (game.userData.vibration_is_on) {
                 vibrator.vibrate(150);
             }
-            game.save_user_data();
+            game.saveUserData();
         }
 
-        hints_button.update();
-        if (hints_button.recently_changed){
-            game.userData.button_hints_are_on = hints_button.state == 1;
-            game.save_user_data();
+        hintsButton.update();
+        if (hintsButton.recentlyChanged) {
+            game.userData.button_hints_are_on = hintsButton.state == 1;
+            game.saveUserData();
         }
 
-        premium_button.update();
-        if (premium_button.recently_changed){
-            if (game.userData.premium_is_on){
+        premiumButton.update();
+        if (premiumButton.recentlyChanged) {
+            if (game.userData.premium_is_on) {
                 game.setScreen("menu_premium_is_activated");
-            }
-            else {
+            } else {
                 game.setScreen("menu_premium");
             }
         }
 
-        locale_button.update();
-        if (!is_too_fast) { controls_button.update(); }
-        back_button.update();
+        localeButton.update();
+        if (!isTooFast) {
+            controlsButton.update();
+        }
+        backButton.update();
     }
 
     @Override
     public void resize(int width, int height) {
-        settings_label.resize(game.upper_button_corner_x, game.upper_button_corner_y, game.button_w, game.button_h, 1);
+        settingsLabel.resize(game.upperButtonCornerX, game.upperButtonCornerY, game.buttonW,
+                game.buttonH, 1);
 
-        float sound_button_corner_y = game.upper_button_corner_y - game.down_margin;
-        float slider_margin_x = game.button_h / 4;
-        float sound_slider_corner_x = game.upper_button_corner_x + game.button_h + slider_margin_x;
-        float slider_w = game.button_w - game.button_h - slider_margin_x;
+        float sound_button_corner_y = game.upperButtonCornerY - game.downMargin;
+        float slider_margin_x = game.buttonH / 4;
+        float sound_slider_corner_x = game.upperButtonCornerX + game.buttonH + slider_margin_x;
+        float slider_w = game.buttonW - game.buttonH - slider_margin_x;
         float sound_slider_corner_y = sound_button_corner_y;
 
-        sound_button.resize(game.upper_button_corner_x, sound_button_corner_y, game.button_h, game.button_h);
-        sound_slider.resize(sound_slider_corner_x, sound_slider_corner_y + game.button_h / 4, slider_w, game.button_h / 2);
+        soundButton.resize(game.upperButtonCornerX, sound_button_corner_y, game.buttonH,
+                game.buttonH);
+        soundSlider.resize(sound_slider_corner_x, sound_slider_corner_y + game.buttonH / 4, slider_w,
+                game.buttonH / 2);
 
-        vibration_button.resize(game.upper_button_corner_x, game.upper_button_corner_y - game.down_margin * 2, game.button_h, game.button_h);
+        vibrationButton.resize(game.upperButtonCornerX,
+                game.upperButtonCornerY - game.downMargin * 2, game.buttonH, game.buttonH);
 
-        float theme_button_corner_x = game.upper_button_corner_x + game.button_w - game.button_h;
-        hints_button.resize(theme_button_corner_x, game.upper_button_corner_y - game.down_margin * 2, game.button_h, game.button_h);
+        float theme_button_corner_x = game.upperButtonCornerX + game.buttonW - game.buttonH;
+        hintsButton.resize(theme_button_corner_x, game.upperButtonCornerY - game.downMargin * 2,
+                game.buttonH, game.buttonH);
 
-        premium_button.resize(game.upper_button_corner_x, game.upper_button_corner_y - game.down_margin * 3, game.button_h, game.button_h);
-        locale_button.resize(theme_button_corner_x, game.upper_button_corner_y - game.down_margin * 3, game.button_h, game.button_h);
+        premiumButton.resize(game.upperButtonCornerX,
+                game.upperButtonCornerY - game.downMargin * 3, game.buttonH, game.buttonH);
+        localeButton.resize(theme_button_corner_x, game.upperButtonCornerY - game.downMargin * 3,
+                game.buttonH, game.buttonH);
 
-        if (is_too_fast){
-            back_button.resize(game.upper_button_corner_x, game.upper_button_corner_y - game.down_margin * 4, game.button_w, game.button_h);
-        }
-        else {
-            controls_button.resize(game.upper_button_corner_x, game.upper_button_corner_y - game.down_margin * 4, game.button_h, game.button_h);
-            back_button.resize(game.upper_button_corner_x, game.upper_button_corner_y - game.down_margin * 5, game.button_w, game.button_h);
+        if (isTooFast) {
+            backButton.resize(game.upperButtonCornerX,
+                    game.upperButtonCornerY - game.downMargin * 4, game.buttonW, game.buttonH);
+        } else {
+            controlsButton.resize(game.upperButtonCornerX,
+                    game.upperButtonCornerY - game.downMargin * 4, game.buttonH, game.buttonH);
+            backButton.resize(game.upperButtonCornerX,
+                    game.upperButtonCornerY - game.downMargin * 5, game.buttonW, game.buttonH);
         }
     }
 
-    private long previously_launched;
-    private boolean is_too_fast = false;
+    private long previouslyLaunched;
+    private boolean isTooFast = false;
 
     @Override
     public void show() {
         Gdx.gl20.glClearColor(0, 0, 0, 1);
 
-        if (System.currentTimeMillis() - previously_launched < 200){
+        if (System.currentTimeMillis() - previouslyLaunched < 200) {
             Random random = new Random();
-            if (random.nextInt(6) == 0){
-                settings_label.set_string(game.locale.get("Not so fast"));
-                is_too_fast = true;
+            if (random.nextInt(6) == 0) {
+                settingsLabel.setString(game.locale.get("Not so fast"));
+                isTooFast = true;
                 resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
             }
         }
-        previously_launched = System.currentTimeMillis();
+        previouslyLaunched = System.currentTimeMillis();
 
-        premium_button.state = game.userData.premium_is_on ? 1 : 0;
+        premiumButton.state = game.userData.premium_is_on ? 1 : 0;
     }
 
     @Override
     public void render(float delta) {
         Gdx.gl20.glClear(Gdx.gl20.GL_COLOR_BUFFER_BIT);
 
-        settings_label.draw();
-        sound_button.draw();
-        sound_slider.draw();
-        vibration_button.draw();
-        hints_button.draw();
+        settingsLabel.draw();
+        soundButton.draw();
+        soundSlider.draw();
+        vibrationButton.draw();
+        hintsButton.draw();
 
-        premium_button.draw();
-        locale_button.draw();
-        if (!is_too_fast){ controls_button.draw();}
-        back_button.draw();
+        premiumButton.draw();
+        localeButton.draw();
+        if (!isTooFast) {
+            controlsButton.draw();
+        }
+        backButton.draw();
 
         update();
 
-        if (game.is_back_button_pressed){
-            game.is_back_button_pressed = false;
+        if (game.isBackButtonPressed) {
+            game.isBackButtonPressed = false;
             game.setScreen("menu");
         }
     }
@@ -214,9 +222,9 @@ public class SettingsTab extends QuScreen {
 
     @Override
     public void hide() {
-        settings_label.set_string(game.locale.get("Settings"));
-        if (is_too_fast){
-            is_too_fast = false;
+        settingsLabel.setString(game.locale.get("Settings"));
+        if (isTooFast) {
+            isTooFast = false;
             resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         }
     }

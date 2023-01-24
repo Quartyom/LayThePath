@@ -2,99 +2,90 @@ package com.quartyom.game_elements;
 
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Vector2;
 import com.quartyom.LayThePath;
 
 // Хитбокс слайдэра задаётся, параметры элементов слайдэра вычисляются, чтобы поместиться в хитбокс
 // Значение слайдэра изменяется в пределах от 0 до 1
 public class Slider {
-    private float slider_x, slider_y, slider_w, slider_h;   // хитбокс слайдэра
-    private float scale_x, scale_y, scale_w, scale_h;       // размеры шкалы
+    private float sliderX, sliderY, sliderW, sliderH;   // хитбокс слайдэра
+    private float scaleX, scaleY, scaleW, scaleH;       // размеры шкалы
 
     public float value;
 
-    private TextureRegion normal_texture, pressed_texture, line_texture;
-    private NinePatch line_patch;
+    private TextureRegion normalTexture, pressedTexture, lineTexture;
+    private NinePatch linePatch;
 
     public InputState inputState;
     LayThePath game;
 
-    Vector2 touch_pos;
-
-    public Slider(LayThePath game){
+    public Slider(LayThePath game) {
         this.game = game;
 
         inputState = InputState.UNTOUCHED;
-        touch_pos = new Vector2();
     }
 
-    public Slider(String name, LayThePath game){
+    public Slider(String name, LayThePath game) {
         this(game);
 
-        normal_texture = game.sliders_atlas.findRegion( name + "_untouched");
-        pressed_texture =  game.sliders_atlas.findRegion(name + "_touched");
-        line_texture =  game.sliders_atlas.findRegion(name + "_scale");
+        normalTexture = game.slidersAtlas.findRegion(name + "_untouched");
+        pressedTexture = game.slidersAtlas.findRegion(name + "_touched");
+        lineTexture = game.slidersAtlas.findRegion(name + "_scale");
 
 
-        line_patch = new NinePatch(line_texture, 31, 31, 0, 0); // пока так
-
-    }
-
-    public void resize(float x, float y, float w, float h){
-        slider_x = x;
-        slider_y = y;
-        slider_w = w;
-        slider_h = h;
-
-        scale_h = slider_h / 3;
-        scale_w = slider_w - slider_h; // 2 раза по половине (слева и справа)
-
-        scale_x = slider_x + slider_h / 2;
-        scale_y = slider_y + slider_h / 2 - scale_h / 2;
+        linePatch = new NinePatch(lineTexture, 31, 31, 0, 0); // пока так
 
     }
 
-    public void draw(){
+    public void resize(float x, float y, float w, float h) {
+        sliderX = x;
+        sliderY = y;
+        sliderW = w;
+        sliderH = h;
 
-        line_patch.draw(game.batch, scale_x, scale_y, scale_w, scale_h);
+        scaleH = sliderH / 3;
+        scaleW = sliderW - sliderH; // 2 раза по половине (слева и справа)
 
-        if (inputState == inputState.UNTOUCHED) {
-            game.batch.draw(normal_texture, slider_x + scale_w * value, slider_y, slider_h, slider_h) ;
+        scaleX = sliderX + sliderH / 2;
+        scaleY = sliderY + sliderH / 2 - scaleH / 2;
+
+    }
+
+    public void draw() {
+
+        linePatch.draw(game.batch, scaleX, scaleY, scaleW, scaleH);
+
+        if (inputState == InputState.UNTOUCHED) {
+            game.batch.draw(normalTexture, sliderX + scaleW * value, sliderY, sliderH, sliderH);
+        } else if (inputState == InputState.TOUCHED) {
+            game.batch.draw(pressedTexture, sliderX + scaleW * value, sliderY, sliderH, sliderH);
         }
-        else if (inputState == inputState.TOUCHED) {
-            game.batch.draw(pressed_texture, slider_x + scale_w * value, slider_y, slider_h, slider_h);
-        }
 
 
     }
-    public void update(){
+
+    public void update() {
         // если нажато
-        if (game.isTouched()){
-            touch_pos.x = game.touch_pos.x;
-            touch_pos.y = game.touch_pos.y;
+        if (game.isTouched()) {
 
-            if (game.inputState == InputState.JUST_TOUCHED){
+            if (game.inputState == InputState.JUST_TOUCHED) {
                 // попали ли
-                if (touch_pos.x > slider_x && touch_pos.y > slider_y && touch_pos.x < slider_x + slider_w && touch_pos.y < slider_y + slider_h){
+                if (game.touchPos.x > sliderX && game.touchPos.y > sliderY && game.touchPos.x < sliderX + sliderW && game.touchPos.y < sliderY + sliderH) {
                     inputState = InputState.TOUCHED;
-                }
-                else {
+                } else {
                     inputState = InputState.UNTOUCHED;
                 }
                 // не попали по кнопке
             }
-            if (inputState == InputState.TOUCHED){
+            if (inputState == InputState.TOUCHED) {
                 game.isTouchRead = true;
-                value = (touch_pos.x - scale_x) / scale_w;
-                if (value < 0){
+                value = (game.touchPos.x - scaleX) / scaleW;
+                if (value < 0) {
                     value = 0;
-                }
-                else if (value > 1){
+                } else if (value > 1) {
                     value = 1;
                 }
             }
-        }
-        else {
+        } else {
             inputState = InputState.UNTOUCHED;
         }
     }

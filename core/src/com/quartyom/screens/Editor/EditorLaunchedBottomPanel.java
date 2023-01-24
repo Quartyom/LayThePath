@@ -1,99 +1,108 @@
 package com.quartyom.screens.Editor;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.quartyom.game_elements.Button;
 import com.quartyom.game_elements.GameBottomPanel;
 import com.quartyom.interfaces.QuEvent;
 import com.quartyom.screens.Level.LevelConfiguration;
 
 public class EditorLaunchedBottomPanel extends GameBottomPanel {
-    public boolean is_active = false;
+    public boolean isActive = false;
 
     public final EditorScreen editorScreen;
 
-    Button back_button, reset_button, transform_button, save_button;
+    Button backButton, resetButton, transformButton, saveButton;
 
-    public EditorLaunchedBottomPanel(final EditorScreen editorScreen){
+    public EditorLaunchedBottomPanel(final EditorScreen editorScreen) {
         super(editorScreen.game);
         this.editorScreen = editorScreen;
 
-        back_button = new Button("back", game, new QuEvent() {
+        backButton = new Button("back", game, new QuEvent() {
             @Override
             public void execute() {
-                is_active = false;
-                editorScreen.editorLaunchedBoard.is_active = false;
-                editorScreen.editorLaunchedTopPanel.is_active = false;
+                isActive = false;
+                editorScreen.editorLaunchedBoard.isActive = false;
+                editorScreen.editorLaunchedTopPanel.isActive = false;
 
-                editorScreen.editorBottomPanel.is_active = true;
-                editorScreen.editorBoard.is_active = true;
-                editorScreen.editorTopPanel.is_active = true;
+                editorScreen.editorBottomPanel.isActive = true;
+                editorScreen.editorBoard.isActive = true;
+                editorScreen.editorTopPanel.isActive = true;
             }
         });
-        back_button.setHint(game.locale.get("go back")).setSound("click_1");
+        backButton.setHint(game.locale.get("go back")).setSound("click_1");
 
-        reset_button = new Button("reset", game, new QuEvent() {
+        resetButton = new Button("reset", game, new QuEvent() {
             @Override
             public void execute() {
-                editorScreen.editorLaunchedBoard.gameplay.reset_body();
+                editorScreen.editorLaunchedBoard.gameplay.resetBody();
             }
         });
-        reset_button.setHint(game.locale.get("reset level")).setSound("click_1");
+        resetButton.setHint(game.locale.get("reset level")).setSound("click_1");
 
-        transform_button = new Button("transform", game, new QuEvent() {
+        transformButton = new Button("transform", game, new QuEvent() {
             @Override
             public void execute() {
-                is_active = false;
-                editorScreen.editorTransformBottomPanel.is_active = true;
+                isActive = false;
+                editorScreen.editorTransformBottomPanel.isActive = true;
             }
         });
-        transform_button.setHint(game.locale.get("transform the field")).setSound("click_1");
+        transformButton.setHint(game.locale.get("transform the field")).setSound("click_1");
 
-        save_button = new Button("save", game, new QuEvent() {
+        saveButton = new Button("save", game, new QuEvent() {
             @Override
             public void execute() {
-                if (!game.userData.is_developer){return;}
-                if (!editorScreen.editorLaunchedBoard.is_level_completed){return;}
+                if (!game.userData.is_developer) {
+                    return;
+                }
+                if (!editorScreen.editorLaunchedBoard.isLevelCompleted) {
+                    return;
+                }
 
                 // чтобы нельзя было дважды нажать на кнопку
-                if (editorScreen.editorLaunchedBoard.is_level_saved){return;}
-                editorScreen.editorLaunchedBoard.is_level_saved = true;
+                if (editorScreen.editorLaunchedBoard.isLevelSaved) {
+                    return;
+                }
+                editorScreen.editorLaunchedBoard.isLevelSaved = true;
                 //System.out.println("pressed save button");
 
-                editorScreen.editorLaunchedBoard.gameplay.set_hint();
-                LevelConfiguration levelConfiguration = editorScreen.editorBoard.gameplay.get_level_configuration();
+                editorScreen.editorLaunchedBoard.gameplay.setHint();
+                LevelConfiguration levelConfiguration = editorScreen.editorBoard.gameplay.getLevelConfiguration();
                 Gdx.files.local("user_levels/" + editorScreen.editorLaunchedBoard.gameplay.field_size + "/" + System.currentTimeMillis() + ".json").writeString(editorScreen.game.json.prettyPrint(levelConfiguration), false);
             }
         });
-        save_button.setHint(game.locale.get("save")).setSound("click_1");
+        saveButton.setHint(game.locale.get("save")).setSound("click_1");
     }
 
     @Override
-    public void resize(){
+    public void resize() {
         super.resize();
-        back_button.resize(first_button_x, first_button_y, button_w, button_h);
-        reset_button.resize(first_button_x + panel_w / 4, first_button_y, button_w, button_h);
-        transform_button.resize(first_button_x + panel_w / 4 * 2, first_button_y, button_w, button_h);
-        save_button.resize(first_button_x + panel_w / 4 * 3, first_button_y, button_w, button_h);
+        backButton.resize(firstButtonX, firstButtonY, buttonW, buttonH);
+        resetButton.resize(firstButtonX + panelW / 4, firstButtonY, buttonW, buttonH);
+        transformButton.resize(firstButtonX + panelW / 4 * 2, firstButtonY, buttonW, buttonH);
+        saveButton.resize(firstButtonX + panelW / 4 * 3, firstButtonY, buttonW, buttonH);
     }
 
     @Override
-    public void draw(){
-        if (!is_active){return;}
+    public void draw() {
+        if (!isActive) {
+            return;
+        }
         super.draw();
-        back_button.draw();
-        reset_button.draw();
-        transform_button.draw();
-        save_button.draw();
+        backButton.draw();
+        resetButton.draw();
+        transformButton.draw();
+        saveButton.draw();
     }
 
-    public void update(){
-        if (!is_active){return;}
-        back_button.update();
-        reset_button.update();
-        transform_button.update();
+    public void update() {
+        if (!isActive) {
+            return;
+        }
+        backButton.update();
+        resetButton.update();
+        transformButton.update();
         if (game.userData.is_developer) {
-            save_button.update();
+            saveButton.update();
         }
     }
 

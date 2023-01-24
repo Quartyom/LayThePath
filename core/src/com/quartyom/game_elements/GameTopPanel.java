@@ -9,15 +9,15 @@ public class GameTopPanel {
 
     protected TextureRegion texture;
 
-    protected float panel_x, panel_y, panel_w, panel_h;
-    protected float first_button_x, first_button_y, button_w, button_h;
+    protected float panelX, panelY, panelW, panelH;
+    protected float firstButtonX, firstButtonY, buttonW, buttonH;
 
-    protected Button menu_button;
+    protected Button menuButton;
 
-    protected GameTopPanel(final LayThePath game){
+    protected GameTopPanel(final LayThePath game) {
         this.game = game;
-        texture = game.field_atlas.findRegion("top_panel");
-        menu_button = new Button("menu", game, new QuEvent() {
+        texture = game.fieldAtlas.findRegion("top_panel");
+        menuButton = new Button("menu", game, new QuEvent() {
             @Override
             public void execute() {
                 game.setScreen("menu");
@@ -25,38 +25,38 @@ public class GameTopPanel {
         });
     }
 
-    public void resize(){
-        panel_x = -game.HALF_WIDTH;
-        panel_h = (0.5f / 4) * game.HEIGHT;
-        panel_y = game.HALF_HEIGHT - panel_h;
-        panel_w = game.WIDTH;
+    public void resize() {
+        panelX = -game.HALF_WIDTH;
+        panelH = (0.5f / 4) * game.HEIGHT;
+        panelY = game.HALF_HEIGHT - panelH;
+        panelW = game.WIDTH;
 
-        float button_actual_size = panel_h  / 2;
+        float buttonActualSize = panelH / 2;
 
-        float first_button_center_x = panel_x + panel_w - button_actual_size;
-        float first_button_center_y = panel_y + panel_h / 2;
+        float firstButtonCenterX = panelX + panelW - buttonActualSize;
+        float firstButtonCenterY = panelY + panelH / 2;
 
-        button_actual_size *= 0.9f; // Отступ кнопки от краёв
+        buttonActualSize *= 0.9f; // Отступ кнопки от краёв
 
-        first_button_x = first_button_center_x - button_actual_size;
-        first_button_y = first_button_center_y - button_actual_size;
+        firstButtonX = firstButtonCenterX - buttonActualSize;
+        firstButtonY = firstButtonCenterY - buttonActualSize;
 
-        button_w = button_actual_size * 2;
-        button_h = button_actual_size * 2;
+        buttonW = buttonActualSize * 2;
+        buttonH = buttonActualSize * 2;
 
-        menu_button.resize(first_button_x, first_button_y, button_w, button_h);
+        menuButton.resize(firstButtonX, firstButtonY, buttonW, buttonH);
     }
 
-    public void draw(){
-        game.batch.draw(texture, panel_x, panel_y, panel_w, panel_h);
-        menu_button.draw();
+    public void draw() {
+        game.batch.draw(texture, panelX, panelY, panelW, panelH);
+        menuButton.draw();
     }
 
-    public void update(){
-        menu_button.update();
+    public void update() {
+        menuButton.update();
     }
 
-    public float getHeight(){
-        return panel_h;
+    public float getHeight() {
+        return panelH;
     }
 }
