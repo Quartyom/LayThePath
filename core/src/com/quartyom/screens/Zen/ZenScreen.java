@@ -2,11 +2,14 @@ package com.quartyom.screens.Zen;
 
 import com.badlogic.gdx.Gdx;
 import com.quartyom.LayThePath;
+import com.quartyom.game_elements.AttentionScreenWithBackButton;
 import com.quartyom.game_elements.QuScreen;
 
 public class ZenScreen extends QuScreen {
 
     final LayThePath game;
+    ZenLevelGenerator zenLevelGenerator;
+    private ZenGeneratorThread zenGeneratorThread;  // оновной поток забирает уровни, этот генерирует
 
     ZenTopPanel zenTopPanel;
     ZenBottomPanel zenBottomPanel;
@@ -16,9 +19,14 @@ public class ZenScreen extends QuScreen {
 
     public ZenScreen(final LayThePath game) {
         this.game = game;
+        zenLevelGenerator = new ZenLevelGenerator(game);
+        zenGeneratorThread = new ZenGeneratorThread(zenLevelGenerator);
+        zenGeneratorThread.start();
 
-        game.add("zen_hint", new ZenHintTab(this));
-        game.add("zen_skip", new ZenSkipTab(this));
+        game.add("zen_hint", new AttentionScreenWithBackButton(game,
+                "hints_are_over", "zen"));
+        game.add("zen_skip", new AttentionScreenWithBackButton(game,
+                "skip_level", "zen"));
 
         zenTopPanel = new ZenTopPanel(this);
         zenBottomPanel = new ZenBottomPanel(this);
@@ -48,7 +56,7 @@ public class ZenScreen extends QuScreen {
 
         if (game.isBackButtonPressed) {
             game.isBackButtonPressed = false;
-            game.setScreen("menu");
+            game.setScreen("menu_classic");
         }
     }
 
@@ -58,6 +66,11 @@ public class ZenScreen extends QuScreen {
         zenBottomPanel.resize();
         zenTransformBottomPanel.resize();
         zenBoard.resize();
+    }
+
+    @Override
+    public void dispose(){
+        zenGeneratorThread.interrupt();
     }
 
 }

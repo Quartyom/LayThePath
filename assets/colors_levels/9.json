@@ -1,0 +1,66 @@
+{
+field_size: 6
+horizontal_walls: [
+	{
+		x: 3
+		y: 3
+	}
+	{
+		x: 2
+		y: 1
+	}
+]
+slash_walls: [
+	{
+		x: 2
+		y: 4
+	}
+	{
+		x: 3
+		y: 1
+	}
+]
+colors_sources: [
+	{
+		pos: {
+			x: 4
+			y: 1
+		}
+		color_id: 0
+	}
+	{
+		pos: {
+			x: 4
+			y: 3
+		}
+		color_id: 1
+	}
+	{
+		pos: {
+			x: 4
+			y: 5
+		}
+		color_id: 2
+	}
+	{
+		pos: {
+			x: 1
+		}
+		color_id: 2
+	}
+	{
+		pos: {
+			x: 1
+			y: 2
+		}
+		color_id: 0
+	}
+	{
+		pos: {
+			x: 1
+			y: 4
+		}
+		color_id: 1
+	}
+]
+}

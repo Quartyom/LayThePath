@@ -29,7 +29,7 @@ public class ZenAfterAds extends QuScreen {
         backButton = new Button("in_main_menu", game, new QuEvent() {
             @Override
             public void execute() {
-                game.setScreen("menu");
+                game.setScreen("menu_classic");
             }
         });
         backButton.setNinePatch(6).setLabel(game.locale.get("Back"));
@@ -73,7 +73,7 @@ public class ZenAfterAds extends QuScreen {
 
         if (game.isBackButtonPressed) {
             game.isBackButtonPressed = false;
-            game.setScreen("menu");
+            game.setScreen("menu_classic");
         }
     }
 

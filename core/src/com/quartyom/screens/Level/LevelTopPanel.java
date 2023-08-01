@@ -16,7 +16,7 @@ public class LevelTopPanel extends GameTopPanel {
     String levelString, progressString;
 
     public LevelTopPanel(final LevelScreen levelScreen) {
-        super(levelScreen.game);
+        super(levelScreen.game, "menu_classic");
         this.levelScreen = levelScreen;
 
         inputState = InputState.UNTOUCHED;
@@ -58,38 +58,37 @@ public class LevelTopPanel extends GameTopPanel {
 
         scroller.update();
 
+        LevelBoard levelBoard = levelScreen.levelBoard; // для сокращения кода снизу
         float sensitivity = 50; // количество пикселей, которые нужно пройти, чтобы переключить 1 уровень
 
         if (scroller.inputState == InputState.JUST_TOUCHED) {
-            scroller.value.x = levelScreen.levelBoard.currentLevel * sensitivity;
+            scroller.value.x = levelBoard.currentLevel * sensitivity;
         } else if (scroller.inputState == InputState.TOUCHED) {
-            if ((Math.round(scroller.value.x / sensitivity)) != levelScreen.levelBoard.currentLevel) {
-                levelScreen.levelBoard.currentLevel = (Math.round(scroller.value.x / sensitivity));
+            if ((Math.round(scroller.value.x / sensitivity)) != levelBoard.currentLevel) {
+                levelBoard.currentLevel = (Math.round(scroller.value.x / sensitivity));
 
                 boolean to_change_scroller = true;
 
-                if (levelScreen.levelBoard.currentLevel < 1) {
-                    levelScreen.levelBoard.currentLevel += game.userData.max_level_achieved;
-                    if (levelScreen.levelBoard.currentLevel > levelScreen.levelBoard.howManyLevels) {
-                        levelScreen.levelBoard.currentLevel = levelScreen.levelBoard.howManyLevels;
+                if (levelBoard.currentLevel < 1) {
+                    levelBoard.currentLevel += game.userData.max_level_achieved;
+                    if (levelBoard.currentLevel > levelBoard.howManyLevels) {
+                        levelBoard.currentLevel = levelBoard.howManyLevels;
                     }
-                } else if (levelScreen.levelBoard.currentLevel > levelScreen.levelBoard.howManyLevels) {
-                    levelScreen.levelBoard.currentLevel = 1;
-                } else if (levelScreen.levelBoard.currentLevel > game.userData.max_level_achieved) {
-                    levelScreen.levelBoard.currentLevel -= game.userData.max_level_achieved;
+                } else if (levelBoard.currentLevel > levelBoard.howManyLevels) {
+                    levelBoard.currentLevel = 1;
+                } else if (levelBoard.currentLevel > game.userData.max_level_achieved) {
+                    levelBoard.currentLevel -= game.userData.max_level_achieved;
                 } else {
                     to_change_scroller = false;
                 }
                 if (to_change_scroller) {
-                    scroller.value.x = levelScreen.levelBoard.currentLevel * sensitivity;
+                    scroller.value.x = levelBoard.currentLevel * sensitivity;
                 }
 
-                levelScreen.levelBoard.userData.current_level = levelScreen.levelBoard.currentLevel;
+                levelBoard.userData.current_level = levelBoard.currentLevel;
                 game.saveUserData();
-                levelScreen.levelBoard.loadLevel();
+                levelBoard.loadLevel();
             }
-        } else if (scroller.inputState == InputState.JUST_UNTOUCHED) {
-
         }
     }
 

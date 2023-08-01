@@ -3,6 +3,7 @@ package com.quartyom.screens.Menu;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Align;
 import com.quartyom.LayThePath;
+import com.quartyom.game_elements.AttentionScreenWithBackButton;
 import com.quartyom.game_elements.Button;
 import com.quartyom.game_elements.Label;
 import com.quartyom.game_elements.QuScreen;
@@ -12,7 +13,7 @@ public class MenuTab extends QuScreen {
 
     final LayThePath game;
 
-    Button easterButton, playButton, zenButton, editorButton, infoButton, settingsButton;
+    Button easterButton, classicButton, colorsButton, infoButton, settingsButton;
     Label menuLabel;
 
     private int timesEasterButtonClicked;
@@ -21,8 +22,10 @@ public class MenuTab extends QuScreen {
     public MenuTab(final LayThePath game) {
         this.game = game;
 
+        game.add("menu_classic", new ClassicTab(game));
         game.add("menu_about", new AboutTab(game));
-        game.add("menu_editor_is_unavailable", new EditorIsUnavailable(game));
+        game.add("menu_editor_is_unavailable", new AttentionScreenWithBackButton(game,
+                "editor_is_unavailable", "menu_classic"));
         game.add("menu_how_can_i_help", new HowICanHelpTab(game));
         game.add("menu_how_to_play", new HowToPlayTab(game));
         game.add("menu_info", new InfoTab(game));
@@ -33,7 +36,11 @@ public class MenuTab extends QuScreen {
         game.add("menu_controls", new ControlsTab(game));
         game.add("menu_stats", new StatsTab(game));
         //game.add("menu_zen_after_ads", new ZenAfterAds(game));
-        game.add("menu_zen_is_unavailable", new ZenIsUnavailable(game));
+        game.add("menu_zen_is_unavailable", new AttentionScreenWithBackButton(game, "zen_is_unavailable",
+                "menu_classic"));
+        game.add("menu_colors_is_unavailable", new AttentionScreenWithBackButton(game,
+                "colors_is_unavailable", "menu"));
+
 
         menuLabel = new Label(game, game.locale.get("Menu"));
 
@@ -58,43 +65,28 @@ public class MenuTab extends QuScreen {
             }
         });
 
-        playButton = new Button("in_main_menu", game, new QuEvent() {
+        classicButton = new Button("in_main_menu", game, new QuEvent() {
             @Override
             public void execute() {
-                game.setScreen("level");
+                game.setScreen("menu_classic");
             }
         });
-        playButton.setNinePatch(6).setLabel(game.locale.get("Play"));
+        classicButton.setNinePatch(6).setLabel(game.locale.get("Classic"));
 
-        zenButton = new Button("in_main_menu", game, new QuEvent() {
+        colorsButton = new Button("in_main_menu", game, new QuEvent() {
             @Override
             public void execute() {
-                if (game.userData.zen_is_available) {
-                    /*if (game.userData.editor_is_available){
-                        game.setScreen("zen");
-                    }
-                    else {
-                        game.setScreen("menu_zen_after_ads");
-                    }*/
-                    game.setScreen("zen");
+                if (game.userData.colors_is_available) {
+                    game.setScreen("colors_level");
                 } else {
-                    game.setScreen("menu_zen_is_unavailable");
+                    // game.setScreen("menu_zen_is_unavailable");  // !!!!!!!!!!!!!!!!!
+                    game.setScreen("menu_colors_is_unavailable");
                 }
             }
         });
-        zenButton.setNinePatch(6).setLabel(game.locale.get("Zen"));
+        colorsButton.setNinePatch(6).setLabel(game.locale.get("Colors"));
 
-        editorButton = new Button("in_main_menu", game, new QuEvent() {
-            @Override
-            public void execute() {
-                if (game.userData.editor_is_available) {
-                    game.setScreen("editor");
-                } else {
-                    game.setScreen("menu_editor_is_unavailable");
-                }
-            }
-        });
-        editorButton.setNinePatch(6).setLabel(game.locale.get("Editor"));
+        // gap
 
         infoButton = new Button("in_main_menu", game, new QuEvent() {
             @Override
@@ -120,12 +112,10 @@ public class MenuTab extends QuScreen {
                 game.buttonH, Align.center);
         easterButton.resize(game.upperButtonCornerX, game.upperButtonCornerY, game.buttonW,
                 game.buttonH);
-        playButton.resize(game.upperButtonCornerX, game.upperButtonCornerY - game.downMargin,
+        classicButton.resize(game.upperButtonCornerX, game.upperButtonCornerY - game.downMargin,
                 game.buttonW, game.buttonH);
-        zenButton.resize(game.upperButtonCornerX, game.upperButtonCornerY - game.downMargin * 2,
+        colorsButton.resize(game.upperButtonCornerX, game.upperButtonCornerY - game.downMargin * 2,
                 game.buttonW, game.buttonH);
-        editorButton.resize(game.upperButtonCornerX,
-                game.upperButtonCornerY - game.downMargin * 3, game.buttonW, game.buttonH);
         infoButton.resize(game.upperButtonCornerX,
                 game.upperButtonCornerY - game.downMargin * 4, game.buttonW, game.buttonH);
         settingsButton.resize(game.upperButtonCornerX,
@@ -145,16 +135,14 @@ public class MenuTab extends QuScreen {
         Gdx.gl20.glClear(Gdx.gl20.GL_COLOR_BUFFER_BIT);
 
         menuLabel.draw();
-        playButton.draw();
-        zenButton.draw();
-        editorButton.draw();
+        classicButton.draw();
+        colorsButton.draw();
         infoButton.draw();
         settingsButton.draw();
 
         easterButton.update();
-        playButton.update();
-        zenButton.update();
-        editorButton.update();
+        classicButton.update();
+        colorsButton.update();
         infoButton.update();
         settingsButton.update();
 

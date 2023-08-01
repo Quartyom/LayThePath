@@ -14,15 +14,19 @@ public class GameTopPanel {
 
     protected Button menuButton;
 
-    protected GameTopPanel(final LayThePath game) {
+    protected GameTopPanel(final LayThePath game, final String menu_screen) {
         this.game = game;
         texture = game.fieldAtlas.findRegion("top_panel");
         menuButton = new Button("menu", game, new QuEvent() {
             @Override
             public void execute() {
-                game.setScreen("menu");
+                game.setScreen(menu_screen);
             }
         });
+    }
+
+    protected GameTopPanel(final LayThePath game) {
+        this(game, "menu");
     }
 
     public void resize() {

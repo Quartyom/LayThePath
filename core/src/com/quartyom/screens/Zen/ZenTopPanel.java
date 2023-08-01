@@ -14,7 +14,7 @@ public class ZenTopPanel extends GameTopPanel {
     String levelString, progressString;
 
     public ZenTopPanel(final ZenScreen zenScreen) {
-        super(zenScreen.game);
+        super(zenScreen.game, "menu_classic");
         this.zenScreen = zenScreen;
 
         levelLabel = new Label(game);

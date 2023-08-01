@@ -14,7 +14,7 @@ public class EditorLaunchedTopPanel extends GameTopPanel {
     String progressString;
 
     public EditorLaunchedTopPanel(final EditorScreen editorScreen) {
-        super(editorScreen.game);
+        super(editorScreen.game, "menu_classic");
         this.editorScreen = editorScreen;
 
         editorLabel = new Label(game);

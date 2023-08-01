@@ -130,6 +130,13 @@ box
   orig: 256, 256
   offset: 0, 0
   index: -1
+color_source
+  rotate: false
+  xy: 794, 1034
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
 crossroad
   rotate: false
   xy: 2, 794
@@ -146,14 +153,14 @@ cursor_red
   index: -1
 cursor_white
   rotate: false
-  xy: 390, 518
+  xy: 518, 758
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 dark_square
   rotate: false
-  xy: 536, 776
+  xy: 776, 1016
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
@@ -181,7 +188,7 @@ horizontal_wall
   index: -1
 light_square
   rotate: false
-  xy: 776, 1016
+  xy: 1034, 1274
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
@@ -230,7 +237,7 @@ swamp_square
   index: -1
 top_panel
   rotate: false
-  xy: 518, 758
+  xy: 536, 776
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
@@ -238,6 +245,13 @@ top_panel
 vertical_wall
   rotate: false
   xy: 1034, 1292
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+white_square
+  rotate: false
+  xy: 390, 518
   size: 16, 16
   orig: 16, 16
   offset: 0, 0

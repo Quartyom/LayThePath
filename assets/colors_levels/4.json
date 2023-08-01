@@ -1,0 +1,23 @@
+{
+field_size: 3
+colors_sources: [
+	{
+		pos: {}
+		color_id: 0
+	}
+	{
+		pos: {
+			x: 1
+			y: 1
+		}
+		color_id: 1
+	}
+	{
+		pos: {
+			x: 2
+			y: 2
+		}
+		color_id: 0
+	}
+]
+}

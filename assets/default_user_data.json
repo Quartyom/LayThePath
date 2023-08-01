@@ -1,8 +1,8 @@
 {
 current_level: 1
 max_level_achieved: 1
-zen_is_available: false
-editor_is_available: false
+current_colors_level: 1
+max_colors_level_achieved: 1
 hints_amount: 5
 volume: 0.5
 vibration_is_on: true

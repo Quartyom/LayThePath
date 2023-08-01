@@ -14,7 +14,7 @@ public class EditorTopPanel extends GameTopPanel {
     String toolString;
 
     public EditorTopPanel(final EditorScreen editorScreen) {
-        super(editorScreen.game);
+        super(editorScreen.game, "menu_classic");
         this.editorScreen = editorScreen;
 
         editorLabel = new Label(game);

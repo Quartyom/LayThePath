@@ -45,10 +45,7 @@ public class Gameplay {
         field_size = levelConfiguration.field_size;
 
         resetBody();
-        howManyVisited = 0;
         howManyShouldBeVisited = field_size * field_size - boxes.size();
-
-        headIsCaptured = false;
         isTendingToDestroyTheHead = false;
     }
 
@@ -65,7 +62,6 @@ public class Gameplay {
         }
     }
 
-
     public LevelConfiguration getLevelConfiguration() {
         LevelConfiguration levelConfiguration = new LevelConfiguration();
         levelConfiguration.vertical_walls = vertical_walls;
@@ -76,7 +72,6 @@ public class Gameplay {
         levelConfiguration.points = points;
         levelConfiguration.crossroads = crossroads;
         levelConfiguration.hint = hint;
-
         levelConfiguration.field_size = field_size;
 
         return levelConfiguration;

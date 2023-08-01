@@ -54,6 +54,11 @@ public class LevelBoard extends GameBoard {
             game.saveUserData();
         }
 
+        if (currentLevel > 150 && !userData.colors_is_available) {
+            userData.colors_is_available = true;
+            game.saveUserData();
+        }
+
         if (currentLevel > 200 && !userData.editor_is_available) {
             userData.editor_is_available = true;
             game.saveUserData();

@@ -29,7 +29,8 @@ public class ZenLevelGenerator {
     private boolean generatePath(int field_size) {
         boolean success = false;
 
-        levelConfiguration.setEmpty();
+        //levelConfiguration.setEmpty();
+        levelConfiguration = new LevelConfiguration();
         levelConfiguration.field_size = field_size;
         gameplay.setLevelConfiguration(levelConfiguration);
 
@@ -221,6 +222,7 @@ public class ZenLevelGenerator {
         }
 
         int field_size = FIELD_SIZE_DISTRIBUTION[random.nextInt(FIELD_SIZE_DISTRIBUTION.length)] + shift;
+
 
         while (!generatePath(field_size));
 
@@ -468,5 +470,29 @@ public class ZenLevelGenerator {
             3, 3, 3,
             4, 4
     };
+
+    private LevelConfiguration newLevelConfiguration;
+
+    public synchronized void generateNewLevel() throws InterruptedException {   // генерирует новый уровень, если требуется (иначе ждёт)
+        while (newLevelConfiguration != null){
+            wait();
+        }
+        newLevelConfiguration = new LevelConfiguration(generateLevel());
+        notify();
+    }
+
+    public synchronized LevelConfiguration getNewLevel(){   // выдаёт новый уровень, если сгенерирован (иначе ждёт)
+        while (newLevelConfiguration == null){
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        notify();
+        LevelConfiguration tmp = newLevelConfiguration;
+        newLevelConfiguration = null;
+        return tmp;
+    }
 
 }

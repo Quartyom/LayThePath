@@ -1,0 +1,51 @@
+{
+field_size: 3
+boxes: [
+	{}
+	{
+		x: 1
+	}
+	{
+		x: 1
+		y: 2
+	}
+	{
+		x: 2
+		y: 2
+	}
+]
+colors_sources: [
+	{
+		pos: {
+			y: 2
+		}
+		color_id: 0
+	}
+	{
+		pos: {
+			y: 1
+		}
+		color_id: 1
+	}
+	{
+		pos: {
+			x: 1
+			y: 1
+		}
+		color_id: 2
+	}
+	{
+		pos: {
+			x: 2
+			y: 1
+		}
+		color_id: 3
+	}
+	{
+		pos: {
+			x: 2
+		}
+		color_id: 4
+	}
+]
+}

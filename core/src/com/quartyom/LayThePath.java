@@ -12,6 +12,7 @@ import com.quartyom.game_elements.Locale;
 import com.quartyom.game_elements.QuGame;
 import com.quartyom.game_elements.SoundHolder;
 import com.quartyom.game_elements.Vibrator;
+import com.quartyom.screens.ColorsTest.ColorsScreen;
 import com.quartyom.screens.Editor.EditorScreen;
 import com.quartyom.screens.Level.LevelScreen;
 import com.quartyom.screens.Menu.MenuTab;
@@ -61,6 +62,7 @@ public class LayThePath extends QuGame {
         this.add("level", new LevelScreen(this));
         this.add("zen", new ZenScreen(this));
         this.add("editor", new EditorScreen(this));
+        this.add("colors_level", new ColorsScreen(this));
         this.setScreen(isFirstLaunch ? "menu_locale" : "menu");
 
         Gdx.input.setCatchKey(Input.Keys.BACK, true);
@@ -77,6 +79,7 @@ public class LayThePath extends QuGame {
         this.add("level", new LevelScreen(this));
         this.add("zen", new ZenScreen(this));
         this.add("editor", new EditorScreen(this));
+        this.add("colors_level", new ColorsScreen(this));
     }
 
     public void saveUserData() {

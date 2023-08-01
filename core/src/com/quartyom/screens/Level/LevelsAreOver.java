@@ -41,7 +41,7 @@ public class LevelsAreOver extends QuScreen {
         menuButton = new Button("in_main_menu", game, new QuEvent() {
             @Override
             public void execute() {
-                levelScreen.game.setScreen("menu");
+                levelScreen.game.setScreen("menu_classic");
             }
         });
         menuButton.setNinePatch(6).setLabel(levelScreen.game.locale.get("Go to Menu"));
@@ -62,7 +62,7 @@ public class LevelsAreOver extends QuScreen {
 
         if (game.isBackButtonPressed) {
             game.isBackButtonPressed = false;
-            game.setScreen("menu");
+            game.setScreen("menu_classic");
         }
     }
 

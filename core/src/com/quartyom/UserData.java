@@ -4,8 +4,12 @@ public class UserData {
     public int current_level;
     public int max_level_achieved;
 
+    public int current_colors_level;
+    public int max_colors_level_achieved;
+
     public boolean zen_is_available;
     public boolean editor_is_available;
+    public boolean colors_is_available;
 
     public int hints_amount;
 
@@ -24,5 +28,6 @@ public class UserData {
 
     public long when_to_skip_level;
     public long when_to_skip_zen_level;
+    public long when_to_skip_colors_level;
     public String premium_public_code;
 }

@@ -1,36 +1,34 @@
-package com.quartyom.screens.Menu;
+package com.quartyom.game_elements;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Align;
 import com.quartyom.LayThePath;
-import com.quartyom.game_elements.Button;
-import com.quartyom.game_elements.Label;
-import com.quartyom.game_elements.QuScreen;
-import com.quartyom.game_elements.TextField;
 import com.quartyom.interfaces.QuEvent;
 
-public class ZenIsUnavailable extends QuScreen {
+public class AttentionScreenWithBackButton extends QuScreen {
 
     final LayThePath game;
+    final String back_screen;
 
-    Label zenLabel;
+    Label attentionLabel;
     TextField infoField;
     Button backButton;
 
 
-    public ZenIsUnavailable(final LayThePath game) {
+    public AttentionScreenWithBackButton(final LayThePath game, String filename, final String back_screen) {
         this.game = game;
+        this.back_screen = back_screen;
 
-        zenLabel = new Label(game, game.locale.get("Attention"));
+        attentionLabel = new Label(game, game.locale.get("Attention"));
 
         infoField = new TextField(game,
-                Gdx.files.internal("texts/" + game.userData.locale + "/zen_is_unavailable.txt")
+                Gdx.files.internal("texts/" + game.userData.locale + "/"+ filename + ".txt")
                         .readString());
 
         backButton = new Button("in_main_menu", game, new QuEvent() {
             @Override
             public void execute() {
-                game.setScreen("menu");
+                game.setScreen(back_screen);
             }
         });
         backButton.setNinePatch(6).setLabel(game.locale.get("Back"));
@@ -39,7 +37,7 @@ public class ZenIsUnavailable extends QuScreen {
 
     @Override
     public void resize(int width, int height) {
-        zenLabel.resize(game.upperButtonCornerX, game.upperButtonCornerY, game.buttonW,
+        attentionLabel.resize(game.upperButtonCornerX, game.upperButtonCornerY, game.buttonW,
                 game.buttonH, Align.center);
 
         int font_size = (int) (game.HEIGHT * (1.0f / 32.0f));
@@ -54,7 +52,7 @@ public class ZenIsUnavailable extends QuScreen {
     public void render(float delta) {
         Gdx.gl20.glClear(Gdx.gl20.GL_COLOR_BUFFER_BIT);
 
-        zenLabel.draw();
+        attentionLabel.draw();
         infoField.draw();
         backButton.draw();
 
@@ -62,7 +60,7 @@ public class ZenIsUnavailable extends QuScreen {
 
         if (game.isBackButtonPressed) {
             game.isBackButtonPressed = false;
-            game.setScreen("menu");
+            game.setScreen(back_screen);
         }
     }
 

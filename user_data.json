@@ -1,17 +1,18 @@
 {
-current_level: 190
+current_level: 191
 max_level_achieved: 251
 zen_is_available: true
 editor_is_available: true
 hints_amount: 110
-volume: 0.22285713
+volume: 0.5
+premium_is_on: true
 is_developer: true
 locale: en
-launches: 336
+launches: 358
 zen_levels_passed: 304
-current_zen_level: 1636
+current_zen_level: 1719
 stats_views: 5
-when_to_skip_level: 1674471507613
-when_to_skip_zen_level: 1674471507633
+when_to_skip_level: 1688697321037
+when_to_skip_zen_level: 1688697329698
 premium_public_code: 945097
 }

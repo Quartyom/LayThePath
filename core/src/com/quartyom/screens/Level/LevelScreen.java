@@ -2,6 +2,7 @@ package com.quartyom.screens.Level;
 
 import com.badlogic.gdx.Gdx;
 import com.quartyom.LayThePath;
+import com.quartyom.game_elements.AttentionScreenWithBackButton;
 import com.quartyom.game_elements.QuScreen;
 
 public class LevelScreen extends QuScreen {
@@ -15,8 +16,10 @@ public class LevelScreen extends QuScreen {
     public LevelScreen(final LayThePath game) {
         this.game = game;
 
-        game.add("level_skip", new LevelSkipTab(this));
-        game.add("level_hint", new LevelHintTab(this));
+        game.add("level_skip", new AttentionScreenWithBackButton(game,
+                "skip_level", "level"));
+        game.add("level_hint", new AttentionScreenWithBackButton(game,
+                "hints_are_over", "level"));
         game.add("levels_are_over", new LevelsAreOver(this));
 
         levelTopPanel = new LevelTopPanel(this);
@@ -52,7 +55,7 @@ public class LevelScreen extends QuScreen {
 
         if (game.isBackButtonPressed) {
             game.isBackButtonPressed = false;
-            game.setScreen("menu");
+            game.setScreen("menu_classic");
         }
 
     }

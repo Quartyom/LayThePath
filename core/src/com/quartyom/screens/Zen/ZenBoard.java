@@ -9,7 +9,6 @@ import com.quartyom.screens.Level.LevelConfiguration;
 public class ZenBoard extends GameBoard {
 
     public final ZenScreen zenScreen;
-    ZenLevelGenerator zenLevelGenerator;
 
     public int currentLevel;   // Влияет только на визуал верхней панэли
     boolean wasHintUsed;
@@ -18,17 +17,15 @@ public class ZenBoard extends GameBoard {
         super(zenScreen.game);
         this.zenScreen = zenScreen;
 
-        zenLevelGenerator = new ZenLevelGenerator(zenScreen.game);
-
         currentLevel = game.userData.current_zen_level;
         loadLevel(true);
-
     }
 
     private LevelConfiguration levelConfiguration;
 
     public void newLevel() {
-        levelConfiguration = zenLevelGenerator.generateLevel();
+        //levelConfiguration = zenScreen.zenLevelGenerator.generateLevel();
+        levelConfiguration = zenScreen.zenLevelGenerator.getNewLevel();
         Gdx.files.local("zen_level.json").writeString(game.json.prettyPrint(levelConfiguration), false);
     }
 
@@ -45,8 +42,7 @@ public class ZenBoard extends GameBoard {
         gameplay.setLevelConfiguration(levelConfiguration);
 
         game.userData.when_to_skip_zen_level =
-                TimeUtils.millis() + (levelConfiguration.field_size - 2) * 60_000L
-                        - 1L;    // now + N-2 minutes
+                TimeUtils.millis() + (levelConfiguration.field_size - 2) * 60_000L - 1L;    // now + N-2 minutes
         game.saveUserData();
 
         resize();

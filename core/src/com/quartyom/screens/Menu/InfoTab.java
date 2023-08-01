@@ -1,6 +1,7 @@
 package com.quartyom.screens.Menu;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.utils.Align;
 import com.quartyom.LayThePath;
 import com.quartyom.game_elements.Button;
 import com.quartyom.game_elements.Label;
@@ -56,7 +57,7 @@ public class InfoTab extends QuScreen {
     @Override
     public void resize(int width, int height) {
         infoLabel.resize(game.upperButtonCornerX, game.upperButtonCornerY, game.buttonW,
-                game.buttonH, 1);
+                game.buttonH, Align.center);
         howToPlayButton.resize(game.upperButtonCornerX,
                 game.upperButtonCornerY - game.downMargin, game.buttonW, game.buttonH);
         aboutButton.resize(game.upperButtonCornerX,

@@ -68,7 +68,7 @@ public class EditorScreen extends QuScreen {
 
         if (game.isBackButtonPressed) {
             game.isBackButtonPressed = false;
-            game.setScreen("menu");
+            game.setScreen("menu_classic");
         }
     }
 
