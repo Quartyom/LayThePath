@@ -26,7 +26,7 @@ public class HowICanHelpTab extends QuScreen {
     public HowICanHelpTab(final LayThePath game) {
         this.game = game;
 
-        timer = new Timer(game, new QuEvent() {
+        timer = new Timer(new QuEvent() {
             @Override
             public void execute() {
                 toShowCopiedLabel = false;

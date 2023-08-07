@@ -13,6 +13,7 @@ import com.quartyom.game_elements.QuGame;
 import com.quartyom.game_elements.SoundHolder;
 import com.quartyom.game_elements.Vibrator;
 import com.quartyom.screens.ColorsTest.ColorsScreen;
+import com.quartyom.screens.EasterColorsGame.EasterScreen;
 import com.quartyom.screens.Editor.EditorScreen;
 import com.quartyom.screens.Level.LevelScreen;
 import com.quartyom.screens.Menu.MenuTab;
@@ -58,11 +59,7 @@ public class LayThePath extends QuGame {
         vibrator = new Vibrator(this);
         drawingQueue = new DrawingQueue();
 
-        this.addDefault("menu", new MenuTab(this));
-        this.add("level", new LevelScreen(this));
-        this.add("zen", new ZenScreen(this));
-        this.add("editor", new EditorScreen(this));
-        this.add("colors_level", new ColorsScreen(this));
+        addScreens();
         this.setScreen(isFirstLaunch ? "menu_locale" : "menu");
 
         Gdx.input.setCatchKey(Input.Keys.BACK, true);
@@ -74,12 +71,16 @@ public class LayThePath extends QuGame {
         fontHolder.updateLocale();
 
         super.dispose();    // чтобы корректно выгрузить прошлые Screen
+        addScreens();
+    }
 
+    private void addScreens(){
         this.addDefault("menu", new MenuTab(this));
         this.add("level", new LevelScreen(this));
         this.add("zen", new ZenScreen(this));
         this.add("editor", new EditorScreen(this));
         this.add("colors_level", new ColorsScreen(this));
+        this.add("easter_colors", new EasterScreen(this));
     }
 
     public void saveUserData() {

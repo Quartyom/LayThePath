@@ -9,6 +9,7 @@ import com.quartyom.game_elements.Label;
 import com.quartyom.game_elements.QuScreen;
 import com.quartyom.game_elements.Slider;
 import com.quartyom.game_elements.SwitchButton;
+import com.quartyom.game_elements.Timer;
 import com.quartyom.game_elements.Vibrator;
 import com.quartyom.interfaces.QuEvent;
 
@@ -22,8 +23,11 @@ public class SettingsTab extends QuScreen {
 
     Label settingsLabel;
     Button localeButton, controlsButton, backButton;
-    SwitchButton soundButton, vibrationButton, hintsButton, premiumButton;
+    SwitchButton soundButton, vibrationButton, hintsButton, premiumButton, themeButton;
     Slider soundSlider;
+
+    boolean isThemeButtonVisible = false;
+    Timer timer;
 
     public SettingsTab(final LayThePath game) {
         this.game = game;
@@ -35,15 +39,42 @@ public class SettingsTab extends QuScreen {
         soundSlider = new Slider("regular", game);
         soundSlider.value = game.userData.volume;
 
-        soundButton = new SwitchButton(game);
+        soundButton = new SwitchButton(game, new QuEvent() {
+            @Override
+            public void execute() {
+                if (soundButton.state == 0) {
+                    game.userData.volume = 0;
+                    soundSlider.value = 0;
+                } else {
+                    game.userData.volume = 0.5f;
+                    soundSlider.value = 0.5f;
+                }
+                game.saveUserData();
+            }
+        });
         soundButton.add("sound_off").add("sound_on");
         soundButton.state = game.userData.volume > 0 ? 1 : 0;
 
-        vibrationButton = new SwitchButton(game);
+        vibrationButton = new SwitchButton(game, new QuEvent() {
+            @Override
+            public void execute() {
+                game.userData.vibration_is_on = vibrationButton.state == 1;
+                if (game.userData.vibration_is_on) {
+                    vibrator.vibrate(150);
+                }
+                game.saveUserData();
+            }
+        });
         vibrationButton.add("vibration_off").add("vibration_on");
         vibrationButton.state = game.userData.vibration_is_on ? 1 : 0;
 
-        hintsButton = new SwitchButton(game);
+        hintsButton = new SwitchButton(game, new QuEvent() {
+            @Override
+            public void execute() {
+                game.userData.button_hints_are_on = hintsButton.state == 1;
+                game.saveUserData();
+            }
+        });
         hintsButton.add("button_hints_off").add("button_hints_on");    // обратный порядок
         hintsButton.state = game.userData.button_hints_are_on ? 1 : 0;
 
@@ -54,7 +85,16 @@ public class SettingsTab extends QuScreen {
             }
         });
 
-        premiumButton = new SwitchButton(game);
+        premiumButton = new SwitchButton(game, new QuEvent() {
+            @Override
+            public void execute() {
+                if (game.userData.premium_is_on) {
+                    game.setScreen("menu_premium_is_activated");
+                } else {
+                    game.setScreen("menu_premium");
+                }
+            }
+        });
         premiumButton.add("premium_normal").add("premium_pressed");
         //premium_button.state = game.userData.premium_is_on ? 1 : 0;   // уже есть в show()
         premiumButton.toChangeStateOnClick = false;
@@ -65,6 +105,23 @@ public class SettingsTab extends QuScreen {
                 game.setScreen("menu_controls");
             }
         });
+
+        timer = new Timer(new QuEvent() {
+            @Override
+            public void execute() {
+                isThemeButtonVisible = false;
+            }
+        });
+
+        themeButton = new SwitchButton(game, new QuEvent() {
+            @Override
+            public void execute() {
+                isThemeButtonVisible = true;
+                timer.set(1500);
+            }
+        });
+        themeButton.add("dark_theme");
+        themeButton.click_sound = null;
 
         backButton = new Button("in_main_menu", game, new QuEvent() {
             @Override
@@ -78,17 +135,7 @@ public class SettingsTab extends QuScreen {
 
     public void update() {
         soundButton.update();
-        if (soundButton.recentlyChanged) {
-            if (soundButton.state == 0) {
-                game.userData.volume = 0;
-                soundSlider.value = 0;
-                game.saveUserData();
-            } else {
-                game.userData.volume = 0.5f;
-                soundSlider.value = 0.5f;
-                game.saveUserData();
-            }
-        } else {
+        if (!soundButton.recentlyChanged) {
             soundSlider.update();
             if (game.userData.volume != soundSlider.value) {
                 game.userData.volume = soundSlider.value;
@@ -105,32 +152,14 @@ public class SettingsTab extends QuScreen {
         }
 
         vibrationButton.update();
-        if (vibrationButton.recentlyChanged) {
-            game.userData.vibration_is_on = vibrationButton.state == 1;
-            if (game.userData.vibration_is_on) {
-                vibrator.vibrate(150);
-            }
-            game.saveUserData();
-        }
-
         hintsButton.update();
-        if (hintsButton.recentlyChanged) {
-            game.userData.button_hints_are_on = hintsButton.state == 1;
-            game.saveUserData();
-        }
-
         premiumButton.update();
-        if (premiumButton.recentlyChanged) {
-            if (game.userData.premium_is_on) {
-                game.setScreen("menu_premium_is_activated");
-            } else {
-                game.setScreen("menu_premium");
-            }
-        }
-
         localeButton.update();
+        timer.update();
+
         if (!isTooFast) {
             controlsButton.update();
+            themeButton.update();
         }
         backButton.update();
     }
@@ -168,6 +197,8 @@ public class SettingsTab extends QuScreen {
                     game.upperButtonCornerY - game.downMargin * 4, game.buttonW, game.buttonH);
         } else {
             controlsButton.resize(game.upperButtonCornerX,
+                    game.upperButtonCornerY - game.downMargin * 4, game.buttonH, game.buttonH);
+            themeButton.resize(theme_button_corner_x,
                     game.upperButtonCornerY - game.downMargin * 4, game.buttonH, game.buttonH);
             backButton.resize(game.upperButtonCornerX,
                     game.upperButtonCornerY - game.downMargin * 5, game.buttonW, game.buttonH);
@@ -208,6 +239,9 @@ public class SettingsTab extends QuScreen {
         localeButton.draw();
         if (!isTooFast) {
             controlsButton.draw();
+            if (isThemeButtonVisible) {
+                themeButton.draw();
+            }
         }
         backButton.draw();
 

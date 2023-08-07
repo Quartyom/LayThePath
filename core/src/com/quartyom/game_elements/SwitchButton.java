@@ -3,6 +3,7 @@ package com.quartyom.game_elements;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.quartyom.LayThePath;
+import com.quartyom.interfaces.QuEvent;
 
 import java.util.ArrayList;
 
@@ -16,15 +17,20 @@ public class SwitchButton {
     public boolean toChangeStateOnClick = true;
 
     LayThePath game;
-
-    Sound click_sound;
+    public Sound click_sound;
+    QuEvent onChangeStateAction;
 
     public SwitchButton(LayThePath game) {
         this.game = game;
-
         textures = new ArrayList<>();
-
         click_sound = game.soundHolder.get("click_0");
+    }
+
+    public SwitchButton(LayThePath game, QuEvent onChangeStateAction) {
+        this.game = game;
+        textures = new ArrayList<>();
+        click_sound = game.soundHolder.get("click_0");
+        this.onChangeStateAction = onChangeStateAction;
     }
 
     public SwitchButton add(String path) {
@@ -64,7 +70,8 @@ public class SwitchButton {
                 }
 
                 recentlyChanged = true;
-                click_sound.play(game.userData.volume * 0.5f);
+                if (click_sound != null) { click_sound.play(game.userData.volume * 0.5f); }
+                if (onChangeStateAction != null) { onChangeStateAction.execute(); }
                 return;
             }
         }

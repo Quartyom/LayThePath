@@ -1,6 +1,7 @@
 package com.quartyom.screens.ColorsTest;
 
 import com.badlogic.gdx.math.Vector2;
+import com.quartyom.game_elements.ColorsSource;
 
 import java.util.ArrayList;
 

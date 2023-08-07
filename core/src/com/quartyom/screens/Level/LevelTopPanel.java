@@ -2,6 +2,7 @@ package com.quartyom.screens.Level;
 
 import com.badlogic.gdx.utils.Align;
 import com.quartyom.game_elements.GameTopPanel;
+import com.quartyom.game_elements.Gameplay;
 import com.quartyom.game_elements.InputState;
 import com.quartyom.game_elements.Label;
 import com.quartyom.game_elements.Scroller;

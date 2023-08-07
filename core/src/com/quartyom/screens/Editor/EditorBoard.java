@@ -4,8 +4,8 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.Vector2;
 import com.quartyom.LayThePath;
 import com.quartyom.game_elements.InputState;
-import com.quartyom.screens.Level.BoardDrawer;
-import com.quartyom.screens.Level.Gameplay;
+import com.quartyom.game_elements.BoardDrawer;
+import com.quartyom.game_elements.Gameplay;
 import com.quartyom.screens.Level.LevelConfiguration;
 
 import java.util.ArrayList;

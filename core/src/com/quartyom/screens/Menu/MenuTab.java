@@ -3,10 +3,13 @@ package com.quartyom.screens.Menu;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Align;
 import com.quartyom.LayThePath;
+import com.quartyom.UserData;
 import com.quartyom.game_elements.AttentionScreenWithBackButton;
 import com.quartyom.game_elements.Button;
+import com.quartyom.game_elements.InputState;
 import com.quartyom.game_elements.Label;
 import com.quartyom.game_elements.QuScreen;
+import com.quartyom.game_elements.SwitchButton;
 import com.quartyom.interfaces.QuEvent;
 
 public class MenuTab extends QuScreen {
@@ -14,9 +17,11 @@ public class MenuTab extends QuScreen {
     final LayThePath game;
 
     Button easterButton, classicButton, colorsButton, infoButton, settingsButton;
+    SwitchButton colorsEasterButton;
     Label menuLabel;
 
     private int timesEasterButtonClicked;
+    private int timesColorsEasterButtonClicked;
     private boolean backPressedBefore = false;
 
     public MenuTab(final LayThePath game) {
@@ -76,15 +81,33 @@ public class MenuTab extends QuScreen {
         colorsButton = new Button("in_main_menu", game, new QuEvent() {
             @Override
             public void execute() {
-                if (game.userData.colors_is_available) {
-                    game.setScreen("colors_level");
-                } else {
-                    // game.setScreen("menu_zen_is_unavailable");  // !!!!!!!!!!!!!!!!!
-                    game.setScreen("menu_colors_is_unavailable");
+                UserData userData = game.userData;
+                if (!userData.colors_is_available) {
+                    if (userData.max_level_achieved > 150) {
+                        userData.colors_is_available = true;
+                        game.saveUserData();
+                    }
+                    else {
+                        game.setScreen("menu_colors_is_unavailable");
+                        return;
+                    }
                 }
+                game.setScreen("colors_level");
             }
         });
         colorsButton.setNinePatch(6).setLabel(game.locale.get("Colors"));
+
+        colorsEasterButton = new SwitchButton(game, new QuEvent() {
+            @Override
+            public void execute() {
+                timesColorsEasterButtonClicked++;
+                if (timesColorsEasterButtonClicked >= 2) {
+                    game.setScreen("easter_colors");
+                    colorsButton.inputState = InputState.UNTOUCHED;
+                }
+            }
+        });
+        colorsEasterButton.click_sound = null;
 
         // gap
 
@@ -116,8 +139,12 @@ public class MenuTab extends QuScreen {
                 game.buttonW, game.buttonH);
         colorsButton.resize(game.upperButtonCornerX, game.upperButtonCornerY - game.downMargin * 2,
                 game.buttonW, game.buttonH);
+        // same as colorsButton
+        colorsEasterButton.resize(game.upperButtonCornerX, game.upperButtonCornerY - game.downMargin * 2,
+                game.buttonW, game.buttonH);
         infoButton.resize(game.upperButtonCornerX,
-                game.upperButtonCornerY - game.downMargin * 4, game.buttonW, game.buttonH);
+                game.upperButtonCornerY - game.downMargin * 3, game.buttonW, game.buttonH);
+        // gap
         settingsButton.resize(game.upperButtonCornerX,
                 game.upperButtonCornerY - game.downMargin * 5, game.buttonW, game.buttonH);
     }
@@ -127,6 +154,7 @@ public class MenuTab extends QuScreen {
         Gdx.gl20.glClearColor(0, 0, 0, 1);
         menuLabel.setString(game.locale.get("Menu"));
         timesEasterButtonClicked = 0;
+        timesColorsEasterButtonClicked = 0;
         backPressedBefore = false;
     }
 
@@ -143,6 +171,7 @@ public class MenuTab extends QuScreen {
         easterButton.update();
         classicButton.update();
         colorsButton.update();
+        colorsEasterButton.update();
         infoButton.update();
         settingsButton.update();
 

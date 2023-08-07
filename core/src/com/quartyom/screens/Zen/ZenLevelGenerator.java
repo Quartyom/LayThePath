@@ -2,7 +2,7 @@ package com.quartyom.screens.Zen;
 
 import com.badlogic.gdx.math.Vector2;
 import com.quartyom.LayThePath;
-import com.quartyom.screens.Level.Gameplay;
+import com.quartyom.game_elements.Gameplay;
 import com.quartyom.screens.Level.LevelConfiguration;
 import com.quartyom.screens.Level.MoveResult;
 

@@ -1,6 +1,8 @@
-package com.quartyom.screens.Level;
+package com.quartyom.game_elements;
 
 import com.badlogic.gdx.math.Vector2;
+import com.quartyom.screens.Level.LevelConfiguration;
+import com.quartyom.screens.Level.MoveResult;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -280,7 +282,7 @@ public class Gameplay {
             }
             // курсор не на хвосте, тогда переключаем на хвост
             else {
-                abstractInputCursor = new Vector2(body.get(body.size() - 1));
+                abstractInputCursor = new Vector2(tail);
                 headIsCaptured = true;
                 falsePath.clear(); // чтобы стереть красную дорожку за курсором
                 return MoveResult.OTHER_GOOD;
@@ -503,19 +505,19 @@ public class Gameplay {
                     return MoveResult.MOVE_THROUGH_HORIZONTAL_WALL;
                 }
             }
-            if (moveDirection == 2) {
+            else if (moveDirection == 2) {
                 if (horizontal_walls.contains(xy_to)) {
                     //System.out.println("Movement through the horizontal_wall");
                     return MoveResult.MOVE_THROUGH_HORIZONTAL_WALL;
                 }
             }
-            if (moveDirection == 1) {
+            else if (moveDirection == 1) {
                 if (vertical_walls.contains(tail)) {
                     //System.out.println("Movement through the vertical_wall");
                     return MoveResult.MOVE_THROUGH_VERTICAL_WALL;
                 }
             }
-            if (moveDirection == 3) {
+            else if (moveDirection == 3) {
                 if (vertical_walls.contains(xy_to)) {
                     //System.out.println("Movement through the vertical_wall");
                     return MoveResult.MOVE_THROUGH_VERTICAL_WALL;

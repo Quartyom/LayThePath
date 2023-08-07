@@ -1,0 +1,67 @@
+{
+field_size: 7
+colors_sources: [
+	{
+		pos: {
+			x: 5
+			y: 1
+		}
+		color_id: 0
+	}
+	{
+		pos: {
+			x: 3
+			y: 4
+		}
+		color_id: 0
+	}
+	{
+		pos: {
+			x: 2
+			y: 1
+		}
+		color_id: 1
+	}
+	{
+		pos: {
+			x: 4
+			y: 2
+		}
+		color_id: 1
+	}
+	{
+		pos: {
+			x: 3
+			y: 2
+		}
+		color_id: 2
+	}
+	{
+		pos: {
+			x: 4
+			y: 6
+		}
+		color_id: 2
+	}
+	{
+		pos: {
+			x: 1
+			y: 4
+		}
+		color_id: 3
+	}
+	{
+		pos: {
+			x: 1
+			y: 1
+		}
+		color_id: 3
+	}
+	{
+		pos: {
+			y: 3
+		}
+		color_id: 4
+	}
+]
+}

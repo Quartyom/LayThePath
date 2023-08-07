@@ -1,0 +1,61 @@
+{
+field_size: 6
+slash_walls: [
+	{
+		x: 1
+		y: 2
+	}
+]
+backslash_walls: [
+	{
+		x: 3
+	}
+	{
+		x: 5
+		y: 2
+	}
+]
+boxes: [
+	{
+		x: 5
+		y: 4
+	}
+	{
+		x: 3
+		y: 2
+	}
+]
+points: [
+	{
+		x: 5
+	}
+	{
+		x: 3
+		y: 4
+	}
+]
+crossroads: [
+	{
+		x: 1
+		y: 5
+	}
+	{
+		x: 1
+	}
+]
+colors_sources: [
+	{
+		pos: {
+			x: 3
+			y: 3
+		}
+		color_id: 0
+	}
+	{
+		pos: {
+			y: 5
+		}
+		color_id: 1
+	}
+]
+}

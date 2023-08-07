@@ -1,0 +1,48 @@
+{
+field_size: 6
+boxes: [
+	{
+		x: 1
+		y: 5
+	}
+	{
+		y: 2
+	}
+	{
+		x: 2
+		y: 3
+	}
+	{
+		x: 4
+		y: 4
+	}
+	{
+		x: 4
+		y: 2
+	}
+	{
+		x: 3
+	}
+]
+crossroads: [
+	{
+		x: 4
+		y: 5
+	}
+]
+colors_sources: [
+	{
+		pos: {
+			x: 5
+			y: 5
+		}
+		color_id: 0
+	}
+	{
+		pos: {
+			y: 1
+		}
+		color_id: 1
+	}
+]
+}

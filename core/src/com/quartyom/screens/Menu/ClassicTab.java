@@ -3,6 +3,7 @@ package com.quartyom.screens.Menu;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Align;
 import com.quartyom.LayThePath;
+import com.quartyom.UserData;
 import com.quartyom.game_elements.Button;
 import com.quartyom.game_elements.Label;
 import com.quartyom.game_elements.QuScreen;
@@ -31,17 +32,18 @@ public class ClassicTab extends QuScreen {
         zenButton = new Button("in_main_menu", game, new QuEvent() {
             @Override
             public void execute() {
-                if (game.userData.zen_is_available) {
-                    /*if (game.userData.editor_is_available){
-                        game.setScreen("zen");
+                UserData userData = game.userData;
+                if (!userData.zen_is_available) {
+                    if (userData.max_level_achieved > 100) {
+                        userData.zen_is_available = true;
+                        game.saveUserData();
                     }
                     else {
-                        game.setScreen("menu_zen_after_ads");
-                    }*/
-                    game.setScreen("zen");
-                } else {
-                    game.setScreen("menu_zen_is_unavailable");
+                        game.setScreen("menu_zen_is_unavailable");
+                        return;
+                    }
                 }
+                game.setScreen("zen");
             }
         });
         zenButton.setNinePatch(6).setLabel(game.locale.get("Zen"));
@@ -49,11 +51,18 @@ public class ClassicTab extends QuScreen {
         editorButton = new Button("in_main_menu", game, new QuEvent() {
             @Override
             public void execute() {
-                if (game.userData.editor_is_available) {
-                    game.setScreen("editor");
-                } else {
-                    game.setScreen("menu_editor_is_unavailable");
+                UserData userData = game.userData;
+                if (!userData.editor_is_available) {
+                    if (userData.max_level_achieved > 200) {
+                        userData.editor_is_available = true;
+                        game.saveUserData();
+                    }
+                    else {
+                        game.setScreen("menu_editor_is_unavailable");
+                        return;
+                    }
                 }
+                game.setScreen("editor");
             }
         });
         editorButton.setNinePatch(6).setLabel(game.locale.get("Editor"));

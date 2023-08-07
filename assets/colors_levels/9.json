@@ -1,64 +1,43 @@
 {
-field_size: 6
-horizontal_walls: [
-	{
-		x: 3
-		y: 3
-	}
-	{
-		x: 2
-		y: 1
-	}
-]
+field_size: 5
 slash_walls: [
 	{
+		x: 1
+		y: 1
+	}
+	{
+		x: 3
+		y: 2
+	}
+	{
 		x: 2
+		y: 3
+	}
+]
+boxes: [
+	{
+		x: 1
 		y: 4
 	}
 	{
-		x: 3
-		y: 1
+		y: 2
+	}
+	{
+		x: 4
 	}
 ]
 colors_sources: [
 	{
 		pos: {
-			x: 4
-			y: 1
-		}
-		color_id: 0
-	}
-	{
-		pos: {
-			x: 4
+			x: 2
 			y: 3
 		}
-		color_id: 1
-	}
-	{
-		pos: {
-			x: 4
-			y: 5
-		}
-		color_id: 2
-	}
-	{
-		pos: {
-			x: 1
-		}
-		color_id: 2
-	}
-	{
-		pos: {
-			x: 1
-			y: 2
-		}
 		color_id: 0
 	}
 	{
 		pos: {
-			x: 1
-			y: 4
+			x: 2
+			y: 1
 		}
 		color_id: 1
 	}

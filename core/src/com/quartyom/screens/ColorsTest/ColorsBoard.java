@@ -75,7 +75,7 @@ public class ColorsBoard extends ColorsGameBoard {
         colorsBoardDrawer.isHintShown = false;
         wasHintUsed = false;
 
-        colorsBoardDrawer.colorHolder.refresh();    // поменять цвета источников
+        colorsBoardDrawer.colorHolder.refresh(currentColorsLevel);    // поменять цвета источников
 
     }
 

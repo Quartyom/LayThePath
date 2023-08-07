@@ -3,7 +3,7 @@ package com.quartyom.screens.Editor;
 import com.badlogic.gdx.utils.Align;
 import com.quartyom.game_elements.GameTopPanel;
 import com.quartyom.game_elements.Label;
-import com.quartyom.screens.Level.Gameplay;
+import com.quartyom.game_elements.Gameplay;
 
 public class EditorLaunchedTopPanel extends GameTopPanel {
     public boolean isActive = false;

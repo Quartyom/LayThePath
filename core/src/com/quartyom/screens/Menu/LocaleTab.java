@@ -60,8 +60,8 @@ public class LocaleTab extends QuScreen {
 
         if (scroller.value.y < 0) {
             scroller.value.y = 0;
-        } else if (scroller.value.y > game.downMargin * localeButtons.size()) {
-            scroller.value.y = game.downMargin * localeButtons.size();
+        } else if (scroller.value.y > game.downMargin * 0.5f * localeButtons.size()) {
+            scroller.value.y = game.downMargin * 0.5f * localeButtons.size();
         }
 
         for (Button item : localeButtons) {

@@ -4,9 +4,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.quartyom.LayThePath;
-import com.quartyom.screens.ColorsTest.ColorsGameplay;
-import com.quartyom.screens.ColorsTest.ColorsSource;
-import com.quartyom.screens.Level.Gameplay;
 
 import java.util.ArrayList;
 

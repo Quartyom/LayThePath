@@ -3,7 +3,6 @@ package com.quartyom.game_elements;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.Vector2;
 import com.quartyom.LayThePath;
-import com.quartyom.screens.ColorsTest.ColorsGameplay;
 import com.quartyom.screens.Level.MoveResult;
 
 public abstract class ColorsGameBoard {
@@ -182,6 +181,7 @@ public abstract class ColorsGameBoard {
         pressTimer.update();
 
         float sensitivity = actualSize * 2 / 5;
+        Vector2 abstractInputCursor = colorsGameplay.abstractInputCursor;
 
         if (pressTimer.handle_double_tap()) {
             pressTimer.reset();
@@ -190,7 +190,7 @@ public abstract class ColorsGameBoard {
                 if (colorsGameplay.falsePath.isEmpty()) {
                     vibrator.vibrate(150);
                 }
-                colorsGameplay.falsePath.add(new Vector2((int) colorsGameplay.abstractInputCursor.x, (int) colorsGameplay.abstractInputCursor.y));
+                colorsGameplay.falsePath.add(new Vector2((int) abstractInputCursor.x, (int) abstractInputCursor.y));
             } else if (result == MoveResult.BODY_IS_SHORTENED) {
                 colorsGameplay.falsePath.clear();
                 bodyShortenedSound.play(game.userData.volume);
@@ -200,8 +200,8 @@ public abstract class ColorsGameBoard {
         }
 
         if (scroller.inputState == InputState.JUST_TOUCHED) {
-            scroller.value.x = colorsGameplay.abstractInputCursor.x * sensitivity;
-            scroller.value.y = colorsGameplay.abstractInputCursor.y * sensitivity;
+            scroller.value.x = abstractInputCursor.x * sensitivity;
+            scroller.value.y = abstractInputCursor.y * sensitivity;
         } else if (scroller.inputState == InputState.TOUCHED) {
 
             if (scroller.value.x < 0) {
@@ -217,12 +217,12 @@ public abstract class ColorsGameBoard {
             }
 
             // выравнивание вдоль осей
-            if (colorsGameplay.abstractInputCursor.x != Math.round(scroller.value.x / sensitivity)) {
-                colorsGameplay.abstractInputCursor.x = Math.round(scroller.value.x / sensitivity);
-                scroller.value.y = colorsGameplay.abstractInputCursor.y * sensitivity;
-            } else if (colorsGameplay.abstractInputCursor.y != Math.round(scroller.value.y / sensitivity)) {
-                scroller.value.x = colorsGameplay.abstractInputCursor.x * sensitivity;
-                colorsGameplay.abstractInputCursor.y = Math.round(scroller.value.y / sensitivity);
+            if (abstractInputCursor.x != Math.round(scroller.value.x / sensitivity)) {
+                abstractInputCursor.x = Math.round(scroller.value.x / sensitivity);
+                scroller.value.y = abstractInputCursor.y * sensitivity;
+            } else if (abstractInputCursor.y != Math.round(scroller.value.y / sensitivity)) {
+                scroller.value.x = abstractInputCursor.x * sensitivity;
+                abstractInputCursor.y = Math.round(scroller.value.y / sensitivity);
             }
 
             MoveResult result = colorsGameplay.slideTouchedMakeMove();
@@ -263,7 +263,7 @@ public abstract class ColorsGameBoard {
                     if (colorsGameplay.falsePath.isEmpty()) {
                         vibrator.vibrate(150);
                     }
-                    colorsGameplay.falsePath.add(new Vector2((int) colorsGameplay.abstractInputCursor.x, (int) colorsGameplay.abstractInputCursor.y));
+                    colorsGameplay.falsePath.add(new Vector2((int) abstractInputCursor.x, (int) abstractInputCursor.y));
                     break;
                 case OUT_OF_BOUNDS:
                     if (colorsGameplay.falsePath.isEmpty()) {

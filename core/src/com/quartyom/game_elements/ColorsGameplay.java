@@ -1,6 +1,7 @@
-package com.quartyom.screens.ColorsTest;
+package com.quartyom.game_elements;
 
 import com.badlogic.gdx.math.Vector2;
+import com.quartyom.screens.ColorsTest.LevelColorsConfiguration;
 import com.quartyom.screens.Level.MoveResult;
 
 import java.util.ArrayList;
@@ -308,9 +309,117 @@ public class ColorsGameplay {
             all_bodies_color_id.add(body_color_id);
     }
 
+    // двойное нажатие
+    // ставит голову на пустой клетке
+    // убирает захваченную голову
+    // захватывает голову, если есть тело
+    // переключается на хвост, если на хвост
+    // возвращается к захваченной голове
+    // убирает захват с головы
     public MoveResult doubleTapMakeMove() {
         Vector2 xy_to = new Vector2(abstractInputCursor);
-        catch_certain_body(xy_to);
+
+        // голова захвачена
+        if (headIsCaptured) {
+            Vector2 tail = body.get(body.size() - 1);
+
+            // либо мы уже на голове
+            if (xy_to.equals(tail)) {
+                // длина тела == 1, тогда разрушаем
+                if (body.size() == 1) {
+                    clearBody();
+                    updateHowManyVisited();
+                    headIsCaptured = false;
+                    return MoveResult.HEAD_IS_DESTROYED;
+                }
+                // иначе отключаемся
+                headIsCaptured = false;
+                boolean bodyShortened = false;
+                while (body.size() > 0) {
+                    if (canStayHere(body.get(body.size() - 1))) {
+                        break;
+                    } else {
+                        bodyShortened = true;
+                        cutTail();
+                    }
+                }
+                if (bodyShortened) {
+                    return MoveResult.BODY_IS_SHORTENED;
+                }
+            }
+            // иначе нужно вернуться на голову
+            else {
+                abstractInputCursor = new Vector2(tail);
+                falsePath.clear(); // чтобы стереть красную дорожку за курсором
+            }
+            return MoveResult.OTHER_GOOD;
+        }
+        // голова не захвачена
+        else {
+            catch_certain_body(xy_to);
+
+            // либо тела нет, тогда нужно поставить голову
+            if (body.size() == 0) {
+                // можно ли ставить
+                if (canPutHeadHere(xy_to)) {
+                    body.add(xy_to);
+                    body_io.add(new Vector2(-1, -1));
+                    updateHowManyVisited();
+                    headIsCaptured = true;
+                    isTendingToDestroyTheHead = false;
+                    return MoveResult.HEAD_IS_SET;
+                } else {
+                    clearBody();
+                    return MoveResult.HEAD_IS_NOT_SET;
+                }
+            }
+            // здесь мы уже либо на хвосте, либо на голове
+            else {
+                Vector2 head = body.get(0);
+
+                // курсор уже на хвосте, просто переключаемся
+                headIsCaptured = true;
+                // если курсор таки на голове
+                if (xy_to.equals(head)) {
+                    abstractInputCursor = new Vector2(head);
+
+                    boolean bodyShortened = false;
+                    while (body.size() > 0) {
+                        if (canStayHere(body.get(body.size() - 1))) {
+                            break;
+                        } else {
+                            bodyShortened = true;
+                            cutTail();
+                        }
+                    }
+
+                    Collections.reverse(body);
+                    Collections.reverse(body_io);
+                    for (Vector2 item : body_io) {
+                        float tmp = item.x;
+                        item.x = item.y;
+                        item.y = tmp;
+                    }
+
+                    falsePath.clear(); // чтобы стереть красную дорожку за курсором
+
+                    if (bodyShortened) {
+                        return MoveResult.BODY_IS_SHORTENED;
+                    }
+                }
+                return MoveResult.OTHER_GOOD;
+            }
+
+        }
+
+    }
+
+    public MoveResult _doubleTapMakeMove() {
+        Vector2 xy_to = new Vector2(abstractInputCursor);
+
+        if (!headIsCaptured) {
+            catch_certain_body(xy_to);
+        }
 
         // либо тела нет, тогда нужно поставить голову
         if (body.size() == 0) {
@@ -330,6 +439,7 @@ public class ColorsGameplay {
         // если тело есть
         else {
             Vector2 tail = body.get(body.size() - 1);
+            Vector2 head = body.get(0);
             //System.out.println("Tail: " + tail);
 
             // курсор уже на хвосте
@@ -341,40 +451,45 @@ public class ColorsGameplay {
                     headIsCaptured = false;
                     return MoveResult.HEAD_IS_DESTROYED;
                 }
-                // курсор уже на хвосте, тогда переключаем на голову
+                // курсор уже на хвосте, тогда отключаемся
                 else {
-                    abstractInputCursor = new Vector2(body.get(0));
-
-                    boolean bodyShortened = false;
-                    while (body.size() > 0) {
-                        if (canStayHere(body.get(body.size() - 1))) {
-                            break;
-                        } else {
-                            bodyShortened = true;
-                            cutTail();
-                        }
-                    }
-
-                    Collections.reverse(body);
-                    Collections.reverse(body_io);
-                    for (Vector2 item : body_io) {
-                        float tmp = item.x;
-                        item.x = item.y;
-                        item.y = tmp;
-                    }
-                    //System.out.println(body);
-                    //System.out.println(body_io);
-                    //is_tending_to_destroy_the_head = true;
-                    headIsCaptured = true;
-                    falsePath.clear(); // чтобы стереть красную дорожку за курсором
-
-                    if (bodyShortened) {
-                        return MoveResult.BODY_IS_SHORTENED;
-                    }
-
+                    headIsCaptured = false;
                     return MoveResult.OTHER_GOOD;
                 }
 
+            }
+            // переключаем на голову
+            else if (xy_to.equals(head)){
+                abstractInputCursor = new Vector2(body.get(0));
+
+                boolean bodyShortened = false;
+                while (body.size() > 0) {
+                    if (canStayHere(body.get(body.size() - 1))) {
+                        break;
+                    } else {
+                        bodyShortened = true;
+                        cutTail();
+                    }
+                }
+
+                Collections.reverse(body);
+                Collections.reverse(body_io);
+                for (Vector2 item : body_io) {
+                    float tmp = item.x;
+                    item.x = item.y;
+                    item.y = tmp;
+                }
+                //System.out.println(body);
+                //System.out.println(body_io);
+                //is_tending_to_destroy_the_head = true;
+                headIsCaptured = true;
+                falsePath.clear(); // чтобы стереть красную дорожку за курсором
+
+                if (bodyShortened) {
+                    return MoveResult.BODY_IS_SHORTENED;
+                }
+
+                return MoveResult.OTHER_GOOD;
             }
             // курсор не на хвосте, тогда переключаем на хвост
             else {
@@ -610,74 +725,68 @@ public class ColorsGameplay {
                     return MoveResult.MOVE_THROUGH_HORIZONTAL_WALL;
                 }
             }
-            if (moveDirection == 2) {
+            else if (moveDirection == 2) {
                 if (horizontal_walls.contains(xy_to)) {
                     //System.out.println("Movement through the horizontal_wall");
                     return MoveResult.MOVE_THROUGH_HORIZONTAL_WALL;
                 }
             }
-            if (moveDirection == 1) {
+            else if (moveDirection == 1) {
                 if (vertical_walls.contains(tail)) {
                     //System.out.println("Movement through the vertical_wall");
                     return MoveResult.MOVE_THROUGH_VERTICAL_WALL;
                 }
             }
-            if (moveDirection == 3) {
+            else if (moveDirection == 3) {
                 if (vertical_walls.contains(xy_to)) {
                     //System.out.println("Movement through the vertical_wall");
                     return MoveResult.MOVE_THROUGH_VERTICAL_WALL;
                 }
             }
 
-            for (int i_body=0; i_body<all_bodies.size(); i_body++){
+            int timesVisited = 0;
+            for (int i_body=0; i_body<all_bodies.size(); i_body++) {
                 ArrayList<Vector2> other_body = all_bodies.get(i_body);
                 ArrayList<Vector2> other_body_io = all_bodies_io.get(i_body);
                 int i = other_body.indexOf(xy_to);
                 // то есть ход внутри тела
                 if (i != -1) {
+                    timesVisited++;
                     //System.out.println("Segment " + i + ": " + body.get(i) + " is at the same position");
+                    if (timesVisited >= 2 || other_body.lastIndexOf(xy_to) != i) {
+                        //System.out.println("Triple visited");
+                        return MoveResult.BODY_NOT_VISITED;
+                    }
 
                     if (i == 0 || i == other_body.size() - 1) {
                         //System.out.println("This is my tail");
                         return MoveResult.BODY_NOT_VISITED;
                     }
-                    // ???
-//                    if (body.lastIndexOf(xy_to) != i) {
-//                        //System.out.println("Triple visited");
-//                        return MoveResult.BODY_NOT_VISITED;
-//                    }
 
                     int visitedSegment = SEGMENT_BY_IO[(int) other_body_io.get(i).x][(int) other_body_io.get(i).y];
                     //System.out.println("Visited segment: " + visited_segment);
 
                     int canVisit = ENTRANCE_TO_BODY[moveDirection][visitedSegment];
-
-                    if (canVisit > 0) {
-                        //System.out.println("Move is done");
-                        body.add(xy_to);
-                        body_io.get(body_io.size() - 1).y = moveDirection;
-                        body_io.add(new Vector2(NEGATE_DIRECTION[moveDirection], -1));
-                        if (isTendingToPaintBody) { updateBodyColor(); }
-                        // updateHowManyVisited();
-                        return MoveResult.BODY_VISITED;
-                    } else {
+                    if (canVisit == 0) {
                         //System.out.println("Can't visit by rules");
                         return MoveResult.BODY_NOT_VISITED;
                     }
 
                 }
             }
-            // int i = body.indexOf(xy_to);
-
-            //System.out.println("Simple movement");
             body.add(xy_to);
             body_io.get(body_io.size() - 1).y = moveDirection;
             body_io.add(new Vector2(NEGATE_DIRECTION[moveDirection], -1));
             if (isTendingToPaintBody) { updateBodyColor(); }
 
-            updateHowManyVisited();
-
-            return MoveResult.SIMPLE_MOVEMENT;
+            // то есть был заход в тело, в цикле гарантировали, что меньше 2 раз, при этом посещение доступно
+            if (timesVisited > 0) {
+                return MoveResult.BODY_VISITED;
+            }
+            else {
+                updateHowManyVisited();
+                return MoveResult.SIMPLE_MOVEMENT;
+            }
         }
     }
 

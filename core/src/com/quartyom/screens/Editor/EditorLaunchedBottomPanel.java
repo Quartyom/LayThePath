@@ -51,11 +51,6 @@ public class EditorLaunchedBottomPanel extends GameBottomPanel {
         saveButton = new Button("save", game, new QuEvent() {
             @Override
             public void execute() {
-                LevelConfiguration levelConfiguration = editorScreen.editorBoard.gameplay.getLevelConfiguration();
-                Gdx.files.local("user_levels/" + editorScreen.editorLaunchedBoard.gameplay.field_size + "/" + System.currentTimeMillis() + ".json").writeString(editorScreen.game.json.prettyPrint(levelConfiguration), false);
-                if (!game.userData.is_developer) {
-                    return;
-                }
                 if (!editorScreen.editorLaunchedBoard.isLevelCompleted) {
                     return;
                 }
@@ -68,8 +63,8 @@ public class EditorLaunchedBottomPanel extends GameBottomPanel {
                 //System.out.println("pressed save button");
 
                 editorScreen.editorLaunchedBoard.gameplay.setHint();
-                //LevelConfiguration levelConfiguration = editorScreen.editorBoard.gameplay.getLevelConfiguration();
-                //Gdx.files.local("user_levels/" + editorScreen.editorLaunchedBoard.gameplay.field_size + "/" + System.currentTimeMillis() + ".json").writeString(editorScreen.game.json.prettyPrint(levelConfiguration), false);
+                LevelConfiguration levelConfiguration = editorScreen.editorBoard.gameplay.getLevelConfiguration();
+                Gdx.files.local("user_levels/" + editorScreen.editorLaunchedBoard.gameplay.field_size + "/" + System.currentTimeMillis() + ".json").writeString(editorScreen.game.json.prettyPrint(levelConfiguration), false);
             }
         });
         saveButton.setHint(game.locale.get("save")).setSound("click_1");

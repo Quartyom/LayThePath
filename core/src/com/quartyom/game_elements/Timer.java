@@ -6,13 +6,11 @@ import com.quartyom.interfaces.QuEvent;
 
 public class Timer {
 
-    private LayThePath game;
     private QuEvent action;
 
     private long whenToAct;
 
-    public Timer(LayThePath game, QuEvent action) {
-        this.game = game;
+    public Timer(QuEvent action) {
         this.action = action;
     }
 

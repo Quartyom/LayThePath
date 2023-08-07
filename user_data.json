@@ -1,18 +1,23 @@
 {
-current_level: 191
+current_level: 4
 max_level_achieved: 251
+current_colors_level: 9
+max_colors_level_achieved: 45
 zen_is_available: true
 editor_is_available: true
-hints_amount: 110
+colors_is_available: true
+hints_amount: 11
 volume: 0.5
 premium_is_on: true
+abstract_input_is_on: true
 is_developer: true
 locale: en
-launches: 358
+launches: 548
 zen_levels_passed: 304
-current_zen_level: 1719
+current_zen_level: 1722
 stats_views: 5
-when_to_skip_level: 1688697321037
-when_to_skip_zen_level: 1688697329698
+when_to_skip_level: 1691216044314
+when_to_skip_zen_level: 1691216284336
+when_to_skip_colors_level: 1691216164366
 premium_public_code: 945097
 }

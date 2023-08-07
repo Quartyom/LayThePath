@@ -1,14 +1,19 @@
 {
-field_size: 5
-boxes: [
+field_size: 4
+vertical_walls: [
+	{}
+]
+horizontal_walls: [
 	{
-		y: 4
-	}
-	{
-		x: 4
+		x: 3
+		y: 2
 	}
 ]
-points: [
+backslash_walls: [
+	{
+		x: 1
+		y: 1
+	}
 	{
 		x: 2
 		y: 2
@@ -16,6 +21,10 @@ points: [
 ]
 colors_sources: [
 	{
+		pos: {}
+		color_id: 0
+	}
+	{
 		pos: {
 			x: 1
 			y: 1
@@ -24,22 +33,15 @@ colors_sources: [
 	}
 	{
 		pos: {
-			x: 3
-			y: 3
-		}
-		color_id: 0
-	}
-	{
-		pos: {
-			x: 1
-			y: 3
+			x: 2
+			y: 2
 		}
 		color_id: 1
 	}
 	{
 		pos: {
 			x: 3
-			y: 1
+			y: 3
 		}
 		color_id: 1
 	}

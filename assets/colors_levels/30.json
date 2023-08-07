@@ -1,0 +1,137 @@
+{
+field_size: 7
+vertical_walls: [
+	{
+		y: 5
+	}
+	{
+		x: 2
+		y: 4
+	}
+	{
+		x: 4
+		y: 5
+	}
+	{
+		y: 1
+	}
+	{
+		x: 2
+	}
+]
+horizontal_walls: [
+	{
+		x: 2
+		y: 3
+	}
+	{
+		x: 4
+		y: 4
+	}
+	{
+		x: 6
+		y: 2
+	}
+	{
+		x: 4
+	}
+]
+slash_walls: [
+	{
+		x: 1
+		y: 2
+	}
+	{
+		x: 1
+		y: 4
+	}
+	{
+		x: 5
+		y: 4
+	}
+]
+backslash_walls: [
+	{
+		x: 6
+		y: 6
+	}
+	{
+		x: 3
+		y: 3
+	}
+]
+points: [
+	{
+		x: 1
+		y: 6
+	}
+	{
+		x: 1
+		y: 3
+	}
+	{
+		x: 2
+		y: 1
+	}
+]
+crossroads: [
+	{
+		x: 3
+		y: 2
+	}
+	{
+		x: 2
+		y: 5
+	}
+]
+colors_sources: [
+	{
+		pos: {
+			x: 3
+			y: 2
+		}
+		color_id: 0
+	}
+	{
+		pos: {
+			x: 5
+			y: 2
+		}
+		color_id: 1
+	}
+	{
+		pos: {
+			x: 1
+			y: 1
+		}
+		color_id: 1
+	}
+	{
+		pos: {
+			x: 5
+			y: 1
+		}
+		color_id: 0
+	}
+	{
+		pos: {
+			x: 2
+		}
+		color_id: 0
+	}
+	{
+		pos: {
+			x: 5
+			y: 4
+		}
+		color_id: 2
+	}
+	{
+		pos: {
+			x: 1
+			y: 4
+		}
+		color_id: 2
+	}
+]
+}

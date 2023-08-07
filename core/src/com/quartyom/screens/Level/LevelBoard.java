@@ -49,20 +49,6 @@ public class LevelBoard extends GameBoard {
 
     public void loadLevel() {
         //System.out.println("Loaded level " + current_level);
-        if (currentLevel > 100 && !userData.zen_is_available) {
-            userData.zen_is_available = true;
-            game.saveUserData();
-        }
-
-        if (currentLevel > 150 && !userData.colors_is_available) {
-            userData.colors_is_available = true;
-            game.saveUserData();
-        }
-
-        if (currentLevel > 200 && !userData.editor_is_available) {
-            userData.editor_is_available = true;
-            game.saveUserData();
-        }
 
         if (currentLevel > userData.max_level_achieved) {
             if (game.random.nextInt(3) == 0) {

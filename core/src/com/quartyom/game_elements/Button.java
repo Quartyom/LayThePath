@@ -45,7 +45,6 @@ public class Button implements Drawable {
         normalTexture = game.buttonsAtlas.findRegion(name + "_normal");
         pressedTexture = game.buttonsAtlas.findRegion(name + "_pressed");
         clickSound = game.soundHolder.get("click_0");
-
     }
 
     public Button setNinePatch(int padding) {
