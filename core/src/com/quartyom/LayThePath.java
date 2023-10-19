@@ -12,7 +12,7 @@ import com.quartyom.game_elements.Locale;
 import com.quartyom.game_elements.QuGame;
 import com.quartyom.game_elements.SoundHolder;
 import com.quartyom.game_elements.Vibrator;
-import com.quartyom.screens.ColorsTest.ColorsScreen;
+import com.quartyom.screens.Colors.ColorsScreen;
 import com.quartyom.screens.EasterColorsGame.EasterScreen;
 import com.quartyom.screens.Editor.EditorScreen;
 import com.quartyom.screens.Level.LevelScreen;

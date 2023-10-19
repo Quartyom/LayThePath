@@ -2,13 +2,7 @@ package com.quartyom.screens.EasterColorsGame;
 
 import com.badlogic.gdx.Gdx;
 import com.quartyom.LayThePath;
-import com.quartyom.game_elements.AttentionScreenWithBackButton;
 import com.quartyom.game_elements.QuScreen;
-import com.quartyom.screens.ColorsTest.ColorsBoard;
-import com.quartyom.screens.ColorsTest.ColorsBottomPanel;
-import com.quartyom.screens.ColorsTest.ColorsLevelsAreOver;
-import com.quartyom.screens.ColorsTest.ColorsTopPanel;
-import com.quartyom.screens.ColorsTest.ColorsTransformBottomPanel;
 
 public class EasterScreen extends QuScreen {
     final LayThePath game;

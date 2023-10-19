@@ -34,8 +34,8 @@
 -keep public class com.quartyom.screens.Level.LevelsData { public private *; }
 -keep public class com.quartyom.screens.Level.LevelConfiguration { public private *; }
 -keep public class com.quartyom.game_elements.ColorsSource { public private *; }
--keep public class com.quartyom.screens.ColorsTest.LevelsColorsData { public private *; }
--keep public class com.quartyom.screens.ColorsTest.LevelColorsConfiguration { public private *; }
+-keep public class com.quartyom.screens.Colors.LevelsColorsData { public private *; }
+-keep public class com.quartyom.screens.Colors.LevelColorsConfiguration { public private *; }
 -keep public class com.badlogic.gdx.math.Vector2 { public private *; }
 
 # Required if using Box2D extension

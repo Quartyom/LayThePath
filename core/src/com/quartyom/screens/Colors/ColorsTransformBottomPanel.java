@@ -1,9 +1,8 @@
-package com.quartyom.screens.ColorsTest;
+package com.quartyom.screens.Colors;
 
 import com.quartyom.game_elements.Button;
 import com.quartyom.game_elements.GameBottomPanel;
 import com.quartyom.interfaces.QuEvent;
-import com.quartyom.screens.Level.LevelScreen;
 
 public class ColorsTransformBottomPanel extends GameBottomPanel {
     public boolean isActive = false;

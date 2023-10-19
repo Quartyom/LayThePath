@@ -1,4 +1,4 @@
-package com.quartyom.screens.ColorsTest;
+package com.quartyom.screens.Colors;
 
 import com.badlogic.gdx.Gdx;
 import com.quartyom.LayThePath;

@@ -1,4 +1,4 @@
-package com.quartyom.screens.ColorsTest;
+package com.quartyom.screens.Colors;
 
 import com.badlogic.gdx.utils.Align;
 import com.quartyom.game_elements.ColorsGameplay;

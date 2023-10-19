@@ -1,4 +1,4 @@
-package com.quartyom.screens.ColorsTest;
+package com.quartyom.screens.Colors;
 
 import com.badlogic.gdx.math.Vector2;
 import com.quartyom.game_elements.ColorsSource;

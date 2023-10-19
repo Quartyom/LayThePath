@@ -2,6 +2,7 @@ package com.quartyom.screens.EasterColorsGame;
 
 import com.badlogic.gdx.utils.Align;
 import com.quartyom.game_elements.ColorsGameplay;
+import com.quartyom.game_elements.FontType;
 import com.quartyom.game_elements.GameTopPanel;
 import com.quartyom.game_elements.InputState;
 import com.quartyom.game_elements.Label;
@@ -15,6 +16,7 @@ public class EasterTopPanel extends GameTopPanel {
         this.easterScreen = easterScreen;
 
         levelLabel = new Label(game);
+        levelLabel.fontType = FontType.LOCALIZED_WITH_LATIN;
     }
 
     @Override

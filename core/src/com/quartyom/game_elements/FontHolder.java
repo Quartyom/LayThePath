@@ -25,7 +25,8 @@ public class FontHolder {
     public FontHolder(LayThePath game, String path) {
         this.game = game;
 
-        FreeTypeFontGenerator.setMaxTextureSize(2048);  // very important string, without it most part of symbols is invisible
+        //FreeTypeFontGenerator.setMaxTextureSize(2048);  // very important string, without it most part of symbols is invisible
+        FreeTypeFontGenerator.setMaxTextureSize(FreeTypeFontGenerator.NO_MAXIMUM);
         generator = new FreeTypeFontGenerator(Gdx.files.internal(path));
         parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.color = Color.WHITE;

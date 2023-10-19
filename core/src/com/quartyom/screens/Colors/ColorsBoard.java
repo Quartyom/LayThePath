@@ -1,10 +1,9 @@
-package com.quartyom.screens.ColorsTest;
+package com.quartyom.screens.Colors;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.quartyom.UserData;
 import com.quartyom.game_elements.ColorsGameBoard;
-import com.quartyom.screens.Level.LevelConfiguration;
 
 public class ColorsBoard extends ColorsGameBoard {
     public final ColorsScreen colorsScreen;

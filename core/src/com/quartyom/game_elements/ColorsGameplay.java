@@ -1,7 +1,7 @@
 package com.quartyom.game_elements;
 
 import com.badlogic.gdx.math.Vector2;
-import com.quartyom.screens.ColorsTest.LevelColorsConfiguration;
+import com.quartyom.screens.Colors.LevelColorsConfiguration;
 import com.quartyom.screens.Level.MoveResult;
 
 import java.util.ArrayList;
