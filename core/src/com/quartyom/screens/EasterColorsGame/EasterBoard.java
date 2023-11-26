@@ -137,7 +137,7 @@ public class EasterBoard {
                 touchPos.x = (int) ((touchPos.x - boardX) / squareW);
                 touchPos.y = (int) ((touchPos.y - boardY) / squareH);
 
-                System.out.println(touchPos + " " + current_level);
+                //System.out.println(touchPos + " " + current_level);
 
                 if (touchPos.equals(current_level)){
                     victorySound.play(game.userData.volume);

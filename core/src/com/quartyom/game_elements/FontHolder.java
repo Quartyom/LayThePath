@@ -25,8 +25,8 @@ public class FontHolder {
     public FontHolder(LayThePath game, String path) {
         this.game = game;
 
-        //FreeTypeFontGenerator.setMaxTextureSize(2048);  // very important string, without it most part of symbols is invisible
-        FreeTypeFontGenerator.setMaxTextureSize(FreeTypeFontGenerator.NO_MAXIMUM);
+        FreeTypeFontGenerator.setMaxTextureSize(2048);  // very important string, without it most part of symbols is invisible
+        //FreeTypeFontGenerator.setMaxTextureSize(FreeTypeFontGenerator.NO_MAXIMUM);
         generator = new FreeTypeFontGenerator(Gdx.files.internal(path));
         parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.color = Color.WHITE;
@@ -70,7 +70,10 @@ public class FontHolder {
                     return fontsLight.get(fontSize);
                 }
             case LOCALIZED_WITH_LATIN:
-                if (fontsWithLatin.containsKey(fontSize)) {
+                if (fontsLight.containsKey(fontSize) && isLatinLight) {
+                    return fontsLight.get(fontSize);
+                }
+                else if (fontsWithLatin.containsKey(fontSize)) {
                     return fontsWithLatin.get(fontSize);
                 }
             case INTERNATIONAL:
@@ -94,6 +97,7 @@ public class FontHolder {
 
         parameter.size = fontSize;
         BitmapFont font = generator.generateFont(parameter);    // creating a new font + put in according map
+
         fonts.put(fontSize, font);
         return font;
     }
