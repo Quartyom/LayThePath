@@ -5,6 +5,7 @@ import com.badlogic.gdx.audio.Sound;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 public class SoundHolder {
     private Map<String, Sound> sounds;

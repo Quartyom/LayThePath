@@ -6,6 +6,7 @@ import com.quartyom.screens.Level.MoveResult;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Random;
 
 // реализует чистую игровую логику
 public class Gameplay {
@@ -632,7 +633,7 @@ public class Gameplay {
         counterclockwiseTurnArray(vertical_walls);
         counterclockwiseTurnArray(horizontal_walls);
         for (Vector2 item : horizontal_walls) {
-            item.x -= 1;
+            item.x--;
         }
         tmp = vertical_walls;
         vertical_walls = horizontal_walls;
@@ -695,6 +696,29 @@ public class Gameplay {
             if (item.y % 2 != 0) {
                 item.y = (item.y + 2) % 4;
             }
+        }
+    }
+
+    public void turnAround() {
+        clockwiseTurn();
+        clockwiseTurn();
+    }
+
+    public void randomTurn() {
+        Random random = new Random();
+        if (random.nextBoolean()) {
+            mirrorTurn();
+        }
+        switch (random.nextInt(4)) {
+            case 0:
+                clockwiseTurn();
+                break;
+            case 1:
+                counterclockwiseTurn();
+                break;
+            case 2:
+                turnAround();
+                break;
         }
     }
 }

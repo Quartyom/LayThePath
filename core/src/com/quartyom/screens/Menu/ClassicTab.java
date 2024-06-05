@@ -34,7 +34,7 @@ public class ClassicTab extends QuScreen {
             public void execute() {
                 UserData userData = game.userData;
                 if (!userData.zen_is_available) {
-                    if (userData.max_level_achieved > 100) {
+                    if (userData.max_level_achieved > 50) {
                         userData.zen_is_available = true;
                         game.saveUserData();
                     }
@@ -53,7 +53,7 @@ public class ClassicTab extends QuScreen {
             public void execute() {
                 UserData userData = game.userData;
                 if (!userData.editor_is_available) {
-                    if (userData.max_level_achieved > 200) {
+                    if (userData.max_level_achieved > 100) {
                         userData.editor_is_available = true;
                         game.saveUserData();
                     }

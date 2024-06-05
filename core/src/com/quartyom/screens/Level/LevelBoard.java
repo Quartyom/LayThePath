@@ -7,8 +7,6 @@ import com.quartyom.game_elements.GameBoard;
 
 public class LevelBoard extends GameBoard {
     public final LevelScreen levelScreen;
-
-    LevelsData levelsData;
     UserData userData;
 
     int howManyLevels, currentLevel;
@@ -20,14 +18,13 @@ public class LevelBoard extends GameBoard {
         this.levelScreen = levelScreen;
 
         String a = Gdx.files.internal("levels/levels_data.json").readString();
-        levelsData = game.json.fromJson(LevelsData.class, a);
+        LevelsData levelsData = game.json.fromJson(LevelsData.class, a);
         howManyLevels = levelsData.how_many_levels;
 
         userData = game.userData;
         currentLevel = userData.current_level;
 
         loadLevel();
-
     }
 
     public void resize() {
@@ -66,6 +63,7 @@ public class LevelBoard extends GameBoard {
         String a = Gdx.files.internal("levels/" + currentLevel + ".json").readString();
         LevelConfiguration levelConfiguration = game.json.fromJson(LevelConfiguration.class, a);
         gameplay.setLevelConfiguration(levelConfiguration);
+        gameplay.randomTurn();
 
         userData.when_to_skip_level = TimeUtils.millis() + (levelConfiguration.field_size - 2) * 60_000L - 1L;    // now + N minutes
         game.saveUserData();
