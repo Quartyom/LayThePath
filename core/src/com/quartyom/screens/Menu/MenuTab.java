@@ -83,7 +83,7 @@ public class MenuTab extends QuScreen {
             public void execute() {
                 UserData userData = game.userData;
                 if (!userData.colors_is_available) {
-                    if (userData.max_level_achieved > 70) {
+                    if (userData.max_level_achieved > 150) {
                         userData.colors_is_available = true;
                         game.saveUserData();
                     }
